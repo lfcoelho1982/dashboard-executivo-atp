@@ -33,7 +33,7 @@
                         },
                         estacio: '#00529b',
                         wyden: '#e63946',
-                        idomed: '#06b6d4',
+                        idomed: '#10b981', /* Verde IDOMED */
                         darkbg: '#0b0f19',
                         darkcard: '#111827',
                         darkborder: '#1f2937'
@@ -141,7 +141,7 @@
                             <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>Wyden
                         </button>
                         <button onclick="selectBrand('IDOMED')" id="btnBrandIdomed" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-                            <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-1.5"></span>IDOMED
+                            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>IDOMED
                         </button>
                     </div>
                 </div>
@@ -510,7 +510,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Dados consolidados completos da planilha (Estácio, Wyden & IDOMED)
+        // Dados completos apurados da planilha consolidada (Estácio, Wyden & IDOMED)
         const rawData = [
             {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"ARACAJU - SE","Acionados":278,"Negociado":164,"Recusa":114,"Acordos":158,"Valor total do acordo":252051.84,"Pagos":147,"Valor Pago":239070.72,"Quebra":11,"Valor da Quebra":12981.12,"Efetividade #":0.93038,"Efetividade $":0.948498,"Renovações":83},
             {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"BELEM - PA","Acionados":198,"Negociado":171,"Recusa":27,"Acordos":171,"Valor total do acordo":270392.53,"Pagos":142,"Valor Pago":238315.64,"Quebra":29,"Valor da Quebra":32076.89,"Efetividade #":0.830409,"Efetividade $":0.881369,"Renovações":90},
@@ -544,12 +544,10 @@
         let chartPresEvolucaoObj = null;
         let chartPresEfetividadeObj = null;
 
-        // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
             initDropdowns();
             applyFilters();
 
-            // Atalhos de teclado para o Modo Apresentação
             document.addEventListener('keydown', (e) => {
                 const overlay = document.getElementById('presentationOverlay');
                 if (!overlay.classList.contains('hidden')) {
@@ -612,7 +610,7 @@
             } else if (brand === 'Wyden') {
                 document.getElementById('btnBrandWyden').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-red-600 text-white shadow-md";
             } else if (brand === 'IDOMED') {
-                document.getElementById('btnBrandIdomed').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-cyan-600 text-white shadow-md";
+                document.getElementById('btnBrandIdomed').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-emerald-600 text-white shadow-md";
             }
             applyFilters();
         }
@@ -645,7 +643,6 @@
                 return matchBrand && matchMes && matchUF && matchUnidade;
             });
 
-            // Atualizar Chips
             document.getElementById('chipBrand').textContent = `Marca: ${currentBrand}`;
             document.getElementById('chipMes').textContent = `Mês: ${mesVal}`;
             document.getElementById('chipUF').textContent = `UF: ${ufVal}`;
@@ -692,7 +689,6 @@
             document.getElementById('kpiNegociados').textContent = `${totNegociados.toLocaleString()} Negociados`;
             document.getElementById('kpiTaxaConversao').textContent = `${taxaConv}% Conv.`;
 
-            // Atualizar valores do Modo Apresentação (Slide 0)
             document.getElementById('presValPago').textContent = totPago.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
             document.getElementById('presValPagoSub').textContent = `${efVal}% Efetividade Financeira`;
             document.getElementById('presValAcordo').textContent = totAcordo.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
@@ -703,7 +699,6 @@
         }
 
         function updateCharts() {
-            // Agrupamento temporal para Gráfico de Evolução
             const mesesMap = {};
             filteredData.forEach(d => {
                 if (!mesesMap[d.Mês]) mesesMap[d.Mês] = { acordo: 0, pago: 0, quebra: 0 };
@@ -744,7 +739,6 @@
             const ctxPres1 = document.getElementById('chartPresEvolucao').getContext('2d');
             chartPresEvolucaoObj = new Chart(ctxPres1, chartEvolucaoObj.config);
 
-            // Gráfico de Distribuição por Marca (Doughnut)
             let marcaEstacio = 0, marcaWyden = 0, marcaIdomed = 0;
             filteredData.forEach(d => {
                 if (d.Marca === 'Estácio') marcaEstacio += d["Valor Pago"] || 0;
@@ -757,10 +751,10 @@
             chartDistribuicaoObj = new Chart(ctx2, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Estácio', 'Wyden', 'IDOMED'],
+                    labels: ['Estácio', 'Wyden', 'IDOMED (Verde)'],
                     datasets: [{
                         data: [marcaEstacio, marcaWyden, marcaIdomed],
-                        backgroundColor: ['#00529b', '#e63946', '#06b6d4'],
+                        backgroundColor: ['#00529b', '#e63946', '#10b981'],
                         borderWidth: 0
                     }]
                 },
@@ -771,7 +765,6 @@
                 }
             });
 
-            // Gráfico de Efetividade por Unidade
             const topUnidades = [...filteredData].sort((a,b) => (b["Valor Pago"] || 0) - (a["Valor Pago"] || 0)).slice(0, 10);
             const unLabels = topUnidades.map(d => `${d.Cidade} (${d.Marca.substring(0,6)})`);
             const unEfet = topUnidades.map(d => ((d["Efetividade $"] || 0) * 100).toFixed(1));
@@ -833,7 +826,7 @@
                 tr.className = "hover:bg-gray-900/50 transition-colors";
                 tr.innerHTML = `
                     <td class="p-3.5 font-medium text-white">${d.Cidade} <span class="block text-[10px] text-gray-500">${d.Mês}</span></td>
-                    <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.Marca === 'Estácio' ? 'bg-blue-500/20 text-blue-400' : d.Marca.includes('Wyden') ? 'bg-red-500/20 text-red-400' : 'bg-cyan-500/20 text-cyan-300'}">${d.Marca}</span></td>
+                    <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.Marca === 'Estácio' ? 'bg-blue-500/20 text-blue-400' : d.Marca.includes('Wyden') ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-300'}">${d.Marca}</span></td>
                     <td class="p-3.5 text-right">${(d.Acionados || 0).toLocaleString()}</td>
                     <td class="p-3.5 text-right">${(d.Negociado || 0).toLocaleString()}</td>
                     <td class="p-3.5 text-right text-gray-400">${(d.Recusa || 0).toLocaleString()}</td>
@@ -849,7 +842,6 @@
                 `;
                 tbody.appendChild(tr);
 
-                // Preencher tabela do Modo Apresentação (Slide 2)
                 const presTr = document.createElement('tr');
                 presTr.className = "hover:bg-gray-800/50";
                 presTr.innerHTML = `
@@ -864,7 +856,6 @@
                 presTbody.appendChild(presTr);
             });
 
-            // Rodapé da Tabela com Totais
             const meanEfetQtd = sumAcionados > 0 ? ((sumAcordos / sumAcionados) * 100).toFixed(1) : 0;
             const meanEfetVal = sumValAcordo > 0 ? ((sumValPago / sumValAcordo) * 100).toFixed(1) : 0;
 
@@ -925,7 +916,6 @@
             updateTable();
         }
 
-        // Funções de Modo Apresentação
         function togglePresentationMode() {
             const overlay = document.getElementById('presentationOverlay');
             overlay.classList.toggle('hidden');
