@@ -9,24 +9,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-body: #f4f6f9;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --primary-blue: #0284c7;
-            --primary-blue-hover: #0369a1;
+            --bg-body: #090d16;
+            --bg-card: #111827;
+            --bg-card-hover: #1f2937;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --primary-blue: #38bdf8;
             --estacio-color: #2563eb;
             --wyden-color: #dc2626;
             --idomed-color: #0d9488;
-            --success: #16a34a;
+            --global-color: #f59e0b;
+            --success: #22c55e;
             --warning: #eab308;
             --danger: #ef4444;
             --radius-md: 10px;
             --radius-lg: 16px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.7);
         }
 
         * {
@@ -39,16 +40,16 @@
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 20px;
+            padding: 24px;
             line-height: 1.5;
         }
 
         .dashboard-container {
-            max-width: 1600px;
+            max-width: 1650px;
             margin: 0 auto;
         }
 
-        /* HEADER EXECUTIVO */
+        /* HEADER EXECUTIVO DARK */
         header {
             background: #0f172a;
             color: #ffffff;
@@ -59,6 +60,7 @@
             align-items: center;
             box-shadow: var(--shadow-lg);
             margin-bottom: 24px;
+            border: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 16px;
         }
@@ -72,23 +74,26 @@
         .header-icon {
             width: 48px;
             height: 48px;
-            background: var(--primary-blue);
+            background: linear-gradient(135deg, #0284c7, #2563eb);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 800;
             font-size: 20px;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
         }
 
         .header-title h1 {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: -0.5px;
+            color: #f8fafc;
         }
 
         .header-title p {
-            color: #94a3b8;
+            color: var(--text-muted);
             font-size: 13px;
         }
 
@@ -99,9 +104,9 @@
         }
 
         .btn-action {
-            background: rgba(255,255,255,0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #334155;
             padding: 10px 18px;
             border-radius: 8px;
             font-size: 13px;
@@ -114,55 +119,76 @@
         }
 
         .btn-action:hover {
-            background: rgba(255,255,255,0.2);
+            background: #334155;
+            border-color: #475569;
         }
 
         .btn-primary {
-            background: var(--primary-blue);
-            border-color: var(--primary-blue);
+            background: var(--estacio-color);
+            border-color: var(--estacio-color);
+            color: #ffffff;
         }
 
         .btn-primary:hover {
-            background: var(--primary-blue-hover);
+            background: #1d4ed8;
         }
 
         /* TABS DE MARCA */
         .brand-tabs {
             display: flex;
-            background: #ffffff;
+            background: var(--bg-card);
             padding: 6px;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-            gap: 6px;
+            margin-bottom: 24px;
+            gap: 8px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px 16px;
-            border: none;
+            padding: 14px 18px;
+            border: 1px solid transparent;
             background: transparent;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             color: var(--text-muted);
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .tab-btn.active {
-            background: #0f172a;
+        .tab-btn:hover {
             color: #ffffff;
-            box-shadow: var(--shadow-sm);
+            background: rgba(255,255,255,0.05);
         }
 
-        .tab-btn[data-brand="Estácio"].active { background: var(--estacio-color); }
-        .tab-btn[data-brand="Wyden"].active { background: var(--wyden-color); }
-        .tab-btn[data-brand="IDOMED"].active { background: var(--idomed-color); }
+        .tab-btn.active[data-brand="Global"] {
+            background: var(--global-color);
+            color: #000000;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .tab-btn.active[data-brand="Estácio"] {
+            background: var(--estacio-color);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+        }
+
+        .tab-btn.active[data-brand="Wyden"] {
+            background: var(--wyden-color);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+        }
+
+        .tab-btn.active[data-brand="IDOMED"] {
+            background: var(--idomed-color);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(13, 148, 136, 0.5);
+        }
 
         /* PAINEL DE FILTROS */
         .filters-panel {
@@ -177,7 +203,7 @@
         .filters-title {
             font-size: 12px;
             text-transform: uppercase;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-muted);
             margin-bottom: 14px;
             letter-spacing: 0.5px;
@@ -187,41 +213,41 @@
 
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
         }
 
         .filter-group label {
             display: block;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             color: var(--text-muted);
             margin-bottom: 6px;
+            text-transform: uppercase;
         }
 
         .filter-group select {
             width: 100%;
-            padding: 10px 12px;
+            padding: 11px 14px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            background-color: #f8fafc;
-            color: var(--text-main);
+            background-color: #0f172a;
+            color: #f8fafc;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             outline: none;
             transition: border 0.2s;
         }
 
         .filter-group select:focus {
             border-color: var(--primary-blue);
-            background-color: #ffffff;
         }
 
         /* ALERTA IDOMED */
         .idomed-alert {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #166534;
+            background: rgba(13, 148, 136, 0.15);
+            border: 1px solid var(--idomed-color);
+            color: #2dd4bf;
             padding: 16px 20px;
             border-radius: var(--radius-md);
             margin-bottom: 24px;
@@ -229,6 +255,7 @@
             align-items: center;
             gap: 12px;
             font-size: 14px;
+            font-weight: 600;
         }
 
         /* CARDS DE KPIS */
@@ -242,7 +269,7 @@
         .kpi-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 22px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
             position: relative;
@@ -252,7 +279,7 @@
 
         .kpi-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            background: var(--bg-card-hover);
         }
 
         .kpi-card::before {
@@ -270,21 +297,20 @@
         .kpi-card.danger::before { background: var(--danger); }
 
         .kpi-label {
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
         }
 
         .kpi-value {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
-            color: var(--text-main);
+            color: #ffffff;
             margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
         .kpi-sub {
@@ -301,8 +327,8 @@
             font-weight: 700;
             font-size: 11px;
         }
-        .badge-positive { background: #dcfce7; color: #15803d; }
-        .badge-negative { background: #fee2e2; color: #b91c1c; }
+        .badge-positive { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .badge-negative { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
         /* GRID DE GRÁFICOS */
         .charts-grid {
@@ -315,7 +341,7 @@
         .chart-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 22px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
         }
@@ -333,7 +359,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border-color);
         }
@@ -341,7 +367,7 @@
         .chart-title {
             font-size: 15px;
             font-weight: 700;
-            color: var(--text-main);
+            color: #ffffff;
         }
 
         .chart-container {
@@ -356,7 +382,6 @@
             border-radius: var(--radius-lg);
             padding: 24px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
             margin-bottom: 24px;
         }
 
@@ -368,10 +393,13 @@
         }
 
         .insight-card {
-            background: #f8fafc;
+            background: #0f172a;
             border-left: 4px solid var(--primary-blue);
             padding: 16px;
             border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .insight-card.positive { border-left-color: var(--success); }
@@ -382,12 +410,12 @@
             font-size: 14px;
             font-weight: 700;
             margin-bottom: 6px;
-            color: var(--text-main);
+            color: #ffffff;
         }
 
         .insight-card p {
             font-size: 13px;
-            color: #475569;
+            color: var(--text-muted);
         }
 
         /* TABELA DETALHADA */
@@ -396,7 +424,6 @@
             border-radius: var(--radius-lg);
             padding: 24px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
             margin-bottom: 24px;
             overflow: hidden;
         }
@@ -410,16 +437,23 @@
         }
 
         .table-search {
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            background: #0f172a;
+            color: #ffffff;
             font-size: 13px;
-            width: 280px;
+            width: 300px;
+            outline: none;
+        }
+
+        .table-search:focus {
+            border-color: var(--primary-blue);
         }
 
         .table-wrapper {
             overflow-x: auto;
-            max-height: 440px;
+            max-height: 460px;
         }
 
         table {
@@ -430,32 +464,33 @@
         }
 
         th {
-            background: #f1f5f9;
+            background: #0f172a;
             color: var(--text-muted);
             font-weight: 700;
-            padding: 12px;
+            padding: 12px 14px;
             position: sticky;
             top: 0;
             z-index: 10;
             white-space: nowrap;
+            border-bottom: 2px solid var(--border-color);
         }
 
         td {
-            padding: 12px;
+            padding: 12px 14px;
             border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
+            color: #cbd5e1;
         }
 
-        tr:hover {
-            background-color: #f8fafc;
+        tr:hover td {
+            background-color: var(--bg-card-hover);
+            color: #ffffff;
         }
 
-        /* REGRAS DE IMPRESSÃO */
         @media print {
-            body { background: white; padding: 0; }
+            body { background: white; color: black; padding: 0; }
             header, .filters-panel, .brand-tabs, .btn-action { display: none !important; }
-            .dashboard-container { max-width: 100%; }
-            .chart-card, .kpi-card, .insights-section, .table-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+            .chart-card, .kpi-card, .insights-section, .table-card { break-inside: avoid; background: white; border: 1px solid #ccc; color: black; }
         }
     </style>
 </head>
@@ -490,7 +525,7 @@
     </div>
 
     <!-- ALERTA IDOMED -->
-    <div id="idomedAlert" class="idomedAlert idomed-alert">
+    <div id="idomedAlert" class="idomed-alert">
         <span>ℹ</span>
         <div>
             <strong>Módulo IDOMED:</strong> Ambiente preparado para futura integração de dados operacionais.
@@ -628,418 +663,4 @@
 </div>
 
 <script>
-    // DADOS ORIGINAIS CONSOLIDADOS
-    const rawData = [
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 224, "negociado": 213, "recusa": 11, "acordos": 215, "val_acordo": 381374.32, "pagos": 196, "val_pago": 346941.02, "quebra": 19, "val_quebra": 34433.3, "efetividade_qtd": 0.9116, "efetividade_val": 0.9097, "renovacoes": 98},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.8931, "efetividade_val": 0.9115, "renovacoes": 87},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 182, "negociado": 182, "recusa": 0, "acordos": 161, "val_acordo": 299044.65, "pagos": 161, "val_pago": 299044.65, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 65},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 257, "negociado": 204, "recusa": 53, "acordos": 197, "val_acordo": 321799.39, "pagos": 162, "val_pago": 286255.45, "quebra": 35, "val_quebra": 35543.94, "efetividade_qtd": 0.8223, "efetividade_val": 0.8895, "renovacoes": 102},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 191, "negociado": 159, "recusa": 32, "acordos": 158, "val_acordo": 272718.04, "pagos": 139, "val_pago": 249673.81, "quebra": 19, "val_quebra": 23044.23, "efetividade_qtd": 0.8797, "efetividade_val": 0.9155, "renovacoes": 74},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 132, "negociado": 132, "recusa": 0, "acordos": 128, "val_acordo": 243912.42, "pagos": 128, "val_pago": 243912.42, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 77},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 231, "negociado": 137, "recusa": 94, "acordos": 136, "val_acordo": 256860.01, "pagos": 113, "val_pago": 242095.68, "quebra": 23, "val_quebra": 14764.33, "efetividade_qtd": 0.8309, "efetividade_val": 0.9425, "renovacoes": 63},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 210, "negociado": 178, "recusa": 32, "acordos": 175, "val_acordo": 266155.65, "pagos": 139, "val_pago": 241551.81, "quebra": 36, "val_quebra": 24603.84, "efetividade_qtd": 0.7943, "efetividade_val": 0.9076, "renovacoes": 97},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 224, "negociado": 138, "recusa": 86, "acordos": 134, "val_acordo": 244583.54, "pagos": 102, "val_pago": 210878.02, "quebra": 32, "val_quebra": 33705.52, "efetividade_qtd": 0.7612, "efetividade_val": 0.8622, "renovacoes": 59},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 199, "negociado": 176, "recusa": 23, "acordos": 172, "val_acordo": 367061.9, "pagos": 128, "val_pago": 240311.17, "quebra": 44, "val_quebra": 126750.73, "efetividade_qtd": 0.7442, "efetividade_val": 0.6547, "renovacoes": 77},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 141, "negociado": 118, "recusa": 23, "acordos": 111, "val_acordo": 169389.28, "pagos": 86, "val_pago": 154181.82, "quebra": 25, "val_quebra": 15207.46, "efetividade_qtd": 0.7748, "efetividade_val": 0.9102, "renovacoes": 48},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 137, "negociado": 38, "recusa": 99, "acordos": 37, "val_acordo": 32858.36, "pagos": 35, "val_pago": 30260.1, "quebra": 2, "val_quebra": 2598.26, "efetividade_qtd": 0.9459, "efetividade_val": 0.9209, "renovacoes": 22},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 133, "negociado": 105, "recusa": 28, "acordos": 104, "val_acordo": 139151.05, "pagos": 83, "val_pago": 114620.15, "quebra": 21, "val_quebra": 24530.9, "efetividade_qtd": 0.7981, "efetividade_val": 0.8237, "renovacoes": 80},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 156, "negociado": 112, "recusa": 44, "acordos": 112, "val_acordo": 126938.85, "pagos": 86, "val_pago": 102558.83, "quebra": 26, "val_quebra": 24380.02, "efetividade_qtd": 0.7679, "efetividade_val": 0.8079, "renovacoes": 76},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 158, "negociado": 107, "recusa": 51, "acordos": 108, "val_acordo": 133857.91, "pagos": 80, "val_pago": 101185.09, "quebra": 28, "val_quebra": 32672.82, "efetividade_qtd": 0.7407, "efetividade_val": 0.756, "renovacoes": 60},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 118, "negociado": 103, "recusa": 15, "acordos": 104, "val_acordo": 108865.23, "pagos": 82, "val_pago": 88062.91, "quebra": 22, "val_quebra": 20802.32, "efetividade_qtd": 0.7885, "efetividade_val": 0.8089, "renovacoes": 59},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 168, "negociado": 128, "recusa": 40, "acordos": 126, "val_acordo": 125134.78, "pagos": 83, "val_pago": 87814.94, "quebra": 43, "val_quebra": 37319.84, "efetividade_qtd": 0.6587, "efetividade_val": 0.7018, "renovacoes": 85},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 92, "negociado": 82, "recusa": 10, "acordos": 81, "val_acordo": 82635.85, "pagos": 71, "val_pago": 72583.55, "quebra": 10, "val_quebra": 10052.3, "efetividade_qtd": 0.8765, "efetividade_val": 0.8783, "renovacoes": 58},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 128, "negociado": 108, "recusa": 20, "acordos": 107, "val_acordo": 118742.84, "pagos": 69, "val_pago": 71092.74, "quebra": 38, "val_quebra": 47650.1, "efetividade_qtd": 0.6449, "efetividade_val": 0.5987, "renovacoes": 42},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 109, "negociado": 74, "recusa": 35, "acordos": 74, "val_acordo": 87102.32, "pagos": 57, "val_pago": 68673.49, "quebra": 17, "val_quebra": 18428.83, "efetividade_qtd": 0.7703, "efetividade_val": 0.7884, "renovacoes": 38},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 78, "negociado": 70, "recusa": 8, "acordos": 70, "val_acordo": 73229.42, "pagos": 57, "val_pago": 63935.61, "quebra": 13, "val_quebra": 9293.81, "efetividade_qtd": 0.8143, "efetividade_val": 0.8731, "renovacoes": 43},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 108, "negociado": 82, "recusa": 26, "acordos": 80, "val_acordo": 85116.51, "pagos": 58, "val_pago": 60505.78, "quebra": 22, "val_quebra": 24610.73, "efetividade_qtd": 0.725, "efetividade_val": 0.7109, "renovacoes": 42},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 82, "negociado": 61, "recusa": 21, "acordos": 58, "val_acordo": 54685.29, "pagos": 44, "val_pago": 43105.7, "quebra": 14, "val_quebra": 11579.59, "efetividade_qtd": 0.7586, "efetividade_val": 0.7882, "renovacoes": 29},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 61, "negociado": 19, "recusa": 42, "acordos": 19, "val_acordo": 28659.13, "pagos": 15, "val_pago": 25556.7, "quebra": 4, "val_quebra": 3102.43, "efetividade_qtd": 0.7895, "efetividade_val": 0.8917, "renovacoes": 14},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 178, "negociado": 104, "recusa": 74, "acordos": 106, "val_acordo": 104523.51, "pagos": 81, "val_pago": 80112.31, "quebra": 25, "val_quebra": 24411.2, "efetividade_qtd": 0.7642, "efetividade_val": 0.7664, "renovacoes": 12},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 169, "negociado": 108, "recusa": 61, "acordos": 108, "val_acordo": 92257.6, "pagos": 78, "val_pago": 68673.18, "quebra": 30, "val_quebra": 23584.42, "efetividade_qtd": 0.7222, "efetividade_val": 0.7444, "renovacoes": 13},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 170, "negociado": 103, "recusa": 67, "acordos": 105, "val_acordo": 82064.08, "pagos": 75, "val_pago": 60517.37, "quebra": 30, "val_quebra": 21546.71, "efetividade_qtd": 0.7143, "efetividade_val": 0.7374, "renovacoes": 12},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 139, "negociado": 94, "recusa": 45, "acordos": 94, "val_acordo": 83610.97, "pagos": 65, "val_pago": 59103.54, "quebra": 29, "val_quebra": 24507.43, "efetividade_qtd": 0.6915, "efetividade_val": 0.7069, "renovacoes": 9},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 108, "negociado": 72, "recusa": 36, "acordos": 73, "val_acordo": 71832.18, "pagos": 57, "val_pago": 57423.82, "quebra": 16, "val_quebra": 14408.36, "efetividade_qtd": 0.7808, "efetividade_val": 0.7994, "renovacoes": 11},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 142, "negociado": 98, "recusa": 44, "acordos": 96, "val_acordo": 72153.25, "pagos": 62, "val_pago": 48212.19, "quebra": 34, "val_quebra": 23941.06, "efetividade_qtd": 0.6458, "efetividade_val": 0.6682, "renovacoes": 7},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 93, "negociado": 63, "recusa": 30, "acordos": 62, "val_acordo": 52183.1, "pagos": 51, "val_pago": 43105.7, "quebra": 11, "val_quebra": 9077.4, "efetividade_qtd": 0.8226, "efetividade_val": 0.826, "renovacoes": 8},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 92, "negociado": 68, "recusa": 24, "acordos": 68, "val_acordo": 55802.13, "pagos": 51, "val_pago": 42105.82, "quebra": 17, "val_quebra": 13696.31, "efetividade_qtd": 0.75, "efetividade_val": 0.7546, "renovacoes": 12},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 88, "negociado": 52, "recusa": 36, "acordos": 52, "val_acordo": 44105.8, "pagos": 41, "val_pago": 36105.9, "quebra": 11, "val_quebra": 7999.9, "efetividade_qtd": 0.7885, "efetividade_val": 0.8186, "renovacoes": 6},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 82, "negociado": 47, "recusa": 35, "acordos": 47, "val_acordo": 41205.9, "pagos": 35, "val_pago": 31205.8, "quebra": 12, "val_quebra": 10000.1, "efetividade_qtd": 0.7447, "efetividade_val": 0.7573, "renovacoes": 5},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 71, "negociado": 41, "recusa": 30, "acordos": 41, "val_acordo": 32105.4, "pagos": 30, "val_pago": 24105.3, "quebra": 11, "val_quebra": 8000.1, "efetividade_qtd": 0.7317, "efetividade_val": 0.7508, "renovacoes": 4},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 42, "negociado": 21, "recusa": 21, "acordos": 21, "val_acordo": 18205.1, "pagos": 17, "val_pago": 15105.2, "quebra": 4, "val_quebra": 3099.9, "efetividade_qtd": 0.8095, "efetividade_val": 0.8297, "renovacoes": 2},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 176, "negociado": 112, "recusa": 64, "acordos": 115, "val_acordo": 87088.87, "pagos": 88, "val_pago": 56371.66, "quebra": 27, "val_quebra": 30717.21, "efetividade_qtd": 0.7652, "efetividade_val": 0.6473, "renovacoes": 2},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 165, "negociado": 98, "recusa": 67, "acordos": 101, "val_acordo": 78205.12, "pagos": 74, "val_pago": 51205.3, "quebra": 27, "val_quebra": 26999.82, "efetividade_qtd": 0.7327, "efetividade_val": 0.6548, "renovacoes": 3},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 162, "negociado": 95, "recusa": 67, "acordos": 97, "val_acordo": 71105.4, "pagos": 70, "val_pago": 48105.2, "quebra": 27, "val_quebra": 23000.2, "efetividade_qtd": 0.7216, "efetividade_val": 0.6765, "renovacoes": 2},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 131, "negociado": 82, "recusa": 49, "acordos": 84, "val_acordo": 68205.3, "pagos": 58, "val_pago": 42105.5, "quebra": 26, "val_quebra": 26099.8, "efetividade_qtd": 0.6905, "efetividade_val": 0.6173, "renovacoes": 1},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 138, "negociado": 86, "recusa": 52, "acordos": 88, "val_acordo": 64105.2, "pagos": 55, "val_pago": 39105.4, "quebra": 33, "val_quebra": 24999.8, "efetividade_qtd": 0.625, "efetividade_val": 0.61, "renovacoes": 2},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 102, "negociado": 65, "recusa": 37, "acordos": 66, "val_acordo": 52105.1, "pagos": 49, "val_pago": 38105.2, "quebra": 17, "val_quebra": 13999.9, "efetividade_qtd": 0.7424, "efetividade_val": 0.7313, "renovacoes": 1},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 112, "negociado": 74, "recusa": 38, "acordos": 75, "val_acordo": 62105.8, "pagos": 52, "val_pago": 41205.9, "quebra": 23, "val_quebra": 20899.9, "efetividade_qtd": 0.6933, "efetividade_val": 0.6635, "renovacoes": 4},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 105, "negociado": 68, "recusa": 37, "acordos": 69, "val_acordo": 58205.3, "pagos": 48, "val_pago": 39105.4, "quebra": 21, "val_quebra": 19099.9, "efetividade_qtd": 0.6957, "efetividade_val": 0.6719, "renovacoes": 3},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 245, "negociado": 162, "recusa": 83, "acordos": 165, "val_acordo": 215402.1, "pagos": 132, "val_pago": 172501.2, "quebra": 33, "val_quebra": 42900.9, "efetividade_qtd": 0.8, "efetividade_val": 0.8008, "renovacoes": 45},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 310, "negociado": 215, "recusa": 95, "acordos": 220, "val_acordo": 358201.5, "pagos": 172, "val_pago": 275102.3, "quebra": 48, "val_quebra": 83099.2, "efetividade_qtd": 0.7818, "efetividade_val": 0.768, "renovacoes": 88},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 280, "negociado": 195, "recusa": 85, "acordos": 198, "val_acordo": 298105.4, "pagos": 155, "val_pago": 228105.2, "quebra": 43, "val_quebra": 70000.2, "efetividade_qtd": 0.7828, "efetividade_val": 0.7652, "renovacoes": 62},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 195, "negociado": 142, "recusa": 53, "acordos": 145, "val_acordo": 168205.3, "pagos": 110, "val_pago": 118205.1, "quebra": 35, "val_quebra": 50000.2, "efetividade_qtd": 0.7586, "efetividade_val": 0.7027, "renovacoes": 32},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 210, "negociado": 158, "recusa": 52, "acordos": 160, "val_acordo": 195402.1, "pagos": 125, "val_pago": 142105.8, "quebra": 35, "val_quebra": 53296.3, "efetividade_qtd": 0.7812, "efetividade_val": 0.7272, "renovacoes": 41},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 260, "negociado": 198, "recusa": 62, "acordos": 202, "val_acordo": 188205.4, "pagos": 172, "val_pago": 158105.2, "quebra": 30, "val_quebra": 30100.2, "efetividade_qtd": 0.8515, "efetividade_val": 0.8401, "renovacoes": 75},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 420, "negociado": 330, "recusa": 90, "acordos": 335, "val_acordo": 428105.9, "pagos": 272, "val_pago": 338105.4, "quebra": 63, "val_quebra": 90000.5, "efetividade_qtd": 0.8119, "efetividade_val": 0.7898, "renovacoes": 130},
-      {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 210, "negociado": 175, "recusa": 35, "acordos": 174, "val_acordo": 265402.1, "pagos": 140, "val_pago": 208105.3, "quebra": 34, "val_quebra": 57296.8, "efetividade_qtd": 0.8046, "efetividade_val": 0.7841, "renovacoes": 62},
-      {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 94, "negociado": 78, "recusa": 16, "acordos": 78, "val_acordo": 119269.44, "pagos": 63, "val_pago": 92154.56, "quebra": 15, "val_quebra": 27114.88, "efetividade_qtd": 0.8077, "efetividade_val": 0.7727, "renovacoes": 28},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 480, "negociado": 385, "recusa": 95, "acordos": 390, "val_acordo": 658201.2, "pagos": 322, "val_pago": 538105.9, "quebra": 68, "val_quebra": 120095.3, "efetividade_qtd": 0.8256, "efetividade_val": 0.8175, "renovacoes": 185},
-      {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 240, "negociado": 205, "recusa": 35, "acordos": 204, "val_acordo": 382105.4, "pagos": 172, "val_pago": 338105.2, "quebra": 32, "val_quebra": 44000.2, "efetividade_qtd": 0.8431, "efetividade_val": 0.8848, "renovacoes": 92},
-      {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 107, "negociado": 90, "recusa": 17, "acordos": 90, "val_acordo": 168190.9, "pagos": 75, "val_pago": 148346.37, "quebra": 15, "val_quebra": 19844.53, "efetividade_qtd": 0.8333, "efetividade_val": 0.882, "renovacoes": 41},
-      {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 220, "negociado": 165, "recusa": 55, "acordos": 168, "val_acordo": 248201.5, "pagos": 135, "val_pago": 198105.3, "quebra": 33, "val_quebra": 50096.2, "efetividade_qtd": 0.8036, "efetividade_val": 0.7982, "renovacoes": 78},
-      {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 125, "negociado": 98, "recusa": 27, "acordos": 97, "val_acordo": 148205.1, "pagos": 78, "val_pago": 118105.2, "quebra": 19, "val_quebra": 30099.9, "efetividade_qtd": 0.8041, "efetividade_val": 0.7969, "renovacoes": 38},
-      {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 58, "negociado": 46, "recusa": 12, "acordos": 46, "val_acordo": 68200.4, "pagos": 35, "val_pago": 51205.1, "quebra": 11, "val_quebra": 16995.3, "efetividade_qtd": 0.7609, "efetividade_val": 0.7508, "renovacoes": 15}
-    ];
-
-    let charts = {};
-
-    document.addEventListener('DOMContentLoaded', () => {
-        initFilters();
-        renderDashboard();
-    });
-
-    // INICIALIZAÇÃO E POPULAÇÃO DOS FILTROS
-    function initFilters() {
-        const meses = ["Todos os Meses (Visão Histórica)", ...new Set(rawData.map(d => d.mes))];
-        const marcas = ["Todas as Marcas", "Estácio", "Wyden", "IDOMED"];
-        
-        populateSelect('filterMes', meses);
-        populateSelect('filterMarca', marcas);
-        
-        updateUFAndUnitsDropdowns();
-    }
-
-    function populateSelect(id, items) {
-        const select = document.getElementById(id);
-        select.innerHTML = '';
-        items.forEach(item => {
-            const opt = document.createElement('option');
-            opt.value = item.startsWith('Todos') ? '' : item;
-            opt.textContent = item;
-            select.appendChild(opt);
-        });
-    }
-
-    // SINCRONIZAÇÃO DAS TABS DE MARCA COM O DROPDOWN
-    function switchBrandTab(brand) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.tab-btn[data-brand="${brand}"]`)?.classList.add('active');
-
-        const marcaSelect = document.getElementById('filterMarca');
-        marcaSelect.value = (brand === 'Global') ? '' : brand;
-
-        const idomedAlert = document.getElementById('idomedAlert');
-        idomedAlert.style.display = (brand === 'IDOMED') ? 'flex' : 'none';
-
-        updateUFAndUnitsDropdowns();
-        renderDashboard();
-    }
-
-    function onMarcaSelectChange() {
-        const marcaVal = document.getElementById('filterMarca').value;
-        const brandTab = marcaVal === '' ? 'Global' : marcaVal;
-
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.tab-btn[data-brand="${brandTab}"]`)?.classList.add('active');
-
-        const idomedAlert = document.getElementById('idomedAlert');
-        idomedAlert.style.display = (marcaVal === 'IDOMED') ? 'flex' : 'none';
-
-        updateUFAndUnitsDropdowns();
-        renderDashboard();
-    }
-
-    function onUFSelectChange() {
-        updateUnitsDropdown();
-        renderDashboard();
-    }
-
-    function updateUFAndUnitsDropdowns() {
-        const marcaVal = document.getElementById('filterMarca').value;
-        let data = rawData;
-        if (marcaVal && marcaVal !== 'IDOMED') {
-            data = data.filter(d => d.marca_grupo === marcaVal);
-        }
-
-        const ufs = ["Todos os Estados", ...new Set(data.map(d => d.uf))].sort();
-        populateSelect('filterUF', ufs);
-
-        updateUnitsDropdown();
-    }
-
-    function updateUnitsDropdown() {
-        const marcaVal = document.getElementById('filterMarca').value;
-        const ufVal = document.getElementById('filterUF').value;
-
-        let data = rawData;
-        if (marcaVal && marcaVal !== 'IDOMED') {
-            data = data.filter(d => d.marca_grupo === marcaVal);
-        }
-        if (ufVal) {
-            data = data.filter(d => d.uf === ufVal);
-        }
-
-        const unidades = ["Todas as Unidades", ...new Set(data.map(d => d.unidade))].sort();
-        populateSelect('filterUnidade', unidades);
-    }
-
-    function resetFilters() {
-        document.getElementById('filterMes').value = '';
-        document.getElementById('filterMarca').value = '';
-        document.getElementById('filterUF').value = '';
-        switchBrandTab('Global');
-    }
-
-    // OBTER DADOS FILTRADOS
-    function getFilteredData() {
-        const mes = document.getElementById('filterMes').value;
-        const marca = document.getElementById('filterMarca').value;
-        const uf = document.getElementById('filterUF').value;
-        const unidade = document.getElementById('filterUnidade').value;
-
-        if (marca === 'IDOMED') return [];
-
-        return rawData.filter(d => {
-            if (mes && d.mes !== mes) return false;
-            if (marca && d.marca_grupo !== marca) return false;
-            if (uf && d.uf !== uf) return false;
-            if (unidade && d.unidade !== unidade) return false;
-            return true;
-        });
-    }
-
-    // FORMATAÇÃO BRL
-    function formatBRL(val) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
-    }
-
-    function formatNum(val) {
-        return new Intl.NumberFormat('pt-BR').format(val || 0);
-    }
-
-    // RENDERIZAÇÃO DO DASHBOARD
-    function renderDashboard() {
-        const data = getFilteredData();
-
-        // 1. CALCULAR KPIS
-        const totPago = data.reduce((s, r) => s + r.val_pago, 0);
-        const totAcordo = data.reduce((s, r) => s + r.val_acordo, 0);
-        const totQuebra = data.reduce((s, r) => s + r.val_quebra, 0);
-        const totAcionados = data.reduce((s, r) => s + r.acionados, 0);
-        const totPagosQtd = data.reduce((s, r) => s + r.pagos, 0);
-        const totAcordosQtd = data.reduce((s, r) => s + r.acordos, 0);
-        const totRenovacoes = data.reduce((s, r) => s + r.renovacoes, 0);
-
-        const efFin = totAcordo > 0 ? (totPago / totAcordo) * 100 : 0;
-        const percQuebra = totAcordo > 0 ? (totQuebra / totAcordo) * 100 : 0;
-        const taxaConversao = totAcionados > 0 ? (totPagosQtd / totAcionados) * 100 : 0;
-        const ticketMedio = totPagosQtd > 0 ? totPago / totPagosQtd : 0;
-
-        document.getElementById('kpiValPago').textContent = formatBRL(totPago);
-        document.getElementById('kpiEfetividadeVal').textContent = efFin.toFixed(1) + '%';
-        
-        document.getElementById('kpiValAcordo').textContent = formatBRL(totAcordo);
-        document.getElementById('kpiAcordosQtd').textContent = `${formatNum(totAcordosQtd)} acordos firmados`;
-
-        document.getElementById('kpiValQuebra').textContent = formatBRL(totQuebra);
-        document.getElementById('kpiPercQuebra').textContent = percQuebra.toFixed(1) + '%';
-
-        document.getElementById('kpiTaxaConversao').textContent = taxaConversao.toFixed(1) + '%';
-        document.getElementById('kpiPagosAcionados').textContent = `${formatNum(totPagosQtd)} pagos / ${formatNum(totAcionados)} acionados`;
-
-        document.getElementById('kpiTicketMedio').textContent = formatBRL(ticketMedio);
-        document.getElementById('kpiRenovacoes').textContent = `${formatNum(totRenovacoes)} renovações efetuadas`;
-
-        // 2. RENDERIZAR GRÁFICOS
-        renderChartEvolucao(data);
-        renderChartFunil(totAcionados, totAcordosQtd, totPagosQtd);
-        renderChartRankingUF(data);
-        renderChartMarcaShare(data);
-
-        // 3. INSIGHTS E TABELA
-        renderInsights(data, totPago, totQuebra, taxaConversao, efFin);
-        renderTable(data);
-    }
-
-    // GRÁFICO 1: EVOLUÇÃO
-    function renderChartEvolucao(data) {
-        const ctx = document.getElementById('chartEvolucao').getContext('2d');
-        if (charts.evolucao) charts.evolucao.destroy();
-
-        const mesesOrder = ["Agosto/2025", "Setembro/2025", "Outubro/2025", "Novembro/2025", "Dezembro/2025", "Janeiro/2026", "Fevereiro/2026", "Março/2026", "Abril/2026", "Maio/2026", "Junho/2026", "Julho/2026", "Agosto/2026", "Setembro/2026"];
-        
-        const grouped = {};
-        data.forEach(d => {
-            if (!grouped[d.mes]) grouped[d.mes] = { pago: 0, quebra: 0 };
-            grouped[d.mes].pago += d.val_pago;
-            grouped[d.mes].quebra += d.val_quebra;
-        });
-
-        const activeMeses = mesesOrder.filter(m => grouped[m]);
-        const pagos = activeMeses.map(m => grouped[m].pago);
-        const quebras = activeMeses.map(m => grouped[m].quebra);
-
-        charts.evolucao = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: activeMeses,
-                datasets: [
-                    { label: 'Valor Pago (R$)', data: pagos, borderColor: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 },
-                    { label: 'Valor em Quebra (R$)', data: quebras, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.3 }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
-    }
-
-    // GRÁFICO 2: FUNIL
-    function renderChartFunil(acionados, acordos, pagos) {
-        const ctx = document.getElementById('chartFunil').getContext('2d');
-        if (charts.funil) charts.funil.destroy();
-
-        charts.funil = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Alunos Acionados', 'Acordos Firmados', 'Pagamentos Concluídos'],
-                datasets: [{
-                    data: [acionados, acordos, pagos],
-                    backgroundColor: ['#0284c7', '#eab308', '#16a34a']
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
-    // GRÁFICO 3: RANKING UF
-    function renderChartRankingUF(data) {
-        const ctx = document.getElementById('chartRankingUF').getContext('2d');
-        if (charts.rankingUF) charts.rankingUF.destroy();
-
-        const ufGroup = {};
-        data.forEach(d => {
-            ufGroup[d.uf] = (ufGroup[d.uf] || 0) + d.val_pago;
-        });
-
-        const sorted = Object.entries(ufGroup).sort((a,b) => b[1] - a[1]).slice(0, 7);
-
-        charts.rankingUF = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: sorted.map(s => s[0]),
-                datasets: [{ label: 'Recuperado (R$)', data: sorted.map(s => s[1]), backgroundColor: '#2563eb' }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
-    }
-
-    // GRÁFICO 4: SHARE MARCA
-    function renderChartMarcaShare(data) {
-        const ctx = document.getElementById('chartMarcaShare').getContext('2d');
-        if (charts.marcaShare) charts.marcaShare.destroy();
-
-        const estacioTot = data.filter(d => d.marca_grupo === 'Estácio').reduce((s,r) => s + r.val_pago, 0);
-        const wydenTot = data.filter(d => d.marca_grupo === 'Wyden').reduce((s,r) => s + r.val_pago, 0);
-
-        charts.marcaShare = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Estácio', 'Wyden', 'IDOMED (Pendente)'],
-                datasets: [{
-                    data: [estacioTot, wydenTot, 0],
-                    backgroundColor: ['#2563eb', '#dc2626', '#0d9488']
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
-    }
-
-    // INSIGHTS EXECUTIVOS
-    function renderInsights(data, totPago, totQuebra, taxaConversao, efFin) {
-        const grid = document.getElementById('insightsGrid');
-        grid.innerHTML = '';
-
-        if (data.length === 0) {
-            grid.innerHTML = '<div class="insight-card warning"><h4>Sem dados disponíveis</h4><p>Ajuste os filtros para visualizar a análise técnica.</p></div>';
-            return;
-        }
-
-        // Top Unidade
-        const unitMap = {};
-        data.forEach(d => unitMap[d.unidade] = (unitMap[d.unidade] || 0) + d.val_pago);
-        const topUnit = Object.entries(unitMap).sort((a,b) => b[1] - a[1])[0];
-
-        grid.innerHTML += `
-            <div class="insight-card positive">
-                <h4>Maior Destaque Operacional</h4>
-                <p>A unidade <strong>${topUnit ? topUnit[0] : 'N/A'}</strong> liderou a arrecadação no período selecionado, somando <strong>${formatBRL(topUnit ? topUnit[1] : 0)}</strong> recuperados em caixa.</p>
-            </div>
-            <div class="insight-card ${efFin >= 75 ? 'positive' : 'warning'}">
-                <h4>Efetividade Financeira (${efFin.toFixed(1)}%)</h4>
-                <p>${efFin >= 75 ? 'A taxa de conversão financeira de acordos para caixa honrado está num patamar de alta eficiência executiva.' : 'Recomenda-se reforçar réguas de cobrança pré-vencimento da primeira parcela para reduzir a quebra.'}</p>
-            </div>
-            <div class="insight-card ${totQuebra > 500000 ? 'danger' : 'warning'}">
-                <h4>Atenção à Inadimplência / Quebra</h4>
-                <p>O volume acumulado de acordos não honrados soma <strong>${formatBRL(totQuebra)}</strong>. Ponto de atenção para renegociações em balcão presencial.</p>
-            </div>
-        `;
-    }
-
-    // TABELA DETALHADA
-    function renderTable(data) {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
-
-        data.forEach(r => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${r.marca_orig}</strong></td>
-                <td>${r.mes}</td>
-                <td>${r.unidade}</td>
-                <td>${r.uf}</td>
-                <td>${formatNum(r.acionados)}</td>
-                <td>${formatNum(r.acordos)}</td>
-                <td>${formatBRL(r.val_acordo)}</td>
-                <td>${formatNum(r.pagos)}</td>
-                <td style="color: var(--success); font-weight:700;">${formatBRL(r.val_pago)}</td>
-                <td style="color: var(--danger);">${formatBRL(r.val_quebra)}</td>
-                <td>${(r.efetividade_val * 100).toFixed(1)}%</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function filterTable() {
-        const query = document.getElementById('tableSearch').value.toLowerCase();
-        const rows = document.querySelectorAll('#tableBody tr');
-        rows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(query) ? '' : 'none';
-        });
-    }
-
-    // EXPORTAÇÃO CSV
-    function exportCSV() {
-        const data = getFilteredData();
-        if (data.length === 0) { alert('Sem dados para exportar.'); return; }
-
-        let csv = 'Marca;Mes;Unidade;UF;Acionados;Acordos;Valor_Acordo;Pagos;Valor_Pago;Valor_Quebra\n';
-        data.forEach(r => {
-            csv += `"${r.marca_orig}";"${r.mes}";"${r.unidade}";"${r.uf}";${r.acionados};${r.acordos};${r.val_acordo};${r.pagos};${r.val_pago};${r.val_quebra}\n`;
-        });
-
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute("download", "Dashboard_ATP_Export.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-</body>
-</html>
+    // DADOS ORIGINAIS CONSOLIDADOS (ESTÁCIO E WYDEN)
