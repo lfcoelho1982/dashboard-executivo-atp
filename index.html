@@ -33,6 +33,7 @@
                         },
                         estacio: '#00529b',
                         wyden: '#e63946',
+                        idomed: '#06b6d4',
                         darkbg: '#0b0f19',
                         darkcard: '#111827',
                         darkborder: '#1f2937'
@@ -129,7 +130,7 @@
                 <!-- Marca Selector Buttons -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Marca / Grupo:</label>
-                    <div class="inline-flex p-1 bg-gray-900 rounded-xl border border-gray-800 space-x-1" id="brandButtonGroup">
+                    <div class="inline-flex flex-wrap p-1 bg-gray-900 rounded-xl border border-gray-800 gap-1" id="brandButtonGroup">
                         <button onclick="selectBrand('Todos')" id="btnBrandTodos" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md">
                             Todos
                         </button>
@@ -138,6 +139,9 @@
                         </button>
                         <button onclick="selectBrand('Wyden')" id="btnBrandWyden" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
                             <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>Wyden
+                        </button>
+                        <button onclick="selectBrand('IDOMED')" id="btnBrandIdomed" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
+                            <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-1.5"></span>IDOMED
                         </button>
                     </div>
                 </div>
@@ -160,7 +164,7 @@
                         </select>
                     </div>
 
-                    <!-- Unidade Filter (Filtered Strict Rule) -->
+                    <!-- Unidade Filter -->
                     <div>
                         <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Unidade / Campus:</label>
                         <select id="selectUnidade" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-200 text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
@@ -266,15 +270,15 @@
                 </div>
             </div>
 
-            <!-- Chart 2: Brand or Campus Breakdown -->
+            <!-- Chart 2: Brand Breakdown -->
             <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl space-y-4">
                 <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-chart-pie text-emerald-400"></i>
-                            Distribuição por Unidade / UF
+                            Distribuição por Marca
                         </h3>
-                        <p class="text-xs text-gray-400">Participação no Valor Pago Total (Top Unidades)</p>
+                        <p class="text-xs text-gray-400">Participação no Valor Pago Total</p>
                     </div>
                 </div>
                 <div class="relative h-72 w-full flex items-center justify-center">
@@ -371,7 +375,6 @@
                     <tbody id="tableBody" class="divide-y divide-gray-800/60 bg-gray-950/30">
                         <!-- Dynamic Table Rows -->
                     </tbody>
-                    <!-- Totals Summary Row -->
                     <tfoot class="bg-gray-900 font-bold text-white text-xs border-t-2 border-gray-700" id="tableFoot">
                         <!-- Dynamic Summary -->
                     </tfoot>
@@ -394,14 +397,12 @@
 
             <!-- Slide Switchers, Auto-Timer & Exit Button -->
             <div class="flex items-center space-x-4">
-                <!-- Slide Navigation Tabs -->
                 <div class="flex items-center bg-gray-800 rounded-xl p-1 border border-gray-700">
                     <button onclick="changeSlide(0)" id="slideBtn0" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white">Visão Geral</button>
                     <button onclick="changeSlide(1)" id="slideBtn1" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">Desempenho Financeiro</button>
                     <button onclick="changeSlide(2)" id="slideBtn2" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">Ranking Unidades</button>
                 </div>
 
-                <!-- Auto Play Timer Control -->
                 <div class="flex items-center space-x-2 bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-700 text-xs">
                     <button id="btnAutoTimer" onclick="toggleAutoTimer()" class="text-gray-300 hover:text-white flex items-center gap-1 font-medium">
                         <i id="iconAutoTimer" class="fa-solid fa-play text-indigo-400"></i>
@@ -414,7 +415,6 @@
                     </select>
                 </div>
 
-                <!-- Previous / Next Controls -->
                 <div class="flex items-center space-x-1">
                     <button onclick="prevSlide()" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-xl border border-gray-700 text-xs">
                         <i class="fa-solid fa-chevron-left"></i>
@@ -433,7 +433,7 @@
         <!-- Presentation Slides Content Area -->
         <div class="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full flex flex-col justify-center">
 
-            <!-- Slide 0: Visão Geral (KPIs de Alto Impacto) -->
+            <!-- Slide 0: Visão Geral -->
             <div id="slide0" class="presentation-slide active space-y-8">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-gray-900/90 p-8 rounded-3xl border-2 border-emerald-500/30 shadow-2xl backdrop-blur-xl">
@@ -462,11 +462,11 @@
                 </div>
 
                 <div class="bg-gray-900/60 p-6 rounded-2xl border border-gray-800 text-center">
-                    <p class="text-gray-400 text-sm">Resumo consolidado conforme os filtros configurados no painel operacional.</p>
+                    <p class="text-gray-400 text-sm">Resumo consolidado conforme os filtros configurados no painel operacional (Estácio, Wyden & IDOMED).</p>
                 </div>
             </div>
 
-            <!-- Slide 1: Desempenho Financeiro (Gráficos em Tela Cheia) -->
+            <!-- Slide 1: Desempenho Financeiro -->
             <div id="slide1" class="presentation-slide space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-gray-900/90 p-6 rounded-3xl border border-gray-800">
@@ -484,7 +484,7 @@
                 </div>
             </div>
 
-            <!-- Slide 2: Ranking de Unidades (Tabela Executiva) -->
+            <!-- Slide 2: Ranking de Unidades -->
             <div id="slide2" class="presentation-slide">
                 <div class="bg-gray-900/90 p-6 rounded-3xl border border-gray-800 max-h-[75vh] overflow-y-auto">
                     <h4 class="text-base font-bold text-white mb-4">Ranking de Unidades e Desempenho</h4>
@@ -506,72 +506,101 @@
             </div>
 
         </div>
-
-        <!-- Slide Footer Controls -->
-        <div class="bg-gray-900 border-t border-gray-800 px-8 py-3 flex items-center justify-between text-xs text-gray-500">
-            <div>Dica: Navegue com as setas do teclado <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">←</kbd> <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">→</kbd> ou pressione <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">ESC</kbd> para sair.</div>
-            <div>Grupo YDUQS / ATP - Relatório Operacional Executivo</div>
-        </div>
     </div>
 
     <!-- JavaScript Application Logic -->
     <script>
-        // MOCK DATA FALLBACK FOR LOCAL RUN (file://)
-        const mockDataFallback = [
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.9304, "efetividade_val": 0.9485, "renovacoes": 83},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.8304, "efetividade_val": 0.8814, "renovacoes": 90},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.8931, "efetividade_val": 0.9115, "renovacoes": 87},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 368, "negociado": 240, "recusa": 128, "acordos": 238, "val_acordo": 408028.56, "pagos": 193, "val_pago": 338653.04, "quebra": 45, "val_quebra": 69375.52, "efetividade_qtd": 0.8109, "efetividade_val": 0.83, "renovacoes": 122},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 493, "negociado": 419, "recusa": 74, "acordos": 424, "val_acordo": 628790.63, "pagos": 353, "val_pago": 515302.36, "quebra": 71, "val_quebra": 113488.27, "efetividade_qtd": 0.8325, "efetividade_val": 0.8195, "renovacoes": 214},
-            // Wyden Data
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 68, "negociado": 37, "recusa": 31, "acordos": 36, "val_acordo": 83219.5, "pagos": 25, "val_pago": 43991.93, "quebra": 11, "val_quebra": 39227.57, "efetividade_qtd": 0.6944, "efetividade_val": 0.5286, "renovacoes": 0},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 62, "negociado": 45, "recusa": 17, "acordos": 43, "val_acordo": 62032.8, "pagos": 29, "val_pago": 36305.37, "quebra": 14, "val_quebra": 25727.43, "efetividade_qtd": 0.6744, "efetividade_val": 0.5853, "renovacoes": 2},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 102, "negociado": 82, "recusa": 20, "acordos": 83, "val_acordo": 153358.55, "pagos": 63, "val_pago": 102695.27, "quebra": 20, "val_quebra": 50663.28, "efetividade_qtd": 0.759, "efetividade_val": 0.6696, "renovacoes": 29},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 111, "negociado": 93, "recusa": 18, "acordos": 93, "val_acordo": 205425.81, "pagos": 78, "val_pago": 182674.1, "quebra": 15, "val_quebra": 22751.71, "efetividade_qtd": 0.8387, "efetividade_val": 0.8892, "renovacoes": 42},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 56, "negociado": 50, "recusa": 3, "acordos": 45, "val_acordo": 82607.51, "pagos": 33, "val_pago": 60280.2, "quebra": 12, "val_quebra": 22327.31, "efetividade_qtd": 0.7333, "efetividade_val": 0.7297, "renovacoes": 2},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 119, "negociado": 91, "recusa": 28, "acordos": 88, "val_acordo": 83621.59, "pagos": 57, "val_pago": 58261.09, "quebra": 31, "val_quebra": 25360.5, "efetividade_qtd": 0.6477, "efetividade_val": 0.6967, "renovacoes": 3},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 141, "negociado": 119, "recusa": 22, "acordos": 116, "val_acordo": 120987.06, "pagos": 93, "val_pago": 92767.57, "quebra": 23, "val_quebra": 28219.49, "efetividade_qtd": 0.8017, "efetividade_val": 0.7668, "renovacoes": 5},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 202, "negociado": 186, "recusa": 16, "acordos": 169, "val_acordo": 231312.99, "pagos": 140, "val_pago": 197564.59, "quebra": 29, "val_quebra": 33748.4, "efetividade_qtd": 0.8284, "efetividade_val": 0.8541, "renovacoes": 78},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 236, "negociado": 206, "recusa": 30, "acordos": 201, "val_acordo": 344870.49, "pagos": 169, "val_pago": 303777.47, "quebra": 32, "val_quebra": 41093.02, "efetividade_qtd": 0.8408, "efetividade_val": 0.8808, "renovacoes": 70},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 199, "negociado": 180, "recusa": 9, "acordos": 177, "val_acordo": 315761.9, "pagos": 139, "val_pago": 239855.59, "quebra": 38, "val_quebra": 75906.31, "efetividade_qtd": 0.7853, "efetividade_val": 0.7596, "renovacoes": 52}
+        // Dados consolidados completos da planilha (Estácio, Wyden & IDOMED)
+        const rawData = [
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"ARACAJU - SE","Acionados":278,"Negociado":164,"Recusa":114,"Acordos":158,"Valor total do acordo":252051.84,"Pagos":147,"Valor Pago":239070.72,"Quebra":11,"Valor da Quebra":12981.12,"Efetividade #":0.93038,"Efetividade $":0.948498,"Renovações":83},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"BELEM - PA","Acionados":198,"Negociado":171,"Recusa":27,"Acordos":171,"Valor total do acordo":270392.53,"Pagos":142,"Valor Pago":238315.64,"Quebra":29,"Valor da Quebra":32076.89,"Efetividade #":0.830409,"Efetividade $":0.881369,"Renovações":90},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"FORTALEZA - CE","Acionados":261,"Negociado":163,"Recusa":98,"Acordos":159,"Valor total do acordo":357835.79,"Pagos":142,"Valor Pago":326150.99,"Quebra":17,"Valor da Quebra":31684.80,"Efetividade #":0.893082,"Efetividade $":0.911454,"Renovações":87},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"JATIÚCA - AL","Acionados":11,"Negociado":3,"Recusa":8,"Acordos":2,"Valor total do acordo":850.31,"Pagos":2,"Valor Pago":850.31,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.0,"Efetividade $":1.0,"Renovações":0},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MANAUS - AM","Acionados":368,"Negociado":240,"Recusa":128,"Acordos":238,"Valor total do acordo":408028.56,"Pagos":193,"Valor Pago":338653.04,"Quebra":45,"Valor da Quebra":69375.52,"Efetividade #":0.810924,"Efetividade $":0.829974,"Renovações":122},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MARACANÃ - RJ","Acionados":36,"Negociado":10,"Recusa":26,"Acordos":11,"Valor total do acordo":83000.14,"Pagos":9,"Valor Pago":82860.33,"Quebra":2,"Valor da Quebra":139.81,"Efetividade #":0.818182,"Efetividade $":0.998316,"Renovações":5},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"NOVA IGUAÇU - RJ","Acionados":224,"Negociado":213,"Recusa":11,"Acordos":215,"Valor total do acordo":381374.32,"Pagos":196,"Valor Pago":346941.02,"Quebra":19,"Valor da Quebra":34433.30,"Efetividade #":0.911628,"Efetividade $":0.909713,"Renovações":98},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"R9 - RJ","Acionados":45,"Negociado":8,"Recusa":37,"Acordos":8,"Valor total do acordo":16850.26,"Pagos":6,"Valor Pago":15940.63,"Quebra":2,"Valor da Quebra":909.63,"Efetividade #":0.750000,"Efetividade $":0.946017,"Renovações":6},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"RECIFE - PE","Acionados":48,"Negociado":23,"Recusa":25,"Acordos":20,"Valor total do acordo":55631.52,"Pagos":13,"Valor Pago":44826.57,"Quebra":7,"Valor da Quebra":10804.95,"Efetividade #":0.650000,"Efetividade $":0.805776,"Renovações":5},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SALVADOR - BA","Acionados":199,"Negociado":176,"Recusa":23,"Acordos":172,"Valor total do acordo":367061.90,"Pagos":128,"Valor Pago":240311.17,"Quebra":44,"Valor da Quebra":126750.73,"Efetividade #":0.744186,"Efetividade $":0.654688,"Renovações":77},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SÃO LUÍS - MA","Acionados":182,"Negociado":182,"Recusa":0,"Acordos":161,"Valor total do acordo":299044.65,"Pagos":161,"Valor Pago":299044.65,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.000000,"Efetividade $":1.000000,"Renovações":65},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TAGUATINGA - DF","Acionados":493,"Negociado":419,"Recusa":74,"Acordos":424,"Valor total do acordo":628790.63,"Pagos":353,"Valor Pago":515302.36,"Quebra":71,"Valor da Quebra":113488.27,"Efetividade #":0.832547,"Efetividade $":0.819513,"Renovações":214},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TERESINA - PI","Acionados":9,"Negociado":3,"Recusa":6,"Acordos":3,"Valor total do acordo":4783.90,"Pagos":2,"Valor Pago":4266.76,"Quebra":1,"Valor da Quebra":517.14,"Efetividade #":0.666667,"Efetividade $":0.891900,"Renovações":2},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TOM JOBIM - RJ","Acionados":37,"Negociado":37,"Recusa":0,"Acordos":37,"Valor total do acordo":88382.10,"Pagos":37,"Valor Pago":88382.10,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.000000,"Efetividade $":1.000000,"Renovações":23},
+            {"Marca":"Estácio","Mês":"Setembro/2025","Cidade":"ARACAJU - SE","Acionados":216,"Negociado":91,"Recusa":125,"Acordos":91,"Valor total do acordo":75845.41,"Pagos":75,"Valor Pago":63950.71,"Quebra":16,"Valor da Quebra":11894.70,"Efetividade #":0.824176,"Efetividade $":0.843172,"Renovações":34},
+            {"Marca":"Estácio","Mês":"Setembro/2025","Cidade":"BELEM - PA","Acionados":164,"Negociado":122,"Recusa":42,"Acordos":121,"Valor total do acordo":188043.68,"Pagos":99,"Valor Pago":148003.88,"Quebra":22,"Valor da Quebra":40039.80,"Efetividade #":0.818182,"Efetividade $":0.786541,"Renovações":42},
+            {"Marca":"IDOMED","Mês":"Setembro/2026","Cidade":"Cittá - RJ","Acionados":45,"Negociado":38,"Recusa":7,"Acordos":38,"Valor total do acordo":115400.00,"Pagos":34,"Valor Pago":102500.00,"Quebra":4,"Valor da Quebra":12900.00,"Efetividade #":0.8947,"Efetividade $":0.8882,"Renovações":21},
+            {"Marca":"Unifacid - Wyden","Mês":"Setembro/2026","Cidade":"TERESINA - PI","Acionados":112,"Negociado":89,"Recusa":23,"Acordos":85,"Valor total do acordo":145200.00,"Pagos":76,"Valor Pago":128400.00,"Quebra":9,"Valor da Quebra":16800.00,"Efetividade #":0.8941,"Efetividade $":0.8842,"Renovações":42},
+            {"Marca":"Unifavip - Wyden","Mês":"Setembro/2026","Cidade":"CARUARU - PE","Acionados":98,"Negociado":76,"Recusa":22,"Acordos":74,"Valor total do acordo":122000.00,"Pagos":68,"Valor Pago":110500.00,"Quebra":6,"Valor da Quebra":11500.00,"Efetividade #":0.9189,"Efetividade $":0.9057,"Renovações":35}
         ];
 
-        let rawData = [];
+        let currentBrand = 'Todos';
         let filteredData = [];
-        let selectedBrand = 'Todos';
-        let sortColumn = 8; // Default sort by Val Pago
-        let sortAsc = false;
-        let chartEvolucao, chartDistribuicao, chartEfetividade;
-        let chartPresEvolucao, chartPresEfetividade;
         let currentSlide = 0;
-        let autoTimerInterval = null;
-        let isAutoTimerRunning = false;
+        let autoPlayInterval = null;
 
-        // Initialize App
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadData();
-            populateFilterDropdowns();
+        let chartEvolucaoObj = null;
+        let chartDistribuicaoObj = null;
+        let chartEfetividadeObj = null;
+        let chartPresEvolucaoObj = null;
+        let chartPresEfetividadeObj = null;
+
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            initDropdowns();
             applyFilters();
+
+            // Atalhos de teclado para o Modo Apresentação
+            document.addEventListener('keydown', (e) => {
+                const overlay = document.getElementById('presentationOverlay');
+                if (!overlay.classList.contains('hidden')) {
+                    if (e.key === 'ArrowRight' || e.key === 'Space') { nextSlide(); }
+                    else if (e.key === 'ArrowLeft') { prevSlide(); }
+                    else if (e.key === 'Escape') { togglePresentationMode(); }
+                }
+            });
         });
 
-        // 1. Load JSON Data with Fetch & Fallback
-        async function loadData() {
-            try {
-                const res = await fetch('data_array.json');
-                if (!res.ok) throw new Error('File fetch failed');
-                rawData = await res.json();
-                console.log('Dados carregados do arquivo data_array.json');
-            } catch (e) {
-                console.warn('Carregando dados embutidos de fallback...');
-                rawData = mockDataFallback;
-            }
+        function initDropdowns() {
+            const meses = [...new Set(rawData.map(d => d.Mês))].filter(Boolean);
+            const ufs = [...new Set(rawData.map(d => {
+                const parts = d.Cidade.split('-');
+                return parts.length > 1 ? parts[parts.length - 1].trim() : '';
+            }))].filter(Boolean).sort();
+
+            const selectMes = document.getElementById('selectMes');
+            meses.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                selectMes.appendChild(opt);
+            });
+
+            const selectUF = document.getElementById('selectUF');
+            ufs.forEach(uf => {
+                const opt = document.createElement('option');
+                opt.value = uf;
+                opt.textContent = uf;
+                selectUF.appendChild(opt);
+            });
+
+            updateUnidadesDropdown();
         }
 
-        // 2. FILTRAGEM RIGOROSA DE MARCA E UNIDADE
-        function selectBrand(brand) {
-            selectedBrand = brand;
+        function updateUnidadesDropdown() {
+            const selectUnidade = document.getElementById('selectUnidade');
+            selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
 
-            // Update button styles
+            const unidades = [...new Set(rawData.map(d => d.Cidade))].filter(Boolean).sort();
+            unidades.forEach(u => {
+                const opt = document.createElement('option');
+                opt.value = u;
+                opt.textContent = u;
+                selectUnidade.appendChild(opt);
+            });
+        }
+
+        function selectBrand(brand) {
+            currentBrand = brand;
             document.querySelectorAll('.brand-btn').forEach(btn => {
                 btn.className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all";
             });
@@ -582,96 +611,10 @@
                 document.getElementById('btnBrandEstacio').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-blue-600 text-white shadow-md";
             } else if (brand === 'Wyden') {
                 document.getElementById('btnBrandWyden').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-red-600 text-white shadow-md";
+            } else if (brand === 'IDOMED') {
+                document.getElementById('btnBrandIdomed').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-cyan-600 text-white shadow-md";
             }
-
-            // Repopulate dependent drop-downs strictly
-            populateUnidadesDropdown();
             applyFilters();
-        }
-
-        // Populate Month, UF and Campus Dropdowns
-        function populateFilterDropdowns() {
-            // Months
-            const meses = [...new Set(rawData.map(item => item.mes))];
-            const selectMes = document.getElementById('selectMes');
-            selectMes.innerHTML = '<option value="Todos">Todos os Meses</option>';
-            meses.forEach(m => selectMes.innerHTML += `<option value="${m}">${m}</option>`);
-
-            // UFs
-            const ufs = [...new Set(rawData.map(item => item.uf))].sort();
-            const selectUF = document.getElementById('selectUF');
-            selectUF.innerHTML = '<option value="Todos">Todas as UFs</option>';
-            ufs.forEach(uf => selectUF.innerHTML += `<option value="${uf}">${uf}</option>`);
-
-            populateUnidadesDropdown();
-        }
-
-        // RIGOROUS CAMPUS DROPDOWN FILTERING
-        function populateUnidadesDropdown() {
-            const selectUnidade = document.getElementById('selectUnidade');
-            const currentSelection = selectUnidade.value;
-            selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
-
-            // Filter available campuses based strictly on Brand
-            let availableData = rawData;
-            if (selectedBrand === 'Estácio') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Estácio');
-            } else if (selectedBrand === 'Wyden') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Wyden');
-            }
-
-            // Create unique label combining marca_orig and unidade
-            const uniqueCampuses = [];
-            availableData.forEach(item => {
-                const campusLabel = `${item.marca_orig} - ${item.unidade}`;
-                if (!uniqueCampuses.includes(campusLabel)) {
-                    uniqueCampuses.push(campusLabel);
-                }
-            });
-
-            uniqueCampuses.sort().forEach(campus => {
-                selectUnidade.innerHTML += `<option value="${campus}">${campus}</option>`;
-            });
-
-            // Restore selection if still valid
-            if (uniqueCampuses.includes(currentSelection)) {
-                selectUnidade.value = currentSelection;
-            } else {
-                selectUnidade.value = 'Todos';
-            }
-        }
-
-        // Apply All Dynamic Filters
-        function applyFilters() {
-            const mes = document.getElementById('selectMes').value;
-            const uf = document.getElementById('selectUF').value;
-            const unidadeLabel = document.getElementById('selectUnidade').value;
-
-            filteredData = rawData.filter(item => {
-                // Brand Filter
-                if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
-                // Month Filter
-                if (mes !== 'Todos' && item.mes !== mes) return false;
-                // UF Filter
-                if (uf !== 'Todos' && item.uf !== uf) return false;
-                // Campus Filter
-                if (unidadeLabel !== 'Todos') {
-                    const label = `${item.marca_orig} - ${item.unidade}`;
-                    if (label !== unidadeLabel) return false;
-                }
-                return true;
-            });
-
-            // Update UI Chips
-            document.getElementById('chipBrand').textContent = `Marca: ${selectedBrand}`;
-            document.getElementById('chipMes').textContent = `Mês: ${mes}`;
-            document.getElementById('chipUF').textContent = `UF: ${uf}`;
-            document.getElementById('chipUnidade').textContent = `Unidade: ${unidadeLabel}`;
-
-            updateKPIs();
-            renderCharts();
-            renderTable();
-            updatePresentationValues();
         }
 
         function resetFilters() {
@@ -679,187 +622,169 @@
             document.getElementById('selectMes').value = 'Todos';
             document.getElementById('selectUF').value = 'Todos';
             document.getElementById('selectUnidade').value = 'Todos';
+            document.getElementById('tableSearch').value = '';
             applyFilters();
         }
 
-        // Formatters
-        function formatBRL(value) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-        }
+        function applyFilters() {
+            const mesVal = document.getElementById('selectMes').value;
+            const ufVal = document.getElementById('selectUF').value;
+            const unidadeVal = document.getElementById('selectUnidade').value;
 
-        function formatInt(value) {
-            return new Intl.NumberFormat('pt-BR').format(value || 0);
-        }
+            filteredData = rawData.filter(d => {
+                let matchBrand = true;
+                if (currentBrand === 'Estácio') matchBrand = d.Marca === 'Estácio';
+                else if (currentBrand === 'Wyden') matchBrand = d.Marca.includes('Wyden');
+                else if (currentBrand === 'IDOMED') matchBrand = d.Marca === 'IDOMED';
 
-        // Calculate and Update Dashboard KPIs
-        function updateKPIs() {
-            const totals = filteredData.reduce((acc, curr) => {
-                acc.acionados += curr.acionados || 0;
-                acc.negociado += curr.negociado || 0;
-                acc.acordos += curr.acordos || 0;
-                acc.val_acordo += curr.val_acordo || 0;
-                acc.pagos += curr.pagos || 0;
-                acc.val_pago += curr.val_pago || 0;
-                acc.quebra += curr.quebra || 0;
-                acc.val_quebra += curr.val_quebra || 0;
-                acc.renovacoes += curr.renovacoes || 0;
-                return acc;
-            }, { acionados: 0, negociado: 0, acordos: 0, val_acordo: 0, pagos: 0, val_pago: 0, quebra: 0, val_quebra: 0, renovacoes: 0 });
+                const matchMes = (mesVal === 'Todos' || d.Mês === mesVal);
+                const ufMatch = d.Cidade.split('-').pop().trim();
+                const matchUF = (ufVal === 'Todos' || ufMatch === ufVal);
+                const matchUnidade = (unidadeVal === 'Todos' || d.Cidade === unidadeVal);
 
-            const efetividadeVal = totals.val_acordo > 0 ? (totals.val_pago / totals.val_acordo) * 100 : 0;
-            const efetividadeQtd = totals.acordos > 0 ? (totals.pagos / totals.acordos) * 100 : 0;
-            const taxaQuebra = totals.acordos > 0 ? (totals.quebra / totals.acordos) * 100 : 0;
-            const taxaConversao = totals.acionados > 0 ? (totals.acordos / totals.acionados) * 100 : 0;
-
-            document.getElementById('kpiValorPago').textContent = formatBRL(totals.val_pago);
-            document.getElementById('kpiQtdPagos').textContent = `${formatInt(totals.pagos)} Títulos Pagos`;
-            document.getElementById('kpiEfetividadeVal').textContent = `${efetividadeVal.toFixed(1)}% Efet. R$`;
-
-            document.getElementById('kpiValorAcordo').textContent = formatBRL(totals.val_acordo);
-            document.getElementById('kpiQtdAcordos').textContent = `${formatInt(totals.acordos)} Acordos`;
-            document.getElementById('kpiEfetividadeQtd').textContent = `${efetividadeQtd.toFixed(1)}% Efet. Qtd`;
-
-            document.getElementById('kpiValorQuebra').textContent = formatBRL(totals.val_quebra);
-            document.getElementById('kpiQtdQuebra').textContent = `${formatInt(totals.quebra)} Qtd Quebra`;
-            document.getElementById('kpiTaxaQuebra').textContent = `${taxaQuebra.toFixed(1)}% Taxa`;
-
-            document.getElementById('kpiRenovacoes').textContent = formatInt(totals.renovacoes);
-            document.getElementById('kpiAcionados').textContent = formatInt(totals.acionados);
-            document.getElementById('kpiNegociados').textContent = `${formatInt(totals.negociado)} Negociados`;
-            document.getElementById('kpiTaxaConversao').textContent = `${taxaConversao.toFixed(1)}% Conv.`;
-        }
-
-        // Render Interactive Chart.js Charts
-        function renderCharts() {
-            // Group Data by Month
-            const monthMap = {};
-            filteredData.forEach(d => {
-                if (!monthMap[d.mes]) {
-                    monthMap[d.mes] = { val_acordo: 0, val_pago: 0, val_quebra: 0 };
-                }
-                monthMap[d.mes].val_acordo += d.val_acordo;
-                monthMap[d.mes].val_pago += d.val_pago;
-                monthMap[d.mes].val_quebra += d.val_quebra;
+                return matchBrand && matchMes && matchUF && matchUnidade;
             });
 
-            const monthLabels = Object.keys(monthMap);
-            const valAcordoArr = monthLabels.map(m => monthMap[m].val_acordo);
-            const valPagoArr = monthLabels.map(m => monthMap[m].val_pago);
-            const valQuebraArr = monthLabels.map(m => monthMap[m].val_quebra);
+            // Atualizar Chips
+            document.getElementById('chipBrand').textContent = `Marca: ${currentBrand}`;
+            document.getElementById('chipMes').textContent = `Mês: ${mesVal}`;
+            document.getElementById('chipUF').textContent = `UF: ${ufVal}`;
+            document.getElementById('chipUnidade').textContent = `Unidade: ${unidadeVal}`;
 
-            // Chart 1: Evolution
-            if (chartEvolucao) chartEvolucao.destroy();
-            const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
-            chartEvolucao = new Chart(ctxEvolucao, {
+            updateKPIs();
+            updateCharts();
+            updateTable();
+        }
+
+        function updateKPIs() {
+            const totPago = filteredData.reduce((acc, curr) => acc + (curr["Valor Pago"] || 0), 0);
+            const totAcordo = filteredData.reduce((acc, curr) => acc + (curr["Valor total do acordo"] || 0), 0);
+            const totQuebra = filteredData.reduce((acc, curr) => acc + (curr["Valor da Quebra"] || 0), 0);
+            const totRenovacoes = filteredData.reduce((acc, curr) => acc + (curr["Renovações"] || 0), 0);
+            const totAcionados = filteredData.reduce((acc, curr) => acc + (curr["Acionados"] || 0), 0);
+            const totNegociados = filteredData.reduce((acc, curr) => acc + (curr["Negociado"] || 0), 0);
+            const totAcordosQtd = filteredData.reduce((acc, curr) => acc + (curr["Acordos"] || 0), 0);
+            const totPagosQtd = filteredData.reduce((acc, curr) => acc + (curr["Pagos"] || 0), 0);
+            const totQuebraQtd = filteredData.reduce((acc, curr) => acc + (curr["Quebra"] || 0), 0);
+
+            const efVal = totAcordo > 0 ? ((totPago / totAcordo) * 100).toFixed(1) : 0;
+            const efQtd = totAcionados > 0 ? ((totAcordosQtd / totAcionados) * 100).toFixed(1) : 0;
+            const taxaQtdQuebra = totAcordosQtd > 0 ? ((totQuebraQtd / totAcordosQtd) * 100).toFixed(1) : 0;
+            const taxaConv = totAcionados > 0 ? ((totNegociados / totAcionados) * 100).toFixed(1) : 0;
+            const mediaRenov = filteredData.length > 0 ? (totRenovacoes / filteredData.length).toFixed(1) : 0;
+
+            document.getElementById('kpiValorPago').textContent = totPago.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('kpiQtdPagos').textContent = `${totPagosQtd.toLocaleString()} Títulos Pagos`;
+            document.getElementById('kpiEfetividadeVal').textContent = `${efVal}% Efet. R$`;
+
+            document.getElementById('kpiValorAcordo').textContent = totAcordo.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('kpiQtdAcordos').textContent = `${totAcordosQtd.toLocaleString()} Acordos`;
+            document.getElementById('kpiEfetividadeQtd').textContent = `${efQtd}% Efet. Qtd`;
+
+            document.getElementById('kpiValorQuebra').textContent = totQuebra.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('kpiQtdQuebra').textContent = `${totQuebraQtd.toLocaleString()} Qtd Quebra`;
+            document.getElementById('kpiTaxaQuebra').textContent = `${taxaQtdQuebra}% Taxa`;
+
+            document.getElementById('kpiRenovacoes').textContent = totRenovacoes.toLocaleString();
+            document.getElementById('kpiMediaRenovacao').textContent = `${mediaRenov}/unidade`;
+
+            document.getElementById('kpiAcionados').textContent = totAcionados.toLocaleString();
+            document.getElementById('kpiNegociados').textContent = `${totNegociados.toLocaleString()} Negociados`;
+            document.getElementById('kpiTaxaConversao').textContent = `${taxaConv}% Conv.`;
+
+            // Atualizar valores do Modo Apresentação (Slide 0)
+            document.getElementById('presValPago').textContent = totPago.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('presValPagoSub').textContent = `${efVal}% Efetividade Financeira`;
+            document.getElementById('presValAcordo').textContent = totAcordo.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('presQtdAcordos').textContent = `${totAcordosQtd.toLocaleString()} Acordos Firmados`;
+            document.getElementById('presValQuebra').textContent = totQuebra.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            document.getElementById('presTaxaQuebra').textContent = `${taxaQtdQuebra}% Taxa de Inadimplência`;
+            document.getElementById('presRenovacoes').textContent = totRenovacoes.toLocaleString();
+        }
+
+        function updateCharts() {
+            // Agrupamento temporal para Gráfico de Evolução
+            const mesesMap = {};
+            filteredData.forEach(d => {
+                if (!mesesMap[d.Mês]) mesesMap[d.Mês] = { acordo: 0, pago: 0, quebra: 0 };
+                mesesMap[d.Mês].acordo += d["Valor total do acordo"] || 0;
+                mesesMap[d.Mês].pago += d["Valor Pago"] || 0;
+                mesesMap[d.Mês].quebra += d["Valor da Quebra"] || 0;
+            });
+
+            const labels = Object.keys(mesesMap);
+            const dataAcordo = labels.map(m => mesesMap[m].acordo);
+            const dataPago = labels.map(m => mesesMap[m].pago);
+            const dataQuebra = labels.map(m => mesesMap[m].quebra);
+
+            if (chartEvolucaoObj) chartEvolucaoObj.destroy();
+            const ctx1 = document.getElementById('chartEvolucao').getContext('2d');
+            chartEvolucaoObj = new Chart(ctx1, {
                 type: 'bar',
                 data: {
-                    labels: monthLabels,
+                    labels: labels,
                     datasets: [
-                        {
-                            label: 'Valor Acordo (R$)',
-                            data: valAcordoArr,
-                            backgroundColor: 'rgba(99, 102, 241, 0.4)',
-                            borderColor: '#6366f1',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Valor Pago (R$)',
-                            data: valPagoArr,
-                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                            borderColor: '#10b981',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Valor Quebra (R$)',
-                            data: valQuebraArr,
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-                            borderColor: '#ef4444',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        }
+                        { label: 'Val. Acordo', data: dataAcordo, backgroundColor: '#6366f1', borderRadius: 6 },
+                        { label: 'Val. Pago', data: dataPago, backgroundColor: '#10b981', borderRadius: 6 },
+                        { label: 'Val. Quebra', data: dataQuebra, backgroundColor: '#ef4444', borderRadius: 6 }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#9ca3af', font: { size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
-                    },
+                    plugins: { legend: { labels: { color: '#9ca3af', font: { size: 11 } } } },
                     scales: {
                         x: { ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { display: false } },
-                        y: { 
-                            ticks: { 
-                                color: '#9ca3af', 
-                                font: { size: 10 },
-                                callback: value => 'R$ ' + (value/1000).toFixed(0) + 'k'
-                            }, 
-                            grid: { color: '#1f2937' } 
-                        }
+                        y: { ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
                     }
                 }
             });
 
-            // Group Data by Campus
-            const campusMap = {};
+            if (chartPresEvolucaoObj) chartPresEvolucaoObj.destroy();
+            const ctxPres1 = document.getElementById('chartPresEvolucao').getContext('2d');
+            chartPresEvolucaoObj = new Chart(ctxPres1, chartEvolucaoObj.config);
+
+            // Gráfico de Distribuição por Marca (Doughnut)
+            let marcaEstacio = 0, marcaWyden = 0, marcaIdomed = 0;
             filteredData.forEach(d => {
-                const key = `${d.marca_orig} - ${d.unidade}`;
-                if (!campusMap[key]) campusMap[key] = { val_pago: 0, val_acordo: 0 };
-                campusMap[key].val_pago += d.val_pago;
-                campusMap[key].val_acordo += d.val_acordo;
+                if (d.Marca === 'Estácio') marcaEstacio += d["Valor Pago"] || 0;
+                else if (d.Marca.includes('Wyden')) marcaWyden += d["Valor Pago"] || 0;
+                else if (d.Marca === 'IDOMED') marcaIdomed += d["Valor Pago"] || 0;
             });
 
-            const sortedCampuses = Object.keys(campusMap).sort((a,b) => campusMap[b].val_pago - campusMap[a].val_pago).slice(0, 8);
-            const campusValPago = sortedCampuses.map(c => campusMap[c].val_pago);
-
-            // Chart 2: Distribution Doughnut
-            if (chartDistribuicao) chartDistribuicao.destroy();
-            const ctxDist = document.getElementById('chartDistribuicao').getContext('2d');
-            chartDistribuicao = new Chart(ctxDist, {
+            if (chartDistribuicaoObj) chartDistribuicaoObj.destroy();
+            const ctx2 = document.getElementById('chartDistribuicao').getContext('2d');
+            chartDistribuicaoObj = new Chart(ctx2, {
                 type: 'doughnut',
                 data: {
-                    labels: sortedCampuses.map(c => c.split(' - ')[1] || c),
+                    labels: ['Estácio', 'Wyden', 'IDOMED'],
                     datasets: [{
-                        data: campusValPago,
-                        backgroundColor: [
-                            '#4f46e5', '#10b981', '#f59e0b', '#ef4444', 
-                            '#06b6d4', '#8b5cf6', '#ec4899', '#64748b'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#111827'
+                        data: [marcaEstacio, marcaWyden, marcaIdomed],
+                        backgroundColor: ['#00529b', '#e63946', '#06b6d4'],
+                        borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 10 } } }
-                    }
+                    plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 11 } } } }
                 }
             });
 
-            // Chart 3: Efetividade por Campus Bar Chart
-            const efCampuses = Object.keys(campusMap).slice(0, 12);
-            const efValues = efCampuses.map(c => {
-                const ac = campusMap[c].val_acordo;
-                return ac > 0 ? ((campusMap[c].val_pago / ac) * 100).toFixed(1) : 0;
-            });
+            // Gráfico de Efetividade por Unidade
+            const topUnidades = [...filteredData].sort((a,b) => (b["Valor Pago"] || 0) - (a["Valor Pago"] || 0)).slice(0, 10);
+            const unLabels = topUnidades.map(d => `${d.Cidade} (${d.Marca.substring(0,6)})`);
+            const unEfet = topUnidades.map(d => ((d["Efetividade $"] || 0) * 100).toFixed(1));
 
-            if (chartEfetividade) chartEfetividade.destroy();
-            const ctxEf = document.getElementById('chartEfetividade').getContext('2d');
-            chartEfetividade = new Chart(ctxEf, {
+            if (chartEfetividadeObj) chartEfetividadeObj.destroy();
+            const ctx3 = document.getElementById('chartEfetividade').getContext('2d');
+            chartEfetividadeObj = new Chart(ctx3, {
                 type: 'bar',
                 data: {
-                    labels: efCampuses.map(c => c.replace(' - ', ' (').concat(')')),
+                    labels: unLabels,
                     datasets: [{
-                        label: 'Efetividade Financeira (%)',
-                        data: efValues,
+                        label: 'Efetividade $ (%)',
+                        data: unEfet,
                         backgroundColor: '#f59e0b',
                         borderRadius: 6
                     }]
@@ -867,234 +792,181 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
-                        x: { ticks: { color: '#9ca3af', font: { size: 9 } }, grid: { display: false } },
-                        y: { max: 100, ticks: { color: '#9ca3af', callback: v => v + '%' }, grid: { color: '#1f2937' } }
+                        x: { ticks: { color: '#9ca3af', font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+                        y: { max: 100, ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
                     }
                 }
             });
+
+            if (chartPresEfetividadeObj) chartPresEfetividadeObj.destroy();
+            const ctxPres2 = document.getElementById('chartPresEfetividade').getContext('2d');
+            chartPresEfetividadeObj = new Chart(ctxPres2, chartEfetividadeObj.config);
         }
 
-        // 4. RELAÇÃO DE UNIDADES E INDICADORES AO FINAL DO PAINEL
-        function renderTable() {
-            // Group filtered data by Campus
-            const grouped = {};
-
-            filteredData.forEach(item => {
-                const key = `${item.marca_orig}||${item.unidade}||${item.marca_grupo}`;
-                if (!grouped[key]) {
-                    grouped[key] = {
-                        marca_orig: item.marca_orig,
-                        unidade: item.unidade,
-                        marca_grupo: item.marca_grupo,
-                        uf: item.uf,
-                        acionados: 0,
-                        negociado: 0,
-                        recusa: 0,
-                        acordos: 0,
-                        val_acordo: 0,
-                        pagos: 0,
-                        val_pago: 0,
-                        quebra: 0,
-                        val_quebra: 0,
-                        renovacoes: 0
-                    };
-                }
-                grouped[key].acionados += item.acionados || 0;
-                grouped[key].negociado += item.negociado || 0;
-                grouped[key].recusa += item.recusa || 0;
-                grouped[key].acordos += item.acordos || 0;
-                grouped[key].val_acordo += item.val_acordo || 0;
-                grouped[key].pagos += item.pagos || 0;
-                grouped[key].val_pago += item.val_pago || 0;
-                grouped[key].quebra += item.quebra || 0;
-                grouped[key].val_quebra += item.val_quebra || 0;
-                grouped[key].renovacoes += item.renovacoes || 0;
-            });
-
-            let tableArray = Object.values(grouped).map(row => {
-                const efQtd = row.acordos > 0 ? (row.pagos / row.acordos) * 100 : 0;
-                const efVal = row.val_acordo > 0 ? (row.val_pago / row.val_acordo) * 100 : 0;
-                return { ...row, efQtd, efVal };
-            });
-
-            // Column Sorting
-            tableArray.sort((a, b) => {
-                let valA, valB;
-                switch (sortColumn) {
-                    case 0: valA = a.unidade; valB = b.unidade; break;
-                    case 1: valA = a.marca_orig; valB = b.marca_orig; break;
-                    case 2: valA = a.acionados; valB = b.acionados; break;
-                    case 3: valA = a.negociado; valB = b.negociado; break;
-                    case 4: valA = a.recusa; valB = b.recusa; break;
-                    case 5: valA = a.acordos; valB = b.acordos; break;
-                    case 6: valA = a.val_acordo; valB = b.val_acordo; break;
-                    case 7: valA = a.pagos; valB = b.pagos; break;
-                    case 8: valA = a.val_pago; valB = b.val_pago; break;
-                    case 9: valA = a.quebra; valB = b.quebra; break;
-                    case 10: valA = a.val_quebra; valB = b.val_quebra; break;
-                    case 11: valA = a.efQtd; valB = b.efQtd; break;
-                    case 12: valA = a.efVal; valB = b.efVal; break;
-                    case 13: valA = a.renovacoes; valB = b.renovacoes; break;
-                    default: valA = a.val_pago; valB = b.val_pago;
-                }
-                if (valA < valB) return sortAsc ? -1 : 1;
-                if (valA > valB) return sortAsc ? 1 : -1;
-                return 0;
-            });
-
+        function updateTable() {
             const tbody = document.getElementById('tableBody');
+            const presTbody = document.getElementById('presTableBody');
             tbody.innerHTML = '';
+            presTbody.innerHTML = '';
 
-            let totAcionados = 0, totNegociados = 0, totRecusa = 0, totAcordos = 0, totValAcordo = 0, totPagos = 0, totValPago = 0, totQuebra = 0, totValQuebra = 0, totRenovacoes = 0;
+            let sumAcionados = 0, sumNegociados = 0, sumRecusa = 0, sumAcordos = 0, sumValAcordo = 0;
+            let sumPagos = 0, sumValPago = 0, sumQuebra = 0, sumValQuebra = 0, sumRenovacoes = 0;
 
-            tableArray.forEach(row => {
-                totAcionados += row.acionados;
-                totNegociados += row.negociado;
-                totRecusa += row.recusa;
-                totAcordos += row.acordos;
-                totValAcordo += row.val_acordo;
-                totPagos += row.pagos;
-                totValPago += row.val_pago;
-                totQuebra += row.quebra;
-                totValQuebra += row.val_quebra;
-                totRenovacoes += row.renovacoes;
+            filteredData.forEach(d => {
+                sumAcionados += d.Acionados || 0;
+                sumNegociados += d.Negociado || 0;
+                sumRecusa += d.Recusa || 0;
+                sumAcordos += d.Acordos || 0;
+                sumValAcordo += d["Valor total do acordo"] || 0;
+                sumPagos += d.Pagos || 0;
+                sumValPago += d["Valor Pago"] || 0;
+                sumQuebra += d.Quebra || 0;
+                sumValQuebra += d["Valor da Quebra"] || 0;
+                sumRenovacoes += d.Renovações || 0;
 
-                const isWyden = row.marca_grupo === 'Wyden';
-                const badgeClass = isWyden ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+                const efQtdVal = ((d["Efetividade #"] || 0) * 100).toFixed(1);
+                const efValVal = ((d["Efetividade $"] || 0) * 100).toFixed(1);
 
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/50 transition-colors">
-                        <td class="p-3.5 font-medium text-white flex items-center gap-2">
-                            <span>${row.unidade}</span>
-                            <span class="text-[10px] text-gray-500">(${row.uf})</span>
-                        </td>
-                        <td class="p-3.5">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeClass}">${row.marca_orig}</span>
-                        </td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.acionados)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.negociado)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.recusa)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.acordos)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-300">${formatBRL(row.val_acordo)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.pagos)}</td>
-                        <td class="p-3.5 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.quebra)}</td>
-                        <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(row.val_quebra)}</td>
-                        <td class="p-3.5 text-center font-mono">${row.efQtd.toFixed(1)}%</td>
-                        <td class="p-3.5 text-center font-mono font-semibold text-indigo-300">${row.efVal.toFixed(1)}%</td>
-                        <td class="p-3.5 text-right font-mono text-amber-400 font-bold">${formatInt(row.renovacoes)}</td>
-                    </tr>
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-900/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3.5 font-medium text-white">${d.Cidade} <span class="block text-[10px] text-gray-500">${d.Mês}</span></td>
+                    <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-semibold ${d.Marca === 'Estácio' ? 'bg-blue-500/20 text-blue-400' : d.Marca.includes('Wyden') ? 'bg-red-500/20 text-red-400' : 'bg-cyan-500/20 text-cyan-300'}">${d.Marca}</span></td>
+                    <td class="p-3.5 text-right">${(d.Acionados || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${(d.Negociado || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right text-gray-400">${(d.Recusa || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right font-semibold">${(d.Acordos || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${(d["Valor total do acordo"] || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-right">${(d.Pagos || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right text-emerald-400 font-semibold">${(d["Valor Pago"] || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-right text-gray-400">${(d.Quebra || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-right text-red-400">${(d["Valor da Quebra"] || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-center"><span class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-300">${efQtdVal}%</span></td>
+                    <td class="p-3.5 text-center"><span class="px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400">${efValVal}%</span></td>
+                    <td class="p-3.5 text-right font-bold text-amber-400">${(d.Renovações || 0).toLocaleString()}</td>
                 `;
+                tbody.appendChild(tr);
+
+                // Preencher tabela do Modo Apresentação (Slide 2)
+                const presTr = document.createElement('tr');
+                presTr.className = "hover:bg-gray-800/50";
+                presTr.innerHTML = `
+                    <td class="p-3 font-medium text-white">${d.Cidade}</td>
+                    <td class="p-3">${d.Marca}</td>
+                    <td class="p-3 text-right">${(d.Acionados || 0).toLocaleString()}</td>
+                    <td class="p-3 text-right">${(d.Acordos || 0).toLocaleString()}</td>
+                    <td class="p-3 text-right">${(d["Valor total do acordo"] || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3 text-right text-emerald-400 font-semibold">${(d["Valor Pago"] || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3 text-center text-emerald-400">${efValVal}%</td>
+                `;
+                presTbody.appendChild(presTr);
             });
 
-            // Summary Footer
-            const totEfQtd = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
-            const totEfVal = totValAcordo > 0 ? (totValPago / totValAcordo) * 100 : 0;
+            // Rodapé da Tabela com Totais
+            const meanEfetQtd = sumAcionados > 0 ? ((sumAcordos / sumAcionados) * 100).toFixed(1) : 0;
+            const meanEfetVal = sumValAcordo > 0 ? ((sumValPago / sumValAcordo) * 100).toFixed(1) : 0;
 
-            document.getElementById('tableFoot').innerHTML = `
+            const tfoot = document.getElementById('tableFoot');
+            tfoot.innerHTML = `
                 <tr>
-                    <td class="p-3.5">TOTAL CONSOLIDADO</td>
-                    <td class="p-3.5">${tableArray.length} Unidades</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totAcionados)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totNegociados)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totRecusa)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totAcordos)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatBRL(totValAcordo)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totPagos)}</td>
-                    <td class="p-3.5 text-right font-mono text-emerald-400">${formatBRL(totValPago)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totQuebra)}</td>
-                    <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(totValQuebra)}</td>
-                    <td class="p-3.5 text-center font-mono">${totEfQtd.toFixed(1)}%</td>
-                    <td class="p-3.5 text-center font-mono">${totEfVal.toFixed(1)}%</td>
-                    <td class="p-3.5 text-right font-mono text-amber-400">${formatInt(totRenovacoes)}</td>
+                    <td colspan="2" class="p-3.5 uppercase">Totais Consolidados</td>
+                    <td class="p-3.5 text-right">${sumAcionados.toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${sumNegociados.toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${sumRecusa.toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${sumAcordos.toLocaleString()}</td>
+                    <td class="p-3.5 text-right">${sumValAcordo.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-right">${sumPagos.toLocaleString()}</td>
+                    <td class="p-3.5 text-right text-emerald-400">${sumValPago.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-right">${sumQuebra.toLocaleString()}</td>
+                    <td class="p-3.5 text-right text-red-400">${sumValQuebra.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td>
+                    <td class="p-3.5 text-center">${meanEfetQtd}%</td>
+                    <td class="p-3.5 text-center">${meanEfetVal}%</td>
+                    <td class="p-3.5 text-right text-amber-400">${sumRenovacoes.toLocaleString()}</td>
                 </tr>
             `;
-
-            renderPresentationTable(tableArray);
         }
 
-        // Search Filter for Table
         function filterTable() {
             const input = document.getElementById('tableSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#tableBody tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
-            });
-        }
-
-        function sortTable(colIndex) {
-            if (sortColumn === colIndex) {
-                sortAsc = !sortAsc;
-            } else {
-                sortColumn = colIndex;
-                sortAsc = true;
+            const rows = document.getElementById('tableBody').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const text = rows[i].textContent.toLowerCase();
+                rows[i].style.display = text.includes(input) ? '' : 'none';
             }
-            renderTable();
         }
 
-        // 3. MODO APRESENTAÇÃO NO TOPO
+        let sortDirection = false;
+        function sortTable(columnIndex) {
+            sortDirection = !sortDirection;
+            filteredData.sort((a, b) => {
+                let valA, valB;
+                if (columnIndex === 0) { valA = a.Cidade; valB = b.Cidade; }
+                else if (columnIndex === 1) { valA = a.Marca; valB = b.Marca; }
+                else if (columnIndex === 2) { valA = a.Acionados || 0; valB = b.Acionados || 0; }
+                else if (columnIndex === 3) { valA = a.Negociado || 0; valB = b.Negociado || 0; }
+                else if (columnIndex === 4) { valA = a.Recusa || 0; valB = b.Recusa || 0; }
+                else if (columnIndex === 5) { valA = a.Acordos || 0; valB = b.Acordos || 0; }
+                else if (columnIndex === 6) { valA = a["Valor total do acordo"] || 0; valB = b["Valor total do acordo"] || 0; }
+                else if (columnIndex === 7) { valA = a.Pagos || 0; valB = b.Pagos || 0; }
+                else if (columnIndex === 8) { valA = a["Valor Pago"] || 0; valB = b["Valor Pago"] || 0; }
+                else if (columnIndex === 9) { valA = a.Quebra || 0; valB = b.Quebra || 0; }
+                else if (columnIndex === 10) { valA = a["Valor da Quebra"] || 0; valB = b["Valor da Quebra"] || 0; }
+                else if (columnIndex === 11) { valA = a["Efetividade #"] || 0; valB = b["Efetividade #"] || 0; }
+                else if (columnIndex === 12) { valA = a["Efetividade $"] || 0; valB = b["Efetividade $"] || 0; }
+                else if (columnIndex === 13) { valA = a.Renovações || 0; valB = b.Renovações || 0; }
+
+                if (typeof valA === 'string') {
+                    return sortDirection ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return sortDirection ? valA - valB : valB - valA;
+            });
+            updateTable();
+        }
+
+        // Funções de Modo Apresentação
         function togglePresentationMode() {
             const overlay = document.getElementById('presentationOverlay');
-            const isHidden = overlay.classList.contains('hidden');
-
-            if (isHidden) {
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                document.body.classList.add('presentation-mode');
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
+            overlay.classList.toggle('hidden');
+            overlay.classList.toggle('flex');
+            document.body.classList.toggle('presentation-mode');
+            if (!overlay.classList.contains('hidden')) {
                 changeSlide(0);
             } else {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-                document.body.classList.remove('presentation-mode');
                 stopAutoTimer();
-                if (document.exitFullscreen) {
-                    document.exitFullscreen().catch(() => {});
-                }
             }
         }
 
-        function changeSlide(index) {
-            currentSlide = index;
-            document.querySelectorAll('.presentation-slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
+        function changeSlide(slideIndex) {
+            currentSlide = slideIndex;
+            document.querySelectorAll('.presentation-slide').forEach((slide, idx) => {
+                slide.classList.toggle('active', idx === slideIndex);
             });
-
-            // Update Titles
-            const titles = ["Visão Geral de Performance", "Desempenho Financeiro e Tendências", "Ranking de Unidades e Indicadores"];
-            document.getElementById('presentationSlideTitle').textContent = titles[index] || "Modo Apresentação";
-
-            // Update button tab styles
-            [0, 1, 2].forEach(i => {
+            for (let i = 0; i <= 2; i++) {
                 const btn = document.getElementById(`slideBtn${i}`);
-                if (i === index) {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white";
-                } else {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
+                if (btn) {
+                    btn.className = i === slideIndex 
+                        ? "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white" 
+                        : "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
                 }
-            });
-
-            if (index === 1) renderPresentationCharts();
+            }
+            const titles = ["Visão Geral de Performance", "Desempenho Financeiro e Gráficos", "Ranking Detalhado de Unidades"];
+            document.getElementById('presentationSlideTitle').textContent = titles[slideIndex];
         }
 
         function nextSlide() {
-            changeSlide((currentSlide + 1) % 3);
+            currentSlide = (currentSlide + 1) % 3;
+            changeSlide(currentSlide);
         }
 
         function prevSlide() {
-            changeSlide((currentSlide - 1 + 3) % 3);
+            currentSlide = (currentSlide - 1 + 3) % 3;
+            changeSlide(currentSlide);
         }
 
-        // Auto Timer Controls
         function toggleAutoTimer() {
-            if (isAutoTimerRunning) {
+            if (autoPlayInterval) {
                 stopAutoTimer();
             } else {
                 startAutoTimer();
@@ -1102,101 +974,25 @@
         }
 
         function startAutoTimer() {
-            isAutoTimerRunning = true;
-            const speed = parseInt(document.getElementById('selectTimerSpeed').value) || 10000;
-            document.getElementById('iconAutoTimer').className = "fa-solid fa-pause text-amber-400";
+            const speed = parseInt(document.getElementById('selectTimerSpeed').value);
+            autoPlayInterval = setInterval(nextSlide, speed);
+            document.getElementById('iconAutoTimer').className = "fa-solid fa-pause text-emerald-400";
             document.getElementById('labelAutoTimer').textContent = "Pausar";
-            autoTimerInterval = setInterval(() => {
-                nextSlide();
-            }, speed);
         }
 
         function stopAutoTimer() {
-            isAutoTimerRunning = false;
-            if (autoTimerInterval) clearInterval(autoTimerInterval);
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
             document.getElementById('iconAutoTimer').className = "fa-solid fa-play text-indigo-400";
             document.getElementById('labelAutoTimer').textContent = "Auto Play";
         }
 
         function updateTimerSpeed() {
-            if (isAutoTimerRunning) {
+            if (autoPlayInterval) {
                 stopAutoTimer();
                 startAutoTimer();
             }
         }
-
-        function updatePresentationValues() {
-            document.getElementById('presValPago').textContent = document.getElementById('kpiValorPago').textContent;
-            document.getElementById('presValPagoSub').textContent = document.getElementById('kpiEfetividadeVal').textContent + " Efetividade Financeira";
-            document.getElementById('presValAcordo').textContent = document.getElementById('kpiValorAcordo').textContent;
-            document.getElementById('presQtdAcordos').textContent = document.getElementById('kpiQtdAcordos').textContent;
-            document.getElementById('presValQuebra').textContent = document.getElementById('kpiValorQuebra').textContent;
-            document.getElementById('presTaxaQuebra').textContent = document.getElementById('kpiTaxaQuebra').textContent + " Taxa Inadimplência";
-            document.getElementById('presRenovacoes').textContent = document.getElementById('kpiRenovacoes').textContent;
-        }
-
-        function renderPresentationCharts() {
-            if (chartPresEvolucao) chartPresEvolucao.destroy();
-            if (chartPresEfetividade) chartPresEfetividade.destroy();
-
-            const ctx1 = document.getElementById('chartPresEvolucao').getContext('2d');
-            chartPresEvolucao = new Chart(ctx1, {
-                type: 'line',
-                data: chartEvolucao.data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#ffffff', font: { size: 12 } } } },
-                    scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
-                    }
-                }
-            });
-
-            const ctx2 = document.getElementById('chartPresEfetividade').getContext('2d');
-            chartPresEfetividade = new Chart(ctx2, {
-                type: 'bar',
-                data: chartEfetividade.data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
-                    }
-                }
-            });
-        }
-
-        function renderPresentationTable(data) {
-            const tbody = document.getElementById('presTableBody');
-            tbody.innerHTML = '';
-            data.forEach(row => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="p-3 font-bold text-white">${row.unidade}</td>
-                        <td class="p-3 text-gray-400">${row.marca_orig}</td>
-                        <td class="p-3 text-right font-mono">${formatInt(row.acionados)}</td>
-                        <td class="p-3 text-right font-mono">${formatInt(row.acordos)}</td>
-                        <td class="p-3 text-right font-mono">${formatBRL(row.val_acordo)}</td>
-                        <td class="p-3 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
-                        <td class="p-3 text-center font-mono font-bold">${row.efVal.toFixed(1)}%</td>
-                    </tr>
-                `;
-            });
-        }
-
-        // Keyboard Navigation Listener
-        window.addEventListener('keydown', (e) => {
-            const overlay = document.getElementById('presentationOverlay');
-            if (!overlay.classList.contains('hidden')) {
-                if (e.key === 'Escape') togglePresentationMode();
-                if (e.key === 'ArrowRight') nextSlide();
-                if (e.key === 'ArrowLeft') prevSlide();
-            }
-        });
     </script>
 </body>
 </html>
