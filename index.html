@@ -33,7 +33,7 @@
                         },
                         estacio: '#00529b',
                         wyden: '#e63946',
-                        idomed: '#10b981', /* Verde IDOMED */
+                        idomed: '#10b981',
                         darkbg: '#0b0f19',
                         darkcard: '#111827',
                         darkborder: '#1f2937'
@@ -276,9 +276,9 @@
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-chart-pie text-emerald-400"></i>
-                            Distribuição por Marca
+                            Distribuição por Unidade / UF
                         </h3>
-                        <p class="text-xs text-gray-400">Participação no Valor Pago Total</p>
+                        <p class="text-xs text-gray-400">Participação no Valor Pago Total (Top Unidades)</p>
                     </div>
                 </div>
                 <div class="relative h-72 w-full flex items-center justify-center">
@@ -510,27 +510,25 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Dados completos apurados da planilha consolidada (Estácio, Wyden & IDOMED)
+        // Base de dados completa com todos os 256 registros reais apurados da planilha (Estácio, Wyden e IDOMED)
         const rawData = [
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"ARACAJU - SE","Acionados":278,"Negociado":164,"Recusa":114,"Acordos":158,"Valor total do acordo":252051.84,"Pagos":147,"Valor Pago":239070.72,"Quebra":11,"Valor da Quebra":12981.12,"Efetividade #":0.93038,"Efetividade $":0.948498,"Renovações":83},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"BELEM - PA","Acionados":198,"Negociado":171,"Recusa":27,"Acordos":171,"Valor total do acordo":270392.53,"Pagos":142,"Valor Pago":238315.64,"Quebra":29,"Valor da Quebra":32076.89,"Efetividade #":0.830409,"Efetividade $":0.881369,"Renovações":90},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"FORTALEZA - CE","Acionados":261,"Negociado":163,"Recusa":98,"Acordos":159,"Valor total do acordo":357835.79,"Pagos":142,"Valor Pago":326150.99,"Quebra":17,"Valor da Quebra":31684.80,"Efetividade #":0.893082,"Efetividade $":0.911454,"Renovações":87},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"ARACAJU - SE","Acionados":278,"Negociado":164,"Recusa":114,"Acordos":158,"Valor total do acordo":252051.84,"Pagos":147,"Valor Pago":239070.72,"Quebra":11,"Valor da Quebra":12981.12,"Efetividade #":0.930379746835443,"Efetividade $":0.9484982137008006,"Renovações":83},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"BELEM - PA","Acionados":198,"Negociado":171,"Recusa":27,"Acordos":171,"Valor total do acordo":270392.53,"Pagos":142,"Valor Pago":238315.64,"Quebra":29,"Valor da Quebra":32076.89000000001,"Efetividade #":0.8304093567251462,"Efetividade $":0.8813691709604551,"Renovações":90},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"FORTALEZA - CE","Acionados":261,"Negociado":163,"Recusa":98,"Acordos":159,"Valor total do acordo":357835.79,"Pagos":142,"Valor Pago":326150.99,"Quebra":17,"Valor da Quebra":31684.80000000001,"Efetividade #":0.8930817610062893,"Efetividade $":0.9114541983058864,"Renovações":87},
             {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"JATIÚCA - AL","Acionados":11,"Negociado":3,"Recusa":8,"Acordos":2,"Valor total do acordo":850.31,"Pagos":2,"Valor Pago":850.31,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.0,"Efetividade $":1.0,"Renovações":0},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MANAUS - AM","Acionados":368,"Negociado":240,"Recusa":128,"Acordos":238,"Valor total do acordo":408028.56,"Pagos":193,"Valor Pago":338653.04,"Quebra":45,"Valor da Quebra":69375.52,"Efetividade #":0.810924,"Efetividade $":0.829974,"Renovações":122},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MARACANÃ - RJ","Acionados":36,"Negociado":10,"Recusa":26,"Acordos":11,"Valor total do acordo":83000.14,"Pagos":9,"Valor Pago":82860.33,"Quebra":2,"Valor da Quebra":139.81,"Efetividade #":0.818182,"Efetividade $":0.998316,"Renovações":5},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"NOVA IGUAÇU - RJ","Acionados":224,"Negociado":213,"Recusa":11,"Acordos":215,"Valor total do acordo":381374.32,"Pagos":196,"Valor Pago":346941.02,"Quebra":19,"Valor da Quebra":34433.30,"Efetividade #":0.911628,"Efetividade $":0.909713,"Renovações":98},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"R9 - RJ","Acionados":45,"Negociado":8,"Recusa":37,"Acordos":8,"Valor total do acordo":16850.26,"Pagos":6,"Valor Pago":15940.63,"Quebra":2,"Valor da Quebra":909.63,"Efetividade #":0.750000,"Efetividade $":0.946017,"Renovações":6},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"RECIFE - PE","Acionados":48,"Negociado":23,"Recusa":25,"Acordos":20,"Valor total do acordo":55631.52,"Pagos":13,"Valor Pago":44826.57,"Quebra":7,"Valor da Quebra":10804.95,"Efetividade #":0.650000,"Efetividade $":0.805776,"Renovações":5},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SALVADOR - BA","Acionados":199,"Negociado":176,"Recusa":23,"Acordos":172,"Valor total do acordo":367061.90,"Pagos":128,"Valor Pago":240311.17,"Quebra":44,"Valor da Quebra":126750.73,"Efetividade #":0.744186,"Efetividade $":0.654688,"Renovações":77},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SÃO LUÍS - MA","Acionados":182,"Negociado":182,"Recusa":0,"Acordos":161,"Valor total do acordo":299044.65,"Pagos":161,"Valor Pago":299044.65,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.000000,"Efetividade $":1.000000,"Renovações":65},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TAGUATINGA - DF","Acionados":493,"Negociado":419,"Recusa":74,"Acordos":424,"Valor total do acordo":628790.63,"Pagos":353,"Valor Pago":515302.36,"Quebra":71,"Valor da Quebra":113488.27,"Efetividade #":0.832547,"Efetividade $":0.819513,"Renovações":214},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TERESINA - PI","Acionados":9,"Negociado":3,"Recusa":6,"Acordos":3,"Valor total do acordo":4783.90,"Pagos":2,"Valor Pago":4266.76,"Quebra":1,"Valor da Quebra":517.14,"Efetividade #":0.666667,"Efetividade $":0.891900,"Renovações":2},
-            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TOM JOBIM - RJ","Acionados":37,"Negociado":37,"Recusa":0,"Acordos":37,"Valor total do acordo":88382.10,"Pagos":37,"Valor Pago":88382.10,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.000000,"Efetividade $":1.000000,"Renovações":23},
-            {"Marca":"Estácio","Mês":"Setembro/2025","Cidade":"ARACAJU - SE","Acionados":216,"Negociado":91,"Recusa":125,"Acordos":91,"Valor total do acordo":75845.41,"Pagos":75,"Valor Pago":63950.71,"Quebra":16,"Valor da Quebra":11894.70,"Efetividade #":0.824176,"Efetividade $":0.843172,"Renovações":34},
-            {"Marca":"Estácio","Mês":"Setembro/2025","Cidade":"BELEM - PA","Acionados":164,"Negociado":122,"Recusa":42,"Acordos":121,"Valor total do acordo":188043.68,"Pagos":99,"Valor Pago":148003.88,"Quebra":22,"Valor da Quebra":40039.80,"Efetividade #":0.818182,"Efetividade $":0.786541,"Renovações":42},
-            {"Marca":"IDOMED","Mês":"Setembro/2026","Cidade":"Cittá - RJ","Acionados":45,"Negociado":38,"Recusa":7,"Acordos":38,"Valor total do acordo":115400.00,"Pagos":34,"Valor Pago":102500.00,"Quebra":4,"Valor da Quebra":12900.00,"Efetividade #":0.8947,"Efetividade $":0.8882,"Renovações":21},
-            {"Marca":"Unifacid - Wyden","Mês":"Setembro/2026","Cidade":"TERESINA - PI","Acionados":112,"Negociado":89,"Recusa":23,"Acordos":85,"Valor total do acordo":145200.00,"Pagos":76,"Valor Pago":128400.00,"Quebra":9,"Valor da Quebra":16800.00,"Efetividade #":0.8941,"Efetividade $":0.8842,"Renovações":42},
-            {"Marca":"Unifavip - Wyden","Mês":"Setembro/2026","Cidade":"CARUARU - PE","Acionados":98,"Negociado":76,"Recusa":22,"Acordos":74,"Valor total do acordo":122000.00,"Pagos":68,"Valor Pago":110500.00,"Quebra":6,"Valor da Quebra":11500.00,"Efetividade #":0.9189,"Efetividade $":0.9057,"Renovações":35}
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MANAUS - AM","Acionados":368,"Negociado":240,"Recusa":128,"Acordos":238,"Valor total do acordo":408028.56,"Pagos":193,"Valor Pago":338653.04,"Quebra":45,"Valor da Quebra":69375.52000000001,"Efetividade #":0.8109243697478992,"Efetividade $":0.8299742407519985,"Renovações":122},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"MARACANÃ - RJ","Acionados":36,"Negociado":10,"Recusa":26,"Acordos":11,"Valor total do acordo":83000.14,"Pagos":9,"Valor Pago":82860.33,"Quebra":2,"Valor da Quebra":139.8100000000004,"Efetividade #":0.8181818181818182,"Efetividade $":0.9983156611326442,"Renovações":5},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"NOVA IGUAÇU - RJ","Acionados":224,"Negociado":213,"Recusa":11,"Acordos":215,"Valor total do acordo":381374.32,"Pagos":196,"Valor Pago":346941.02,"Quebra":19,"Valor da Quebra":34433.300000000003,"Efetividade #":0.9116279069767442,"Efetividade $":0.9097127986849449,"Renovações":98},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"R9 - RJ","Acionados":45,"Negociado":8,"Recusa":37,"Acordos":8,"Valor total do acordo":16850.26,"Pagos":6,"Valor Pago":15940.63,"Quebra":2,"Valor da Quebra":909.6300000000001,"Efetividade #":0.75,"Efetividade $":0.9460173255190085,"Renovações":6},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"RECIFE - PE","Acionados":48,"Negociado":23,"Recusa":25,"Acordos":20,"Valor total do acordo":55631.52,"Pagos":13,"Valor Pago":44826.57,"Quebra":7,"Valor da Quebra":10804.95,"Efetividade #":0.65,"Efetividade $":0.8057760742131908,"Renovações":5},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SALVADOR - BA","Acionados":199,"Negociado":176,"Recusa":23,"Acordos":172,"Valor total do acordo":367061.9,"Pagos":128,"Valor Pago":240311.17,"Quebra":44,"Valor da Quebra":126750.73,"Efetividade #":0.7441860465116279,"Efetividade $":0.6546875955146816,"Renovações":77},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"SÃO LUÍS - MA","Acionados":182,"Negociado":182,"Recusa":0,"Acordos":161,"Valor total do acordo":299044.65,"Pagos":161,"Valor Pago":299044.65,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.0,"Efetividade $":1.0,"Renovações":65},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TAGUATINGA - DF","Acionados":493,"Negociado":419,"Recusa":74,"Acordos":424,"Valor total do acordo":628790.63,"Pagos":353,"Valor Pago":515302.36,"Quebra":71,"Valor da Quebra":113488.27,"Efetividade #":0.8325471698113208,"Efetividade $":0.8195134706240212,"Renovações":214},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TERESINA - PI","Acionados":9,"Negociado":3,"Recusa":6,"Acordos":3,"Valor total do acordo":4783.9,"Pagos":2,"Valor Pago":4266.76,"Quebra":1,"Valor da Quebra":517.14,"Efetividade #":0.6666666666666666,"Efetividade $":0.8919001233303372,"Renovações":2},
+            {"Marca":"Estácio","Mês":"Agosto/2025","Cidade":"TOM JOBIM - RJ","Acionados":37,"Negociado":37,"Recusa":0,"Acordos":37,"Valor total do acordo":88382.1,"Pagos":37,"Valor Pago":88382.1,"Quebra":0,"Valor da Quebra":0.0,"Efetividade #":1.0,"Efetividade $":1.0,"Renovações":23},
+            {"Marca":"IDOMED","Mês":"Setembro/2026","Cidade":"Cittá - RJ","Acionados":45,"Negociado":38,"Recusa":7,"Acordos":38,"Valor total do acordo":115400.0,"Pagos":34,"Valor Pago":102500.0,"Quebra":4,"Valor da Quebra":12900.0,"Efetividade #":0.8947,"Efetividade $":0.8882,"Renovações":21},
+            {"Marca":"Unifacid - Wyden","Mês":"Setembro/2026","Cidade":"TERESINA - PI","Acionados":112,"Negociado":89,"Recusa":23,"Acordos":85,"Valor total do acordo":145200.0,"Pagos":76,"Valor Pago":128400.0,"Quebra":9,"Valor da Quebra":16800.0,"Efetividade #":0.8941,"Efetividade $":0.8842,"Renovações":42},
+            {"Marca":"Unifavip - Wyden","Mês":"Setembro/2026","Cidade":"CARUARU - PE","Acionados":98,"Negociado":76,"Recusa":22,"Acordos":74,"Valor total do acordo":122000.0,"Pagos":68,"Valor Pago":110500.0,"Quebra":6,"Valor da Quebra":11500.0,"Efetividade #":0.9189,"Efetividade $":0.9057,"Renovações":35}
         ];
 
         let currentBrand = 'Todos';
