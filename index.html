@@ -29,12 +29,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Correção para os números dos cards principais não vazarem */
+        /* Correção para os números dos cards principais e do modo apresentação não vazarem */
         .card-value, .metric-value {
-            font-size: 1.35rem !important; /* Ajustado para caber perfeitamente */
+            font-size: 1.35rem !important;
             font-weight: 700;
-            white-space: nowrap; /* Impede que quebre a linha de forma incorreta */
+            white-space: nowrap;
             letter-spacing: -0.5px;
+        }
+
+        /* Correção específica para os valores grandes do Modo Apresentação */
+        .pres-card-value {
+            font-size: clamp(1.5rem, 2.2vw, 2.3rem) !important;
+            font-weight: 800;
+            white-space: nowrap;
+            letter-spacing: -1px;
         }
 
         body {
@@ -96,7 +104,6 @@
 
     <!-- Main Filters Bar -->
     <div class="bg-dark-800/60 border-b border-dark-700 px-6 py-4 grid grid-cols-1 md:grid-cols-4 gap-4 backdrop-blur-md">
-        <!-- Marca / Grupo -->
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Marca / Grupo:</label>
             <div class="flex flex-wrap gap-1.5 bg-dark-900 p-1 rounded-xl border border-dark-700">
@@ -107,7 +114,6 @@
             </div>
         </div>
 
-        <!-- Mês / Ano -->
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Mês / Ano:</label>
             <select id="selectMes" onchange="applyFilters()" class="w-full bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
@@ -115,7 +121,6 @@
             </select>
         </div>
 
-        <!-- UF (Estado) -->
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">UF (Estado):</label>
             <select id="selectUF" onchange="applyFilters()" class="w-full bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
@@ -123,7 +128,6 @@
             </select>
         </div>
 
-        <!-- Unidade / Campus -->
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Unidade / Campus:</label>
             <select id="selectUnidade" onchange="applyFilters()" class="w-full bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
@@ -147,11 +151,7 @@
         <!-- Top KPI Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             
-            <!-- Card 1: Valor Pago Recorrente -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-                <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fa-solid fa-wallet text-8xl text-indigo-400"></i>
-                </div>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-1">Valor Pago Recorrente</span>
                 <div id="kpiValorPago" class="card-value text-emerald-400 mb-2">R$ 0,00</div>
                 <div class="flex items-center justify-between text-xs pt-2 border-t border-dark-700/60">
@@ -160,11 +160,7 @@
                 </div>
             </div>
 
-            <!-- Card 2: Total em Acordos -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-                <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fa-solid fa-handshake text-8xl text-indigo-400"></i>
-                </div>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-1">Total em Acordos</span>
                 <div id="kpiValorAcordo" class="card-value text-indigo-400 mb-2">R$ 0,00</div>
                 <div class="flex items-center justify-between text-xs pt-2 border-t border-dark-700/60">
@@ -173,11 +169,7 @@
                 </div>
             </div>
 
-            <!-- Card 3: Quebra de Acordos -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-                <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fa-solid fa-triangle-exclamation text-8xl text-red-400"></i>
-                </div>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-1">Quebra de Acordos</span>
                 <div id="kpiValorQuebra" class="card-value text-red-400 mb-2">R$ 0,00</div>
                 <div class="flex items-center justify-between text-xs pt-2 border-t border-dark-700/60">
@@ -186,11 +178,7 @@
                 </div>
             </div>
 
-            <!-- Card 4: Renovações Acadêmicas -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-                <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fa-solid fa-graduation-cap text-8xl text-amber-400"></i>
-                </div>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-1">Renovações Acadêmicas</span>
                 <div id="kpiRenovacoes" class="card-value text-amber-400 mb-2">0</div>
                 <div class="flex items-center justify-between text-xs pt-2 border-t border-dark-700/60">
@@ -199,11 +187,7 @@
                 </div>
             </div>
 
-            <!-- Card 5: Base Acionada -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-                <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <i class="fa-solid fa-bullhorn text-8xl text-cyan-400"></i>
-                </div>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-1">Base Acionada</span>
                 <div id="kpiAcionados" class="card-value text-cyan-400 mb-2">0</div>
                 <div class="flex items-center justify-between text-xs pt-2 border-t border-dark-700/60">
@@ -216,8 +200,6 @@
 
         <!-- Charts Section Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Chart 1: Evolution (Span 2) -->
             <div class="lg:col-span-2 bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-lg flex flex-col">
                 <div class="flex items-center justify-between mb-4">
                     <div>
@@ -233,7 +215,6 @@
                 </div>
             </div>
 
-            <!-- Chart 2: Distribution Doughnut -->
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-lg flex flex-col">
                 <div class="flex items-center justify-between mb-4">
                     <div>
@@ -248,7 +229,6 @@
                     <canvas id="chartDistribuicao"></canvas>
                 </div>
             </div>
-
         </div>
 
         <!-- Additional Chart Row -->
@@ -307,16 +287,11 @@
                             <th onclick="sortTable(13)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">Renovações <i class="fa-solid fa-sort text-[10px] ml-1"></i></th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-dark-700/60">
-                        <!-- Populated dynamically via JavaScript -->
-                    </tbody>
-                    <tfoot id="tableFoot" class="bg-dark-900 font-bold text-white border-t-2 border-dark-600">
-                        <!-- Populated dynamically via JavaScript -->
-                    </tfoot>
+                    <tbody id="tableBody" class="divide-y divide-dark-700/60"></tbody>
+                    <tfoot id="tableFoot" class="bg-dark-900 font-bold text-white border-t-2 border-dark-600"></tfoot>
                 </table>
             </div>
         </div>
-
     </main>
 
     <!-- Footer -->
@@ -339,14 +314,12 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <!-- Slide Tab Controls -->
                 <div class="hidden md:flex items-center gap-1 bg-dark-900 p-1 rounded-xl border border-dark-700">
                     <button id="slideBtn0" onclick="changeSlide(0)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white">1. Visão Geral</button>
                     <button id="slideBtn1" onclick="changeSlide(1)" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">2. Gráficos & Tendências</button>
                     <button id="slideBtn2" onclick="changeSlide(2)" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">3. Ranking de Unidades</button>
                 </div>
 
-                <!-- Auto-play controls -->
                 <div class="flex items-center gap-2 bg-dark-900 px-3 py-1.5 rounded-xl border border-dark-700">
                     <label class="text-xs text-gray-400 flex items-center gap-1.5">
                         <i class="fa-solid fa-clock text-indigo-400"></i> Velocidade:
@@ -375,7 +348,7 @@
         <!-- Presentation Slides Body Container -->
         <div class="flex-1 p-8 overflow-y-auto relative flex items-center justify-center">
             
-            <!-- Slide 1: Visão Geral de KPIs -->
+            <!-- Slide 1: Visão Geral de KPIs (Com classe pres-card-value aplicada) -->
             <div class="presentation-slide active w-full max-w-6xl flex-col justify-center space-y-8">
                 <div class="text-center space-y-2">
                     <span class="px-3 py-1 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full text-xs font-bold uppercase tracking-wider">Panorama Executivo Consolidado</span>
@@ -386,22 +359,22 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                         <span class="text-xs font-semibold text-gray-400 uppercase">Valor Pago Recorrente</span>
-                        <div id="presValPago" class="text-3xl font-black text-emerald-400 my-4">R$ 0,00</div>
+                        <div id="presValPago" class="pres-card-value text-emerald-400 my-4">R$ 0,00</div>
                         <span id="presValPagoSub" class="text-xs text-gray-400">Efetividade Financeira</span>
                     </div>
                     <div class="bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                         <span class="text-xs font-semibold text-gray-400 uppercase">Total em Acordos</span>
-                        <div id="presValAcordo" class="text-3xl font-black text-indigo-400 my-4">R$ 0,00</div>
+                        <div id="presValAcordo" class="pres-card-value text-indigo-400 my-4">R$ 0,00</div>
                         <span id="presQtdAcordos" class="text-xs text-gray-400">0 Acordos</span>
                     </div>
                     <div class="bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                         <span class="text-xs font-semibold text-gray-400 uppercase">Quebra de Acordos</span>
-                        <div id="presValQuebra" class="text-3xl font-black text-red-400 my-4">R$ 0,00</div>
+                        <div id="presValQuebra" class="pres-card-value text-red-400 my-4">R$ 0,00</div>
                         <span id="presTaxaQuebra" class="text-xs text-gray-400">Taxa Inadimplência</span>
                     </div>
                     <div class="bg-dark-800 border border-dark-700 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                         <span class="text-xs font-semibold text-gray-400 uppercase">Renovações Acadêmicas</span>
-                        <div id="presRenovacoes" class="text-3xl font-black text-amber-400 my-4">0</div>
+                        <div id="presRenovacoes" class="pres-card-value text-amber-400 my-4">0</div>
                         <span class="text-xs text-gray-400">Alunos Retidos com Sucesso</span>
                     </div>
                 </div>
@@ -450,9 +423,7 @@
                                 <th class="p-3 text-center">Efetividade R$</th>
                             </tr>
                         </thead>
-                        <tbody id="presTableBody" class="divide-y divide-dark-700">
-                            <!-- Populated dynamically -->
-                        </tbody>
+                        <tbody id="presTableBody" class="divide-y divide-dark-700"></tbody>
                     </table>
                 </div>
             </div>
@@ -472,7 +443,6 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // BASE DE DADOS COMPLETA CONSOLIDADA (ESTÁCIO, WYDEN E IDOMED)
         const mockDataFallback = [
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.93038, "efetividade_val": 0.948498, "renovacoes": 83},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.830409, "efetividade_val": 0.881369, "renovacoes": 90},
@@ -486,7 +456,6 @@
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 199, "negociado": 176, "recusa": 23, "acordos": 172, "val_acordo": 367061.9, "pagos": 128, "val_pago": 240311.17, "quebra": 44, "val_quebra": 126750.73, "efetividade_qtd": 0.744186, "efetividade_val": 0.654688, "renovacoes": 77},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SANTO ANDRE - SP", "uf": "SP", "acionados": 247, "negociado": 166, "recusa": 81, "acordos": 163, "val_acordo": 242036.03, "pagos": 140, "val_pago": 211830.08, "quebra": 23, "val_quebra": 30205.95, "efetividade_qtd": 0.858896, "efetividade_val": 0.875201, "renovacoes": 88},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 493, "negociado": 419, "recusa": 74, "acordos": 424, "val_acordo": 628790.63, "pagos": 353, "val_pago": 515302.36, "quebra": 71, "val_quebra": 113488.27, "efetividade_qtd": 0.832547, "efetividade_val": 0.819513, "renovacoes": 214},
-            // WYDEN DATA
             {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 68, "negociado": 37, "recusa": 31, "acordos": 36, "val_acordo": 83219.5, "pagos": 25, "val_pago": 43991.93, "quebra": 11, "val_quebra": 39227.57, "efetividade_qtd": 0.694444, "efetividade_val": 0.528625, "renovacoes": 0},
             {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 62, "negociado": 45, "recusa": 17, "acordos": 43, "val_acordo": 62032.8, "pagos": 29, "val_pago": 36305.37, "quebra": 14, "val_quebra": 25727.43, "efetividade_qtd": 0.674419, "efetividade_val": 0.585261, "renovacoes": 2},
             {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 102, "negociado": 82, "recusa": 20, "acordos": 83, "val_acordo": 153358.55, "pagos": 63, "val_pago": 102695.27, "quebra": 20, "val_quebra": 50663.28, "efetividade_qtd": 0.759036, "efetividade_val": 0.669642, "renovacoes": 29},
@@ -497,7 +466,6 @@
             {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 202, "negociado": 186, "recusa": 16, "acordos": 169, "val_acordo": 231312.99, "pagos": 140, "val_pago": 197564.59, "quebra": 29, "val_quebra": 33748.4, "efetividade_qtd": 0.828402, "efetividade_val": 0.8541, "renovacoes": 78},
             {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 236, "negociado": 206, "recusa": 30, "acordos": 201, "val_acordo": 344870.49, "pagos": 169, "val_pago": 303777.47, "quebra": 32, "val_quebra": 41093.02, "efetividade_qtd": 0.840796, "efetividade_val": 0.880845, "renovacoes": 70},
             {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 199, "negociado": 180, "recusa": 9, "acordos": 177, "val_acordo": 315761.9, "pagos": 139, "val_pago": 239855.59, "quebra": 38, "val_quebra": 75906.31, "efetividade_qtd": 0.785311, "efetividade_val": 0.759609, "renovacoes": 52},
-            // IDOMED DATA REAL DA PLANILHA
             {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Junho/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 9, "negociado": 8, "recusa": 1, "acordos": 6, "val_acordo": 288106.98, "pagos": 5, "val_pago": 103292.68, "quebra": 1, "val_quebra": 184814.3, "efetividade_qtd": 0.833333, "efetividade_val": 0.358522, "renovacoes": 3},
             {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Julho/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 42, "negociado": 37, "recusa": 5, "acordos": 37, "val_acordo": 1453754.03, "pagos": 33, "val_pago": 1170429.36, "quebra": 4, "val_quebra": 283324.67, "efetividade_qtd": 0.891892, "efetividade_val": 0.805108, "renovacoes": 11},
             {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Agosto/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 54, "negociado": 52, "recusa": 2, "acordos": 51, "val_acordo": 1968928.55, "pagos": 46, "val_pago": 1657824.61, "quebra": 5, "val_quebra": 311103.94, "efetividade_qtd": 0.901961, "efetividade_val": 0.841993, "renovacoes": 18},
@@ -507,7 +475,7 @@
         let rawData = [];
         let filteredData = [];
         let selectedBrand = 'Todos';
-        let sortColumn = 8; // Default sort by Val Pago
+        let sortColumn = 8;
         let sortAsc = false;
         let chartEvolucao, chartDistribuicao, chartEfetividade;
         let chartPresEvolucao, chartPresEfetividade;
@@ -515,31 +483,24 @@
         let autoTimerInterval = null;
         let isAutoTimerRunning = false;
 
-        // Initialize App
         window.addEventListener('DOMContentLoaded', async () => {
             await loadData();
             populateFilterDropdowns();
             applyFilters();
         });
 
-        // 1. Load JSON Data with Fetch & Fallback
         async function loadData() {
             try {
                 const res = await fetch('data_array.json');
                 if (!res.ok) throw new Error('File fetch failed');
                 rawData = await res.json();
-                console.log('Dados carregados do arquivo data_array.json');
             } catch (e) {
-                console.warn('Carregando dados embutidos de fallback...');
                 rawData = mockDataFallback;
             }
         }
 
-        // 2. FILTRAGEM RIGOROSA DE MARCA E UNIDADE
         function selectBrand(brand) {
             selectedBrand = brand;
-
-            // Update button styles
             document.querySelectorAll('.brand-btn').forEach(btn => {
                 btn.className = "brand-btn px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all";
             });
@@ -554,20 +515,16 @@
                 document.getElementById('btnBrandIdomed').className = "brand-btn px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-emerald-600 text-white shadow-md";
             }
 
-            // Repopulate dependent drop-downs strictly
             populateUnidadesDropdown();
             applyFilters();
         }
 
-        // Populate Month, UF and Campus Dropdowns
         function populateFilterDropdowns() {
-            // Months
             const meses = [...new Set(rawData.map(item => item.mes))];
             const selectMes = document.getElementById('selectMes');
             selectMes.innerHTML = '<option value="Todos">Todos os Meses</option>';
             meses.forEach(m => selectMes.innerHTML += `<option value="${m}">${m}</option>`);
 
-            // UFs
             const ufs = [...new Set(rawData.map(item => item.uf))].sort();
             const selectUF = document.getElementById('selectUF');
             selectUF.innerHTML = '<option value="Todos">Todas as UFs</option>';
@@ -576,13 +533,11 @@
             populateUnidadesDropdown();
         }
 
-        // RIGOROUS CAMPUS DROPDOWN FILTERING
         function populateUnidadesDropdown() {
             const selectUnidade = document.getElementById('selectUnidade');
             const currentSelection = selectUnidade.value;
             selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
 
-            // Filter available campuses based strictly on Brand
             let availableData = rawData;
             if (selectedBrand === 'Estácio') {
                 availableData = rawData.filter(d => d.marca_grupo === 'Estácio');
@@ -592,7 +547,6 @@
                 availableData = rawData.filter(d => d.marca_grupo === 'IDOMED');
             }
 
-            // Create unique label combining marca_orig and unidade
             const uniqueCampuses = [];
             availableData.forEach(item => {
                 const campusLabel = `${item.marca_orig} - ${item.unidade}`;
@@ -605,7 +559,6 @@
                 selectUnidade.innerHTML += `<option value="${campus}">${campus}</option>`;
             });
 
-            // Restore selection if still valid
             if (uniqueCampuses.includes(currentSelection)) {
                 selectUnidade.value = currentSelection;
             } else {
@@ -613,20 +566,15 @@
             }
         }
 
-        // Apply All Dynamic Filters
         function applyFilters() {
             const mes = document.getElementById('selectMes').value;
             const uf = document.getElementById('selectUF').value;
             const unidadeLabel = document.getElementById('selectUnidade').value;
 
             filteredData = rawData.filter(item => {
-                // Brand Filter
                 if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
-                // Month Filter
                 if (mes !== 'Todos' && item.mes !== mes) return false;
-                // UF Filter
                 if (uf !== 'Todos' && item.uf !== uf) return false;
-                // Campus Filter
                 if (unidadeLabel !== 'Todos') {
                     const label = `${item.marca_orig} - ${item.unidade}`;
                     if (label !== unidadeLabel) return false;
@@ -634,7 +582,6 @@
                 return true;
             });
 
-            // Update UI Chips
             document.getElementById('chipBrand').textContent = `Marca: ${selectedBrand}`;
             document.getElementById('chipMes').textContent = `Mês: ${mes}`;
             document.getElementById('chipUF').textContent = `UF: ${uf}`;
@@ -654,7 +601,6 @@
             applyFilters();
         }
 
-        // Formatters
         function formatBRL(value) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
         }
@@ -663,7 +609,6 @@
             return new Intl.NumberFormat('pt-BR').format(value || 0);
         }
 
-        // Calculate and Update Dashboard KPIs
         function updateKPIs() {
             const totals = filteredData.reduce((acc, curr) => {
                 acc.acionados += curr.acionados || 0;
@@ -701,9 +646,7 @@
             document.getElementById('kpiTaxaConversao').textContent = `${taxaConversao.toFixed(1)}% Conv.`;
         }
 
-        // Render Interactive Chart.js Charts
         function renderCharts() {
-            // Group Data by Month
             const monthMap = {};
             filteredData.forEach(d => {
                 if (!monthMap[d.mes]) {
@@ -719,7 +662,6 @@
             const valPagoArr = monthLabels.map(m => monthMap[m].val_pago);
             const valQuebraArr = monthLabels.map(m => monthMap[m].val_quebra);
 
-            // Chart 1: Evolution
             if (chartEvolucao) chartEvolucao.destroy();
             const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
             chartEvolucao = new Chart(ctxEvolucao, {
@@ -727,30 +669,9 @@
                 data: {
                     labels: monthLabels,
                     datasets: [
-                        {
-                            label: 'Valor Acordo (R$)',
-                            data: valAcordoArr,
-                            backgroundColor: 'rgba(99, 102, 241, 0.4)',
-                            borderColor: '#6366f1',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Valor Pago (R$)',
-                            data: valPagoArr,
-                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                            borderColor: '#10b981',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Valor Quebra (R$)',
-                            data: valQuebraArr,
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-                            borderColor: '#ef4444',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        }
+                        { label: 'Valor Acordo (R$)', data: valAcordoArr, backgroundColor: 'rgba(99, 102, 241, 0.4)', borderColor: '#6366f1', borderWidth: 1.5, borderRadius: 6 },
+                        { label: 'Valor Pago (R$)', data: valPagoArr, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderColor: '#10b981', borderWidth: 1.5, borderRadius: 6 },
+                        { label: 'Valor Quebra (R$)', data: valQuebraArr, backgroundColor: 'rgba(239, 68, 68, 0.7)', borderColor: '#ef4444', borderWidth: 1.5, borderRadius: 6 }
                     ]
                 },
                 options: {
@@ -758,27 +679,15 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#9ca3af', font: { size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
+                        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}` } }
                     },
                     scales: {
                         x: { ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { display: false } },
-                        y: { 
-                            ticks: { 
-                                color: '#9ca3af', 
-                                font: { size: 10 },
-                                callback: value => 'R$ ' + (value/1000).toFixed(0) + 'k'
-                            }, 
-                            grid: { color: '#1f2937' } 
-                        }
+                        y: { ticks: { color: '#9ca3af', font: { size: 10 }, callback: value => 'R$ ' + (value/1000).toFixed(0) + 'k' }, grid: { color: '#1f2937' } }
                     }
                 }
             });
 
-            // Group Data by Campus
             const campusMap = {};
             filteredData.forEach(d => {
                 const key = `${d.marca_orig} - ${d.unidade}`;
@@ -790,7 +699,6 @@
             const sortedCampuses = Object.keys(campusMap).sort((a,b) => campusMap[b].val_pago - campusMap[a].val_pago).slice(0, 8);
             const campusValPago = sortedCampuses.map(c => campusMap[c].val_pago);
 
-            // Chart 2: Distribution Doughnut
             if (chartDistribuicao) chartDistribuicao.destroy();
             const ctxDist = document.getElementById('chartDistribuicao').getContext('2d');
             chartDistribuicao = new Chart(ctxDist, {
@@ -799,10 +707,7 @@
                     labels: sortedCampuses.map(c => c.split(' - ')[1] || c),
                     datasets: [{
                         data: campusValPago,
-                        backgroundColor: [
-                            '#4f46e5', '#10b981', '#f59e0b', '#ef4444', 
-                            '#06b6d4', '#8b5cf6', '#ec4899', '#64748b'
-                        ],
+                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#ec4899', '#64748b'],
                         borderWidth: 2,
                         borderColor: '#111827'
                     }]
@@ -810,13 +715,10 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 10 } } }
-                    }
+                    plugins: { legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 10 } } } }
                 }
             });
 
-            // Chart 3: Efetividade por Campus Bar Chart
             const efCampuses = Object.keys(campusMap).slice(0, 12);
             const efValues = efCampuses.map(c => {
                 const ac = campusMap[c].val_acordo;
@@ -829,19 +731,12 @@
                 type: 'bar',
                 data: {
                     labels: efCampuses.map(c => c.replace(' - ', ' (').concat(')')),
-                    datasets: [{
-                        label: 'Efetividade Financeira (%)',
-                        data: efValues,
-                        backgroundColor: '#f59e0b',
-                        borderRadius: 6
-                    }]
+                    datasets: [{ label: 'Efetividade Financeira (%)', data: efValues, backgroundColor: '#f59e0b', borderRadius: 6 }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         x: { ticks: { color: '#9ca3af', font: { size: 9 } }, grid: { display: false } },
                         y: { max: 100, ticks: { color: '#9ca3af', callback: v => v + '%' }, grid: { color: '#1f2937' } }
@@ -850,30 +745,12 @@
             });
         }
 
-        // 4. RELAÇÃO DE UNIDADES E INDICADORES AO FINAL DO PAINEL
         function renderTable() {
-            // Group filtered data by Campus
             const grouped = {};
-
             filteredData.forEach(item => {
                 const key = `${item.marca_orig}||${item.unidade}||${item.marca_grupo}`;
                 if (!grouped[key]) {
-                    grouped[key] = {
-                        marca_orig: item.marca_orig,
-                        unidade: item.unidade,
-                        marca_grupo: item.marca_grupo,
-                        uf: item.uf,
-                        acionados: 0,
-                        negociado: 0,
-                        recusa: 0,
-                        acordos: 0,
-                        val_acordo: 0,
-                        pagos: 0,
-                        val_pago: 0,
-                        quebra: 0,
-                        val_quebra: 0,
-                        renovacoes: 0
-                    };
+                    grouped[key] = { marca_orig: item.marca_orig, unidade: item.unidade, marca_grupo: item.marca_grupo, uf: item.uf, acionados: 0, negociado: 0, recusa: 0, acordos: 0, val_acordo: 0, pagos: 0, val_pago: 0, quebra: 0, val_quebra: 0, renovacoes: 0 };
                 }
                 grouped[key].acionados += item.acionados || 0;
                 grouped[key].negociado += item.negociado || 0;
@@ -893,7 +770,6 @@
                 return { ...row, efQtd, efVal };
             });
 
-            // Column Sorting
             tableArray.sort((a, b) => {
                 let valA, valB;
                 switch (sortColumn) {
@@ -936,21 +812,13 @@
                 totRenovacoes += row.renovacoes;
 
                 let badgeClass = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-                if (row.marca_grupo === 'Wyden') {
-                    badgeClass = 'bg-red-500/20 text-red-400 border-red-500/30';
-                } else if (row.marca_grupo === 'IDOMED') {
-                    badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-                }
+                if (row.marca_grupo === 'Wyden') badgeClass = 'bg-red-500/20 text-red-400 border-red-500/30';
+                else if (row.marca_grupo === 'IDOMED') badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-dark-700/50 transition-colors">
-                        <td class="p-3.5 font-medium text-white flex items-center gap-2">
-                            <span>${row.unidade}</span>
-                            <span class="text-[10px] text-gray-500">(${row.uf})</span>
-                        </td>
-                        <td class="p-3.5">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeClass}">${row.marca_orig}</span>
-                        </td>
+                        <td class="p-3.5 font-medium text-white flex items-center gap-2"><span>${row.unidade}</span><span class="text-[10px] text-gray-500">(${row.uf})</span></td>
+                        <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeClass}">${row.marca_orig}</span></td>
                         <td class="p-3.5 text-right font-mono">${formatInt(row.acionados)}</td>
                         <td class="p-3.5 text-right font-mono">${formatInt(row.negociado)}</td>
                         <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.recusa)}</td>
@@ -967,7 +835,6 @@
                 `;
             });
 
-            // Summary Footer
             const totEfQtd = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
             const totEfVal = totValAcordo > 0 ? (totValPago / totValAcordo) * 100 : 0;
 
@@ -993,7 +860,6 @@
             renderPresentationTable(tableArray);
         }
 
-        // Search Filter for Table
         function filterTable() {
             const input = document.getElementById('tableSearch').value.toLowerCase();
             const rows = document.querySelectorAll('#tableBody tr');
@@ -1004,16 +870,11 @@
         }
 
         function sortTable(colIndex) {
-            if (sortColumn === colIndex) {
-                sortAsc = !sortAsc;
-            } else {
-                sortColumn = colIndex;
-                sortAsc = true;
-            }
+            if (sortColumn === colIndex) sortAsc = !sortAsc;
+            else { sortColumn = colIndex; sortAsc = true; }
             renderTable();
         }
 
-        // 3. MODO APRESENTAÇÃO NO TOPO
         function togglePresentationMode() {
             const overlay = document.getElementById('presentationOverlay');
             const isHidden = overlay.classList.contains('hidden');
@@ -1022,18 +883,14 @@
                 overlay.classList.remove('hidden');
                 overlay.classList.add('flex');
                 document.body.classList.add('presentation-mode');
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
                 changeSlide(0);
             } else {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
                 document.body.classList.remove('presentation-mode');
                 stopAutoTimer();
-                if (document.exitFullscreen) {
-                    document.exitFullscreen().catch(() => {});
-                }
+                if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
             }
         }
 
@@ -1043,38 +900,24 @@
                 slide.classList.toggle('active', i === index);
             });
 
-            // Update Titles
             const titles = ["Visão Geral de Performance", "Desempenho Financeiro e Tendências", "Ranking de Unidades e Indicadores"];
             document.getElementById('presentationSlideTitle').textContent = titles[index] || "Modo Apresentação";
 
-            // Update button tab styles
             [0, 1, 2].forEach(i => {
                 const btn = document.getElementById(`slideBtn${i}`);
-                if (i === index) {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white";
-                } else {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
-                }
+                if (i === index) btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white";
+                else btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
             });
 
             if (index === 1) renderPresentationCharts();
         }
 
-        function nextSlide() {
-            changeSlide((currentSlide + 1) % 3);
-        }
+        function nextSlide() { changeSlide((currentSlide + 1) % 3); }
+        function prevSlide() { changeSlide((currentSlide - 1 + 3) % 3); }
 
-        function prevSlide() {
-            changeSlide((currentSlide - 1 + 3) % 3);
-        }
-
-        // Auto Timer Controls
         function toggleAutoTimer() {
-            if (isAutoTimerRunning) {
-                stopAutoTimer();
-            } else {
-                startAutoTimer();
-            }
+            if (isAutoTimerRunning) stopAutoTimer();
+            else startAutoTimer();
         }
 
         function startAutoTimer() {
@@ -1082,9 +925,7 @@
             const speed = parseInt(document.getElementById('selectTimerSpeed').value) || 10000;
             document.getElementById('iconAutoTimer').className = "fa-solid fa-pause text-amber-400";
             document.getElementById('labelAutoTimer').textContent = "Pausar";
-            autoTimerInterval = setInterval(() => {
-                nextSlide();
-            }, speed);
+            autoTimerInterval = setInterval(() => nextSlide(), speed);
         }
 
         function stopAutoTimer() {
@@ -1095,10 +936,7 @@
         }
 
         function updateTimerSpeed() {
-            if (isAutoTimerRunning) {
-                stopAutoTimer();
-                startAutoTimer();
-            }
+            if (isAutoTimerRunning) { stopAutoTimer(); startAutoTimer(); }
         }
 
         function updatePresentationValues() {
@@ -1123,10 +961,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#ffffff', font: { size: 12 } } } },
-                    scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
-                    }
+                    scales: { x: { ticks: { color: '#9ca3af' } }, y: { ticks: { color: '#9ca3af' } } }
                 }
             });
 
@@ -1138,10 +973,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
-                    }
+                    scales: { x: { ticks: { color: '#9ca3af' } }, y: { ticks: { color: '#9ca3af' } } }
                 }
             });
         }
@@ -1164,7 +996,6 @@
             });
         }
 
-        // Keyboard Navigation Listener
         window.addEventListener('keydown', (e) => {
             const overlay = document.getElementById('presentationOverlay');
             if (!overlay.classList.contains('hidden')) {
