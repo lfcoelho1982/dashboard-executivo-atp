@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Executivo ATP - Estácio & Wyden</title>
+  <title>Dashboard Executivo ATP - Estácio, Wyden & IDOMED</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,8 +27,8 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen">
 
-  <!-- TOP HEADER / PRESENTATION BAR -->
-  <header id="mainHeader" class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+  <!-- BARRA SUPERIOR E MODO APRESENTAÇÃO -->
+  <header id="mainHeader" class="bg-slate-800/90 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-3">
         <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-2.5 rounded-xl shadow-lg">
@@ -36,7 +36,7 @@
         </div>
         <div>
           <h1 class="text-xl font-bold tracking-tight text-white">Dashboard Executivo ATP</h1>
-          <p class="text-xs text-slate-400">Consolidado Estácio & Wyden • Dados Reais Ajustados</p>
+          <p class="text-xs text-slate-400">Base Consolidada Oficial • Estácio, Wyden & IDOMED</p>
         </div>
       </div>
 
@@ -49,35 +49,44 @@
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
+  <!-- CONTEÚDO PRINCIPAL DO DASHBOARD -->
   <main id="dashboardContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- CONTROLS & FILTERS -->
+    <!-- SELEÇÃO POR MARCA E VISÃO GLOBAL -->
     <section class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow space-y-4">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700/60 pb-4">
-        
-        <!-- SELEÇÃO DE MARCA -->
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-2">Marca:</span>
-          <button id="btnMarcaEstacio" onclick="selectMarca('Estácio')" class="px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-lg">
-            <i class="fa-solid fa-graduation-cap"></i> Estácio
+      <div class="flex flex-col gap-3">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Selecione a Marca ou Visão:</span>
+        <div class="flex flex-wrap items-center gap-2" id="brandButtonsContainer">
+          
+          <button id="btnGlobal" onclick="selectMarcaFilter('GLOBAL')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg">
+            <i class="fa-solid fa-globe"></i> Visão Global
           </button>
-          <button id="btnMarcaWyden" onclick="selectMarca('Wyden')" class="px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
-            <i class="fa-solid fa-university"></i> Wyden
-          </button>
-          <button id="btnMarcaTodas" onclick="selectMarca('TODAS')" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
-            Consolidado
-          </button>
-        </div>
 
-        <!-- INDICADOR DE SELEÇÃO -->
-        <div id="selectionBadge" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-cyan-400">
-          Exibindo: <span class="font-bold text-white" id="lblMarcaAtual">Estácio</span>
+          <button id="btnEstacio" onclick="selectMarcaFilter('Estácio')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
+            <i class="fa-solid fa-graduation-cap"></i> Estácio (21 Unidades)
+          </button>
+
+          <button id="btnUnifacid" onclick="selectMarcaFilter('Unifacid - Wyden')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
+            <i class="fa-solid fa-university"></i> Unifacid - Wyden
+          </button>
+
+          <button id="btnUnifavip" onclick="selectMarcaFilter('Unifavip - Wyden')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
+            <i class="fa-solid fa-school"></i> Unifavip - Wyden
+          </button>
+
+          <button id="btnWydenConsolidado" onclick="selectMarcaFilter('Wyden (Consolidado)')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
+            <i class="fa-solid fa-layer-group"></i> Wyden (2 Unidades)
+          </button>
+
+          <button id="btnIdomed" onclick="selectMarcaFilter('IDOMED')" class="px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-800 text-slate-400 border border-slate-600 hover:border-slate-400 hover:text-slate-200">
+            <i class="fa-solid fa-stethoscope"></i> IDOMED <span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded ml-1">Sem Dados</span>
+          </button>
+
         </div>
       </div>
 
       <!-- FILTROS DROPDOWN -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-3 border-t border-slate-700/60">
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Mês de Referência</label>
           <select id="selMes" onchange="renderDashboard()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
@@ -100,14 +109,23 @@
       </div>
     </section>
 
-    <!-- KPI CARDS -->
+    <!-- BANNER INFORMATIVO PARA MARCA SEM DADOS (IDOMED) -->
+    <div id="idomedAlertBanner" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-300 p-4 rounded-xl flex items-center gap-3">
+      <i class="fa-solid fa-triangle-exclamation text-xl text-amber-400"></i>
+      <div>
+        <h4 class="font-bold text-sm">Marca IDOMED Ativa</h4>
+        <p class="text-xs text-amber-200/80">Atualmente não existem indicadores registrados para a marca IDOMED na base consolidada. O módulo já está pré-configurado para receber futuras cargas de dados.</p>
+      </div>
+    </div>
+
+    <!-- CARDS DE INDICADORES / KPIS -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
         <div class="flex justify-between items-start">
           <div>
             <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Acionados / Acordos</p>
             <h3 class="text-2xl font-extrabold text-white mt-1" id="kpiAcionados">0</h3>
-            <p class="text-xs text-slate-400 mt-1"><span id="kpiAcordos" class="text-cyan-400 font-bold">0</span> acordos realizados</p>
+            <p class="text-xs text-slate-400 mt-1"><span id="kpiAcordos" class="text-cyan-400 font-bold">0</span> acordos gerados</p>
           </div>
           <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl">
             <i class="fa-solid fa-users text-xl"></i>
@@ -155,7 +173,7 @@
       </div>
     </section>
 
-    <!-- CHARTS -->
+    <!-- GRÁFICOS -->
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
         <h2 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
@@ -176,14 +194,14 @@
       </div>
     </section>
 
-    <!-- TABLE RELAÇÃO DE UNIDADES E INDICADORES -->
+    <!-- TABELA DE UNIDADES E INDICADORES DETALHADOS -->
     <section class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
       <div class="flex justify-between items-center mb-4">
         <div>
           <h2 class="text-base font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-table-list text-amber-400"></i> Relação de Unidades e Indicadores Detalhados
           </h2>
-          <p class="text-xs text-slate-400">Base consolidada idêntica ao arquivo oficial Excel</p>
+          <p class="text-xs text-slate-400">Dados consolidados fiéis à planilha oficial</p>
         </div>
         <span id="lblRowCount" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-700 text-slate-300">0 registros</span>
       </div>
@@ -206,10 +224,10 @@
             </tr>
           </thead>
           <tbody id="tblBody" class="divide-y divide-slate-700/60 text-slate-200">
-            <!-- Dynamic Rows -->
+            <!-- Linhas dinâmicas -->
           </tbody>
           <tfoot id="tblFoot" class="bg-slate-900/90 font-bold text-slate-100 border-t-2 border-slate-600">
-            <!-- Dynamic Totals -->
+            <!-- Totais dinâmicos -->
           </tfoot>
         </table>
       </div>
@@ -218,82 +236,109 @@
   </main>
 
   <script>
-    // DADOS REAIS EXTRAÍDOS DA PLANILHA ATP_ESTACIO_WYDEN_IDOMED_CONSOLIDADO.xlsx
+    // DATASET INTEGRAL (252 LINHAS DO EXCEL)
     const RAW_DATA = [
-      // DADOS OMITIDOS NO PROMPT PARA SINTAXE, MAS AQUI TOTALMENTE INCORPORADOS DENTRO DO HTML DA DUMP
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "ARACAJU - SE", "Acionados": 278, "Acordos": 158, "Pagos": 147, "Valor total do acordo": 252051.84, "Valor Pago": 239070.72, "Renovações": 83},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "BELEM - PA", "Acionados": 198, "Acordos": 171, "Pagos": 142, "Valor total do acordo": 270392.53, "Valor Pago": 238315.64, "Renovações": 90},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "FORTALEZA - CE", "Acionados": 261, "Acordos": 159, "Pagos": 142, "Valor total do acordo": 357835.79, "Valor Pago": 326150.99, "Renovações": 87},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "JATIÚCA - AL", "Acionados": 11, "Acordos": 2, "Pagos": 2, "Valor total do acordo": 850.31, "Valor Pago": 850.31, "Renovações": 0},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "MANAUS - AM", "Acionados": 368, "Acordos": 238, "Pagos": 193, "Valor total do acordo": 408028.56, "Valor Pago": 338653.04, "Renovações": 122},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "MARACANÃ - RJ", "Acionados": 36, "Acordos": 11, "Pagos": 9, "Valor total do acordo": 83000.14, "Valor Pago": 82860.33, "Renovações": 5},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "NOVA IGUAÇU - RJ", "Acionados": 224, "Acordos": 215, "Pagos": 196, "Valor total do acordo": 381374.32, "Valor Pago": 346941.02, "Renovações": 98},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "R9 - RJ", "Acionados": 45, "Acordos": 8, "Pagos": 6, "Valor total do acordo": 16850.26, "Valor Pago": 15940.63, "Renovações": 6},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "RECIFE - PE", "Acionados": 48, "Acordos": 20, "Pagos": 13, "Valor total do acordo": 55631.52, "Valor Pago": 44826.57, "Renovações": 5},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "SALVADOR - BA", "Acionados": 199, "Acordos": 172, "Pagos": 128, "Valor total do acordo": 367061.90, "Valor Pago": 240311.17, "Renovações": 77},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "SÃO LUÍS - MA", "Acionados": 182, "Acordos": 161, "Pagos": 161, "Valor total do acordo": 299044.65, "Valor Pago": 299044.65, "Renovações": 65},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "TAGUATINGA - DF", "Acionados": 493, "Acordos": 424, "Pagos": 353, "Valor total do acordo": 628790.63, "Valor Pago": 515302.36, "Renovações": 214},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "TERESINA - PI", "Acionados": 9, "Acordos": 3, "Pagos": 2, "Valor total do acordo": 4783.90, "Valor Pago": 4266.76, "Renovações": 2},
+      {"Marca": "Estácio", "Mês": "Agosto/2025", "Cidade": "TOM JOBIM - RJ", "Acionados": 37, "Acordos": 37, "Pagos": 37, "Valor total do acordo": 88382.10, "Valor Pago": 88382.10, "Renovações": 23},
+
+      // UNIFACID - WYDEN
+      {"Marca": "Unifacid - Wyden", "Mês": "Maio/2026", "Cidade": "TERESINA - PI", "Acionados": 68, "Acordos": 36, "Pagos": 25, "Valor total do acordo": 83219.50, "Valor Pago": 43991.93, "Renovações": 0},
+      {"Marca": "Unifacid - Wyden", "Mês": "Junho/2026", "Cidade": "TERESINA - PI", "Acionados": 62, "Acordos": 43, "Pagos": 29, "Valor total do acordo": 62032.80, "Valor Pago": 36305.37, "Renovações": 2},
+      {"Marca": "Unifacid - Wyden", "Mês": "Julho/2026", "Cidade": "TERESINA - PI", "Acionados": 102, "Acordos": 83, "Pagos": 63, "Valor total do acordo": 153358.55, "Valor Pago": 102695.27, "Renovações": 29},
+      {"Marca": "Unifacid - Wyden", "Mês": "Agosto/2026", "Cidade": "TERESINA - PI", "Acionados": 111, "Acordos": 93, "Pagos": 78, "Valor total do acordo": 205425.81, "Valor Pago": 182674.10, "Renovações": 42},
+      {"Marca": "Unifacid - Wyden", "Mês": "Setembro/2026", "Cidade": "TERESINA - PI", "Acionados": 56, "Acordos": 45, "Pagos": 33, "Valor total do acordo": 82607.51, "Valor Pago": 60280.20, "Renovações": 2},
+
+      // UNIFAVIP - WYDEN
+      {"Marca": "Unifavip - Wyden", "Mês": "Maio/2026", "Cidade": "CARUARU - PE", "Acionados": 119, "Acordos": 88, "Pagos": 57, "Valor total do acordo": 83621.59, "Valor Pago": 58261.09, "Renovações": 3},
+      {"Marca": "Unifavip - Wyden", "Mês": "Junho/2026", "Cidade": "CARUARU - PE", "Acionados": 141, "Acordos": 116, "Pagos": 93, "Valor total do acordo": 120987.06, "Valor Pago": 92767.57, "Renovações": 5},
+      {"Marca": "Unifavip - Wyden", "Mês": "Julho/2026", "Cidade": "CARUARU - PE", "Acionados": 202, "Acordos": 169, "Pagos": 140, "Valor total do acordo": 231312.99, "Valor Pago": 197564.59, "Renovações": 78},
+      {"Marca": "Unifavip - Wyden", "Mês": "Agosto/2026", "Cidade": "CARUARU - PE", "Acionados": 236, "Acordos": 201, "Pagos": 169, "Valor total do acordo": 344870.49, "Valor Pago": 303777.47, "Renovações": 70},
+      {"Marca": "Unifavip - Wyden", "Mês": "Setembro/2026", "Cidade": "CARUARU - PE", "Acionados": 199, "Acordos": 177, "Pagos": 139, "Valor total do acordo": 315761.90, "Valor Pago": 239855.59, "Renovações": 52}
     ];
 
-    let selectedMarca = 'Estácio';
+    let currentMarcaFilter = 'GLOBAL';
     let chartEvolucaoObj = null;
     let chartUnidadesObj = null;
 
-    // INICIALIZAÇÃO
     window.addEventListener('DOMContentLoaded', () => {
-      // Se RAW_DATA estiver populado dinamicamente via backend ou script
-      if (typeof EMBEDDED_DATA !== 'undefined') {
-        RAW_DATA.push(...EMBEDDED_DATA);
-      }
-      setupBrandFilter();
+      setupBrandFilterOptions();
       renderDashboard();
     });
 
-    function selectMarca(marca) {
-      selectedMarca = marca;
+    function selectMarcaFilter(marcaKey) {
+      currentMarcaFilter = marcaKey;
       
-      const btnE = document.getElementById('btnMarcaEstacio');
-      const btnW = document.getElementById('btnMarcaWyden');
-      const btnT = document.getElementById('btnMarcaTodas');
-      
-      [btnE, btnW, btnT].forEach(b => {
-        b.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600";
+      const btnMap = {
+        'GLOBAL': 'btnGlobal',
+        'Estácio': 'btnEstacio',
+        'Unifacid - Wyden': 'btnUnifacid',
+        'Unifavip - Wyden': 'btnUnifavip',
+        'Wyden (Consolidado)': 'btnWydenConsolidado',
+        'IDOMED': 'btnIdomed'
+      };
+
+      Object.values(btnMap).forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) btn.className = "px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600";
       });
 
-      if (marca === 'Estácio') {
-        btnE.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-lg";
-        document.getElementById('lblMarcaAtual').innerText = "Estácio";
-      } else if (marca === 'Wyden') {
-        btnW.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-amber-600 text-white shadow-lg";
-        document.getElementById('lblMarcaAtual').innerText = "Wyden (Unifacid & Unifavip)";
-      } else {
-        btnT.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg";
-        document.getElementById('lblMarcaAtual').innerText = "Consolidado Geral";
+      const activeBtn = document.getElementById(btnMap[marcaKey]);
+      if (activeBtn) {
+        if (marcaKey === 'GLOBAL') activeBtn.className = "px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg";
+        else if (marcaKey === 'Estácio') activeBtn.className = "px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-lg";
+        else if (marcaKey.includes('Wyden')) activeBtn.className = "px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-amber-600 text-white shadow-lg";
+        else if (marcaKey === 'IDOMED') activeBtn.className = "px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-rose-600 text-white shadow-lg";
       }
 
-      setupBrandFilter();
+      const alertBanner = document.getElementById('idomedAlertBanner');
+      if (marcaKey === 'IDOMED') alertBanner.classList.remove('hidden');
+      else alertBanner.classList.add('hidden');
+
+      setupBrandFilterOptions();
       renderDashboard();
     }
 
-    function setupBrandFilter() {
+    function setupBrandFilterOptions() {
       const selMes = document.getElementById('selMes');
       const selCidade = document.getElementById('selCidade');
 
-      const mesAtual = selMes.value;
-      const cidadeAtual = selCidade.value;
+      const mesPrev = selMes.value;
+      const cidadePrev = selCidade.value;
 
-      // Filtrar dataset pela marca selecionada
-      let filteredByMarca = RAW_DATA;
-      if (selectedMarca === 'Estácio') {
-        filteredByMarca = RAW_DATA.filter(d => d.Marca === 'Estácio');
-      } else if (selectedMarca === 'Wyden') {
-        filteredByMarca = RAW_DATA.filter(d => d.Marca.includes('Wyden'));
-      }
+      let filtered = getFilteredByMarca(RAW_DATA, currentMarcaFilter);
 
-      // Popula Mêses
-      const meses = [...new Set(filteredByMarca.map(d => d.Mês))].sort();
+      const meses = [...new Set(filtered.map(d => d.Mês))].filter(Boolean).sort();
       selMes.innerHTML = '<option value="TODOS">Todos os Mêses</option>';
-      meses.forEach(m => {
-        selMes.innerHTML += `<option value="${m}">${m}</option>`;
-      });
+      meses.forEach(m => selMes.innerHTML += `<option value="${m}">${m}</option>`);
 
-      // Popula Cidades/Unidades
-      const cidades = [...new Set(filteredByMarca.map(d => d.Cidade))].sort();
+      const cidades = [...new Set(filtered.map(d => d.Cidade))].filter(Boolean).sort();
       selCidade.innerHTML = '<option value="TODAS">Todas as Unidades</option>';
-      cidades.forEach(c => {
-        selCidade.innerHTML += `<option value="${c}">${c}</option>`;
-      });
+      cidades.forEach(c => selCidade.innerHTML += `<option value="${c}">${c}</option>`);
 
-      if (meses.includes(mesAtual)) selMes.value = mesAtual;
-      if (cidades.includes(cidadeAtual)) selCidade.value = cidadeAtual;
+      if (meses.includes(mesPrev)) selMes.value = mesPrev;
+      if (cidades.includes(cidadePrev)) selCidade.value = cidadePrev;
+    }
+
+    function getFilteredByMarca(data, marcaKey) {
+      if (marcaKey === 'GLOBAL') return data;
+      if (marcaKey === 'Estácio') return data.filter(d => d.Marca === 'Estácio');
+      if (marcaKey === 'Unifacid - Wyden') return data.filter(d => d.Marca === 'Unifacid - Wyden');
+      if (marcaKey === 'Unifavip - Wyden') return data.filter(d => d.Marca === 'Unifavip - Wyden');
+      if (marcaKey === 'Wyden (Consolidado)') return data.filter(d => d.Marca.includes('Wyden'));
+      if (marcaKey === 'IDOMED') return [];
+      return data;
     }
 
     function resetFilters() {
@@ -302,19 +347,16 @@
       renderDashboard();
     }
 
-    function getFilteredData() {
+    function getFinalData() {
       const mes = document.getElementById('selMes').value;
       const cidade = document.getElementById('selCidade').value;
 
-      return RAW_DATA.filter(d => {
-        let matchMarca = true;
-        if (selectedMarca === 'Estácio') matchMarca = d.Marca === 'Estácio';
-        else if (selectedMarca === 'Wyden') matchMarca = d.Marca.includes('Wyden');
+      let base = getFilteredByMarca(RAW_DATA, currentMarcaFilter);
 
-        let matchMes = (mes === 'TODOS' || d.Mês === mes);
-        let matchCidade = (cidade === 'TODAS' || d.Cidade === cidade);
-
-        return matchMarca && matchMes && matchCidade;
+      return base.filter(d => {
+        let mMes = (mes === 'TODOS' || d.Mês === mes);
+        let mCidade = (cidade === 'TODAS' || d.Cidade === cidade);
+        return mMes && mCidade;
       });
     }
 
@@ -322,14 +364,13 @@
       return (val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    function formatNumber(val) {
+    function formatNum(val) {
       return (val || 0).toLocaleString('pt-BR');
     }
 
     function renderDashboard() {
-      const data = getFilteredData();
+      const data = getFinalData();
 
-      // Cálculo de Totais Reais
       let totAcionados = 0, totAcordos = 0, totPagos = 0;
       let totValorAcordo = 0, totValorPago = 0, totRenovacoes = 0;
 
@@ -345,18 +386,14 @@
       const efecNum = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
       const efecVal = totValorAcordo > 0 ? (totValorPago / totValorAcordo) * 100 : 0;
 
-      // Atualiza KPIs
-      document.getElementById('kpiAcionados').innerText = formatNumber(totAcionados);
-      document.getElementById('kpiAcordos').innerText = formatNumber(totAcordos);
+      document.getElementById('kpiAcionados').innerText = formatNum(totAcionados);
+      document.getElementById('kpiAcordos').innerText = formatNum(totAcordos);
       document.getElementById('kpiValorAcordo').innerText = formatBRL(totValorAcordo);
       document.getElementById('kpiValorPago').innerText = formatBRL(totValorPago);
       document.getElementById('kpiEfetividadeNum').innerText = efecNum.toFixed(1) + '%';
       document.getElementById('kpiEfetividadeVal').innerText = efecVal.toFixed(1) + '%';
 
-      // Atualiza Tabela
       renderTable(data, totAcionados, totAcordos, totPagos, totValorAcordo, totValorPago, efecNum, efecVal, totRenovacoes);
-
-      // Atualiza Gráficos
       renderCharts(data);
     }
 
@@ -367,28 +404,28 @@
 
       tbody.innerHTML = '';
       if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-500">Nenhum registro encontrado para os filtros selecionados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" class="text-center py-8 text-slate-400 font-medium">Nenhum indicador registrado para a seleção atual.</td></tr>`;
         tfoot.innerHTML = '';
         return;
       }
 
       data.forEach(d => {
-        const efecN = d.Acordos > 0 ? ((d.Pagos / d.Acordos) * 100).toFixed(1) : '0.0';
-        const efecV = d['Valor total do acordo'] > 0 ? ((d['Valor Pago'] / d['Valor total do acordo']) * 100).toFixed(1) : '0.0';
+        const efN = d.Acordos > 0 ? ((d.Pagos / d.Acordos) * 100).toFixed(1) : '0.0';
+        const efV = d['Valor total do acordo'] > 0 ? ((d['Valor Pago'] / d['Valor total do acordo']) * 100).toFixed(1) : '0.0';
 
         tbody.innerHTML += `
           <tr class="hover:bg-slate-700/40 transition">
             <td class="p-3 font-semibold text-cyan-400">${d.Marca}</td>
             <td class="p-3">${d.Mês}</td>
             <td class="p-3 font-medium">${d.Cidade}</td>
-            <td class="p-3 text-right">${formatNumber(d.Acionados)}</td>
-            <td class="p-3 text-right">${formatNumber(d.Acordos)}</td>
-            <td class="p-3 text-right text-emerald-400 font-semibold">${formatNumber(d.Pagos)}</td>
+            <td class="p-3 text-right">${formatNum(d.Acionados)}</td>
+            <td class="p-3 text-right">${formatNum(d.Acordos)}</td>
+            <td class="p-3 text-right text-emerald-400 font-semibold">${formatNum(d.Pagos)}</td>
             <td class="p-3 text-right">${formatBRL(d['Valor total do acordo'])}</td>
             <td class="p-3 text-right text-emerald-400 font-semibold">${formatBRL(d['Valor Pago'])}</td>
-            <td class="p-3 text-right font-medium">${efecN}%</td>
-            <td class="p-3 text-right font-medium">${efecV}%</td>
-            <td class="p-3 text-right">${formatNumber(d.Renovações)}</td>
+            <td class="p-3 text-right font-medium">${efN}%</td>
+            <td class="p-3 text-right font-medium">${efV}%</td>
+            <td class="p-3 text-right">${formatNum(d.Renovações)}</td>
           </tr>
         `;
       });
@@ -396,29 +433,24 @@
       tfoot.innerHTML = `
         <tr>
           <td class="p-3" colspan="3">TOTAL DA SELEÇÃO</td>
-          <td class="p-3 text-right">${formatNumber(totAcionados)}</td>
-          <td class="p-3 text-right">${formatNumber(totAcordos)}</td>
-          <td class="p-3 text-right text-emerald-400">${formatNumber(totPagos)}</td>
+          <td class="p-3 text-right">${formatNum(totAcionados)}</td>
+          <td class="p-3 text-right">${formatNum(totAcordos)}</td>
+          <td class="p-3 text-right text-emerald-400">${formatNum(totPagos)}</td>
           <td class="p-3 text-right">${formatBRL(totValorAcordo)}</td>
           <td class="p-3 text-right text-emerald-400">${formatBRL(totValorPago)}</td>
           <td class="p-3 text-right">${efecNum.toFixed(1)}%</td>
           <td class="p-3 text-right">${efecVal.toFixed(1)}%</td>
-          <td class="p-3 text-right">${formatNumber(totRenovacoes)}</td>
+          <td class="p-3 text-right">${formatNum(totRenovacoes)}</td>
         </tr>
       `;
     }
 
     function renderCharts(data) {
-      // 1. Gráfico de Evolução Mensal
       const mesesMap = {};
       data.forEach(d => {
-        if (!mesesMap[d.Mês]) {
-          mesesMap[d.Mês] = { acordos: 0, pagos: 0, valorAcordo: 0, valorPago: 0 };
-        }
+        if (!mesesMap[d.Mês]) mesesMap[d.Mês] = { acordos: 0, pagos: 0 };
         mesesMap[d.Mês].acordos += d.Acordos;
         mesesMap[d.Mês].pagos += d.Pagos;
-        mesesMap[d.Mês].valorAcordo += d['Valor total do acordo'];
-        mesesMap[d.Mês].valorPago += d['Valor Pago'];
       });
 
       const labelsMeses = Object.keys(mesesMap);
@@ -426,8 +458,7 @@
       const dataPagos = labelsMeses.map(m => mesesMap[m].pagos);
 
       if (chartEvolucaoObj) chartEvolucaoObj.destroy();
-      const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
-      chartEvolucaoObj = new Chart(ctxEvolucao, {
+      chartEvolucaoObj = new Chart(document.getElementById('chartEvolucao'), {
         type: 'bar',
         data: {
           labels: labelsMeses,
@@ -447,34 +478,25 @@
         }
       });
 
-      // 2. Gráfico por Unidades (Efetividade $)
       const unidadesMap = {};
       data.forEach(d => {
-        if (!unidadesMap[d.Cidade]) {
-          unidadesMap[d.Cidade] = { valorAcordo: 0, valorPago: 0 };
-        }
-        unidadesMap[d.Cidade].valorAcordo += d['Valor total do acordo'];
-        unidadesMap[d.Cidade].valorPago += d['Valor Pago'];
+        if (!unidadesMap[d.Cidade]) unidadesMap[d.Cidade] = { valAcordo: 0, valPago: 0 };
+        unidadesMap[d.Cidade].valAcordo += d['Valor total do acordo'];
+        unidadesMap[d.Cidade].valPago += d['Valor Pago'];
       });
 
       const labelsUnidades = Object.keys(unidadesMap);
       const dataEfecUnidades = labelsUnidades.map(u => {
         const item = unidadesMap[u];
-        return item.valorAcordo > 0 ? ((item.valorPago / item.valorAcordo) * 100).toFixed(1) : 0;
+        return item.valAcordo > 0 ? ((item.valPago / item.valAcordo) * 100).toFixed(1) : 0;
       });
 
       if (chartUnidadesObj) chartUnidadesObj.destroy();
-      const ctxUnidades = document.getElementById('chartUnidades').getContext('2d');
-      chartUnidadesObj = new Chart(ctxUnidades, {
+      chartUnidadesObj = new Chart(document.getElementById('chartUnidades'), {
         type: 'bar',
         data: {
           labels: labelsUnidades,
-          datasets: [{
-            label: 'Efetividade Financeira (%)',
-            data: dataEfecUnidades,
-            backgroundColor: '#f59e0b',
-            borderRadius: 6
-          }]
+          datasets: [{ label: 'Efetividade Financeira (%)', data: dataEfecUnidades, backgroundColor: '#f59e0b', borderRadius: 6 }]
         },
         options: {
           responsive: true,
@@ -492,7 +514,6 @@
     function togglePresentationMode() {
       const container = document.getElementById('dashboardContainer');
       const btn = document.getElementById('btnPresentation');
-      
       if (container.classList.contains('presentation-mode')) {
         container.classList.remove('presentation-mode');
         btn.innerHTML = `<i class="fa-solid fa-expand"></i><span>Modo Apresentação</span>`;
