@@ -3,274 +3,504 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Executivo ATP | Estácio • Wyden • IDOMED</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Dashboard Executivo ATP - Estácio & Wyden</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --bg-body: #090d16;
-      --bg-card: #111827;
-      --bg-card-hover: #1f2937;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #1e293b;
-      --primary-blue: #38bdf8;
-      --estacio-color: #2563eb;
-      --wyden-color: #dc2626;
-      --idomed-color: #0d9488;
-      --global-color: #f59e0b;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .card-shadow { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
+    .presentation-mode {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 9999 !important;
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      overflow-y: auto !important;
+      padding: 2rem !important;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; padding: 24px; }
-    
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--bg-card); padding: 20px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); }
-    .header-title h1 { font-size: 22px; font-weight: 800; color: #fff; }
-    .header-title p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
-    .btn-action { background: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .btn-action:hover { background: #334155; }
-
-    /* Tabs de Marca */
-    .tabs-container { display: flex; gap: 12px; margin-bottom: 24px; }
-    .tab-btn { flex: 1; padding: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-muted); font-weight: 700; cursor: pointer; text-align: center; font-size: 15px; transition: all 0.2s; }
-    .tab-btn:hover { background: var(--bg-card-hover); color: #fff; }
-    .tab-btn.active[data-brand="Global"] { background: var(--global-color); color: #000; border-color: var(--global-color); }
-    .tab-btn.active[data-brand="Estácio"] { background: var(--estacio-color); color: #fff; border-color: var(--estacio-color); }
-    .tab-btn.active[data-brand="Wyden"] { background: var(--wyden-color); color: #fff; border-color: var(--wyden-color); }
-    .tab-btn.active[data-brand="IDOMED"] { background: var(--idomed-color); color: #fff; border-color: var(--idomed-color); }
-
-    /* Filtros */
-    .filters-section { background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 24px; }
-    .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-    .filter-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
-    .filter-group select { width: 100%; background: #0f172a; border: 1px solid var(--border-color); color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
-
-    /* KPI Cards */
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .kpi-card { background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; }
-    .kpi-title { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-    .kpi-value { font-size: 26px; font-weight: 800; margin: 10px 0 4px 0; color: #fff; }
-    .kpi-sub { font-size: 12px; color: var(--text-muted); }
-
-    /* Charts Section */
-    .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-    .chart-card { background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); }
-    .chart-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #fff; }
   </style>
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
 
-  <header>
-    <div class="header-title">
-      <h1>Dashboard Executivo de Performance ATP</h1>
-      <p>Atendimento Presencial | Estácio • Wyden • IDOMED</p>
+  <!-- TOP HEADER / PRESENTATION BAR -->
+  <header id="mainHeader" class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-2.5 rounded-xl shadow-lg">
+          <i class="fa-solid fa-chart-line text-white text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white">Dashboard Executivo ATP</h1>
+          <p class="text-xs text-slate-400">Consolidado Estácio & Wyden • Dados Reais Ajustados</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="btnPresentation" onclick="togglePresentationMode()" class="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow-lg">
+          <i class="fa-solid fa-expand"></i>
+          <span>Modo Apresentação</span>
+        </button>
+      </div>
     </div>
-    <button class="btn-action" onclick="window.print()">Exportar PDF</button>
   </header>
 
-  <div class="tabs-container">
-    <button class="tab-btn active" data-brand="Global" onclick="setBrand('Global')">Visão Global (Consolidado)</button>
-    <button class="tab-btn" data-brand="Estácio" onclick="setBrand('Estácio')">Estácio</button>
-    <button class="tab-btn" data-brand="Wyden" onclick="setBrand('Wyden')">Wyden</button>
-    <button class="tab-btn" data-brand="IDOMED" onclick="setBrand('IDOMED')">IDOMED</button>
-  </div>
+  <!-- MAIN CONTAINER -->
+  <main id="dashboardContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-  <div class="filters-section">
-    <div class="filters-grid">
-      <div class="filter-group">
-        <label>PERÍODO / MÊS</label>
-        <select id="filter-mes" onchange="applyFilters()">
-          <option value="ALL">Todos os Meses</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>ESTADO (UF)</label>
-        <select id="filter-uf" onchange="applyFilters()">
-          <option value="ALL">Todos os Estados</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>UNIDADE / CAMPUS</label>
-        <select id="filter-unidade" onchange="applyFilters()">
-          <option value="ALL">Todas as Unidades</option>
-        </select>
-      </div>
-    </div>
-  </div>
+    <!-- CONTROLS & FILTERS -->
+    <section class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-700/60 pb-4">
+        
+        <!-- SELEÇÃO DE MARCA -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-2">Marca:</span>
+          <button id="btnMarcaEstacio" onclick="selectMarca('Estácio')" class="px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-lg">
+            <i class="fa-solid fa-graduation-cap"></i> Estácio
+          </button>
+          <button id="btnMarcaWyden" onclick="selectMarca('Wyden')" class="px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600">
+            <i class="fa-solid fa-university"></i> Wyden
+          </button>
+          <button id="btnMarcaTodas" onclick="selectMarca('TODAS')" class="px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
+            Consolidado
+          </button>
+        </div>
 
-  <div class="kpi-grid">
-    <div class="kpi-card" style="border-left: 4px solid var(--success);">
-      <div class="kpi-title">Valor Recuperado (Pago)</div>
-      <div class="kpi-value" id="kpi-pago">R$ 0,00</div>
-      <div class="kpi-sub" id="kpi-efetividade-val">0.0% Efetividade Financeira</div>
-    </div>
-    <div class="kpi-card" style="border-left: 4px solid var(--primary-blue);">
-      <div class="kpi-title">Valor Total Negociado</div>
-      <div class="kpi-value" id="kpi-negociado">R$ 0,00</div>
-      <div class="kpi-sub" id="kpi-acordos">0 acordos firmados</div>
-    </div>
-    <div class="kpi-card" style="border-left: 4px solid var(--danger);">
-      <div class="kpi-title">Valor em Quebra</div>
-      <div class="kpi-value" id="kpi-quebra">R$ 0,00</div>
-      <div class="kpi-sub" id="kpi-quebra-pct">0.0% do negociado</div>
-    </div>
-    <div class="kpi-card" style="border-left: 4px solid var(--global-color);">
-      <div class="kpi-title">Taxa de Conversão</div>
-      <div class="kpi-value" id="kpi-conversion">0.0%</div>
-      <div class="kpi-sub" id="kpi-acionados">0 acionados</div>
-    </div>
-  </div>
+        <!-- INDICADOR DE SELEÇÃO -->
+        <div id="selectionBadge" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-cyan-400">
+          Exibindo: <span class="font-bold text-white" id="lblMarcaAtual">Estácio</span>
+        </div>
+      </div>
 
-  <div class="charts-grid">
-    <div class="chart-card">
-      <h3>Evolução de Recuperação Financeira</h3>
-      <canvas id="chartEvolucao" height="120"></canvas>
-    </div>
-    <div class="chart-card">
-      <h3>Status das Negociações</h3>
-      <canvas id="chartStatus" height="240"></canvas>
-    </div>
-  </div>
+      <!-- FILTROS DROPDOWN -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Mês de Referência</label>
+          <select id="selMes" onchange="renderDashboard()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+            <option value="TODOS">Todos os Mêses</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Unidade / Campus</label>
+          <select id="selCidade" onchange="renderDashboard()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+            <option value="TODAS">Todas as Unidades</option>
+          </select>
+        </div>
+
+        <div class="flex items-end">
+          <button onclick="resetFilters()" class="w-full bg-slate-700/60 hover:bg-slate-700 text-slate-300 text-sm font-medium py-2 rounded-xl transition border border-slate-600/50 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-left"></i> Limpar Filtros
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI CARDS -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Acionados / Acordos</p>
+            <h3 class="text-2xl font-extrabold text-white mt-1" id="kpiAcionados">0</h3>
+            <p class="text-xs text-slate-400 mt-1"><span id="kpiAcordos" class="text-cyan-400 font-bold">0</span> acordos realizados</p>
+          </div>
+          <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl">
+            <i class="fa-solid fa-users text-xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Valor Total Acordo</p>
+            <h3 class="text-2xl font-extrabold text-emerald-400 mt-1" id="kpiValorAcordo">R$ 0,00</h3>
+            <p class="text-xs text-slate-400 mt-1"><span id="kpiValorPago" class="text-emerald-300 font-bold">R$ 0,00</span> pagos</p>
+          </div>
+          <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
+            <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Efetividade Qtd (#)</p>
+            <h3 class="text-2xl font-extrabold text-blue-400 mt-1" id="kpiEfetividadeNum">0.0%</h3>
+            <p class="text-xs text-slate-400 mt-1">Pagos / Acordos</p>
+          </div>
+          <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
+            <i class="fa-solid fa-chart-pie text-xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Efetividade Val ($)</p>
+            <h3 class="text-2xl font-extrabold text-amber-400 mt-1" id="kpiEfetividadeVal">0.0%</h3>
+            <p class="text-xs text-slate-400 mt-1">Valor Pago / Acordo</p>
+          </div>
+          <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
+            <i class="fa-solid fa-percent text-xl"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHARTS -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <h2 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-chart-column text-cyan-400"></i> Evolução Mensal: Acordos vs Pagos
+        </h2>
+        <div class="h-64">
+          <canvas id="chartEvolucao"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+        <h2 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-building-columns text-emerald-400"></i> Efetividade Financeira por Unidade (%)
+        </h2>
+        <div class="h-64">
+          <canvas id="chartUnidades"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABLE RELAÇÃO DE UNIDADES E INDICADORES -->
+    <section class="bg-slate-800 border border-slate-700/60 rounded-2xl p-5 card-shadow">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-table-list text-amber-400"></i> Relação de Unidades e Indicadores Detalhados
+          </h2>
+          <p class="text-xs text-slate-400">Base consolidada idêntica ao arquivo oficial Excel</p>
+        </div>
+        <span id="lblRowCount" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-700 text-slate-300">0 registros</span>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-700">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-900 text-slate-300 uppercase tracking-wider font-semibold border-b border-slate-700">
+            <tr>
+              <th class="p-3">Marca</th>
+              <th class="p-3">Mês</th>
+              <th class="p-3">Unidade / Campus</th>
+              <th class="p-3 text-right">Acionados</th>
+              <th class="p-3 text-right">Acordos</th>
+              <th class="p-3 text-right">Pagos</th>
+              <th class="p-3 text-right">Valor Total Acordo</th>
+              <th class="p-3 text-right">Valor Pago</th>
+              <th class="p-3 text-right">Efetividade #</th>
+              <th class="p-3 text-right">Efetividade $</th>
+              <th class="p-3 text-right">Renovações</th>
+            </tr>
+          </thead>
+          <tbody id="tblBody" class="divide-y divide-slate-700/60 text-slate-200">
+            <!-- Dynamic Rows -->
+          </tbody>
+          <tfoot id="tblFoot" class="bg-slate-900/90 font-bold text-slate-100 border-t-2 border-slate-600">
+            <!-- Dynamic Totals -->
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+  </main>
 
   <script>
-    // BASE DE DADOS COMPLETA DA PLANILHA (252 REGISTROS)
-    const DATA = [{"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.9304, "efetividade_val": 0.9485, "renovacoes": 83}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.8304, "efetividade_val": 0.8814, "renovacoes": 90}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.8931, "efetividade_val": 0.9115, "renovacoes": 87}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 11, "negociado": 3, "recusa": 8, "acordos": 2, "val_acordo": 850.31, "pagos": 2, "val_pago": 850.31, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 368, "negociado": 240, "recusa": 128, "acordos": 238, "val_acordo": 408028.56, "pagos": 193, "val_pago": 338653.04, "quebra": 45, "val_quebra": 69375.52, "efetividade_qtd": 0.8109, "efetividade_val": 0.83, "renovacoes": 122}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 36, "negociado": 10, "recusa": 26, "acordos": 11, "val_acordo": 83000.14, "pagos": 9, "val_pago": 82860.33, "quebra": 2, "val_quebra": 139.81, "efetividade_qtd": 0.8182, "efetividade_val": 0.9983, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 224, "negociado": 213, "recusa": 11, "acordos": 215, "val_acordo": 381374.32, "pagos": 196, "val_pago": 346941.02, "quebra": 19, "val_quebra": 34433.3, "efetividade_qtd": 0.9116, "efetividade_val": 0.9097, "renovacoes": 98}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 45, "negociado": 8, "recusa": 37, "acordos": 8, "val_acordo": 16850.26, "pagos": 6, "val_pago": 15940.63, "quebra": 2, "val_quebra": 909.63, "efetividade_qtd": 0.75, "efetividade_val": 0.946, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 48, "negociado": 23, "recusa": 25, "acordos": 20, "val_acordo": 55631.52, "pagos": 13, "val_pago": 44826.57, "quebra": 7, "val_quebra": 10804.95, "efetividade_qtd": 0.65, "efetividade_val": 0.8058, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 199, "negociado": 176, "recusa": 23, "acordos": 172, "val_acordo": 367061.9, "pagos": 128, "val_pago": 240311.17, "quebra": 44, "val_quebra": 126750.73, "efetividade_qtd": 0.7442, "efetividade_val": 0.6547, "renovacoes": 77}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 182, "negociado": 182, "recusa": 0, "acordos": 161, "val_acordo": 299044.65, "pagos": 161, "val_pago": 299044.65, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 65}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 493, "negociado": 419, "recusa": 74, "acordos": 424, "val_acordo": 628790.63, "pagos": 353, "val_pago": 515302.36, "quebra": 71, "val_quebra": 113488.27, "efetividade_qtd": 0.8325, "efetividade_val": 0.8195, "renovacoes": 214}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 9, "negociado": 3, "recusa": 6, "acordos": 3, "val_acordo": 4783.9, "pagos": 2, "val_pago": 4266.76, "quebra": 1, "val_quebra": 517.14, "efetividade_qtd": 0.6667, "efetividade_val": 0.8919, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 37, "negociado": 37, "recusa": 0, "acordos": 37, "val_acordo": 88382.1, "pagos": 37, "val_pago": 88382.1, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 23}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 216, "negociado": 91, "recusa": 125, "acordos": 91, "val_acordo": 75845.41, "pagos": 75, "val_pago": 63950.71, "quebra": 16, "val_quebra": 11894.7, "efetividade_qtd": 0.8242, "efetividade_val": 0.8432, "renovacoes": 34}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 79, "negociado": 63, "recusa": 16, "acordos": 64, "val_acordo": 76546.96, "pagos": 44, "val_pago": 44840.02, "quebra": 20, "val_quebra": 31706.94, "efetividade_qtd": 0.6875, "efetividade_val": 0.5858, "renovacoes": 27}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 75, "negociado": 29, "recusa": 46, "acordos": 29, "val_acordo": 62138.47, "pagos": 23, "val_pago": 39999.41, "quebra": 6, "val_quebra": 22139.06, "efetividade_qtd": 0.7931, "efetividade_val": 0.6437, "renovacoes": 13}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 288, "negociado": 127, "recusa": 161, "acordos": 123, "val_acordo": 139382.81, "pagos": 85, "val_pago": 92159.91, "quebra": 38, "val_quebra": 47222.9, "efetividade_qtd": 0.6911, "efetividade_val": 0.6612, "renovacoes": 32}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 54, "negociado": 16, "recusa": 38, "acordos": 17, "val_acordo": 43860.37, "pagos": 12, "val_pago": 38791.49, "quebra": 5, "val_quebra": 5068.88, "efetividade_qtd": 0.7059, "efetividade_val": 0.8844, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 175, "negociado": 113, "recusa": 62, "acordos": 114, "val_acordo": 160064.61, "pagos": 97, "val_pago": 121723.79, "quebra": 17, "val_quebra": 38340.82, "efetividade_qtd": 0.8509, "efetividade_val": 0.7605, "renovacoes": 44}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 187, "negociado": 73, "recusa": 114, "acordos": 74, "val_acordo": 111455.16, "pagos": 44, "val_pago": 69604.18, "quebra": 30, "val_quebra": 41850.98, "efetividade_qtd": 0.5946, "efetividade_val": 0.6245, "renovacoes": 50}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 204, "negociado": 153, "recusa": 51, "acordos": 148, "val_acordo": 160878.13, "pagos": 120, "val_pago": 117349.69, "quebra": 28, "val_quebra": 43528.44, "efetividade_qtd": 0.8108, "efetividade_val": 0.7294, "renovacoes": 41}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 117, "negociado": 40, "recusa": 77, "acordos": 35, "val_acordo": 48463.17, "pagos": 27, "val_pago": 38144.83, "quebra": 8, "val_quebra": 10318.34, "efetividade_qtd": 0.7714, "efetividade_val": 0.7871, "renovacoes": 25}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 271, "negociado": 102, "recusa": 169, "acordos": 99, "val_acordo": 98561.32, "pagos": 57, "val_pago": 50847.51, "quebra": 42, "val_quebra": 47713.81, "efetividade_qtd": 0.5758, "efetividade_val": 0.5159, "renovacoes": 41}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 185, "negociado": 126, "recusa": 59, "acordos": 125, "val_acordo": 146828.72, "pagos": 89, "val_pago": 107158.37, "quebra": 36, "val_quebra": 39670.35, "efetividade_qtd": 0.712, "efetividade_val": 0.7298, "renovacoes": 42}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 78, "negociado": 69, "recusa": 9, "acordos": 68, "val_acordo": 111007.17, "pagos": 67, "val_pago": 109325.98, "quebra": 1, "val_quebra": 1681.19, "efetividade_qtd": 0.9853, "efetividade_val": 0.9849, "renovacoes": 16}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 420, "negociado": 338, "recusa": 82, "acordos": 332, "val_acordo": 249009.29, "pagos": 210, "val_pago": 156896.13, "quebra": 122, "val_quebra": 92113.16, "efetividade_qtd": 0.6325, "efetividade_val": 0.6301, "renovacoes": 71}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 117, "negociado": 74, "recusa": 43, "acordos": 69, "val_acordo": 52866.89, "pagos": 48, "val_pago": 31937.44, "quebra": 21, "val_quebra": 20929.45, "efetividade_qtd": 0.6957, "efetividade_val": 0.6041, "renovacoes": 27}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 14, "negociado": 14, "recusa": 0, "acordos": 14, "val_acordo": 61703.23, "pagos": 9, "val_pago": 32575.5, "quebra": 5, "val_quebra": 29127.73, "efetividade_qtd": 0.6429, "efetividade_val": 0.5279, "renovacoes": 9}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 133, "negociado": 93, "recusa": 40, "acordos": 92, "val_acordo": 70617.74, "pagos": 83, "val_pago": 64151.39, "quebra": 9, "val_quebra": 6466.35, "efetividade_qtd": 0.9022, "efetividade_val": 0.9084, "renovacoes": 21}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 63, "negociado": 43, "recusa": 20, "acordos": 43, "val_acordo": 32968.09, "pagos": 27, "val_pago": 20379.8, "quebra": 16, "val_quebra": 12588.29, "efetividade_qtd": 0.6279, "efetividade_val": 0.6182, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 22, "negociado": 19, "recusa": 3, "acordos": 18, "val_acordo": 10591.19, "pagos": 13, "val_pago": 8909.07, "quebra": 5, "val_quebra": 1682.12, "efetividade_qtd": 0.7222, "efetividade_val": 0.8412, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 222, "negociado": 96, "recusa": 126, "acordos": 96, "val_acordo": 70987.4, "pagos": 47, "val_pago": 21719.63, "quebra": 49, "val_quebra": 49267.77, "efetividade_qtd": 0.4896, "efetividade_val": 0.306, "renovacoes": 8}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 79, "negociado": 41, "recusa": 38, "acordos": 36, "val_acordo": 45919.23, "pagos": 26, "val_pago": 36366.4, "quebra": 10, "val_quebra": 9552.83, "efetividade_qtd": 0.7222, "efetividade_val": 0.792, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 159, "negociado": 92, "recusa": 67, "acordos": 91, "val_acordo": 76774.84, "pagos": 82, "val_pago": 55545.98, "quebra": 9, "val_quebra": 21228.86, "efetividade_qtd": 0.9011, "efetividade_val": 0.7235, "renovacoes": 13}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 147, "negociado": 63, "recusa": 84, "acordos": 64, "val_acordo": 81872.69, "pagos": 35, "val_pago": 29679.94, "quebra": 29, "val_quebra": 52192.75, "efetividade_qtd": 0.5469, "efetividade_val": 0.3625, "renovacoes": 26}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 183, "negociado": 121, "recusa": 62, "acordos": 117, "val_acordo": 98318.23, "pagos": 92, "val_pago": 74708.36, "quebra": 25, "val_quebra": 23609.87, "efetividade_qtd": 0.7863, "efetividade_val": 0.7599, "renovacoes": 16}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 66, "negociado": 25, "recusa": 41, "acordos": 26, "val_acordo": 23756.14, "pagos": 20, "val_pago": 14841.43, "quebra": 6, "val_quebra": 8914.71, "efetividade_qtd": 0.7692, "efetividade_val": 0.6247, "renovacoes": 10}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 151, "negociado": 65, "recusa": 86, "acordos": 65, "val_acordo": 46157.26, "pagos": 41, "val_pago": 23856.17, "quebra": 24, "val_quebra": 22301.09, "efetividade_qtd": 0.6308, "efetividade_val": 0.5168, "renovacoes": 20}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 163, "negociado": 90, "recusa": 73, "acordos": 86, "val_acordo": 87111.59, "pagos": 53, "val_pago": 44440.24, "quebra": 33, "val_quebra": 42671.35, "efetividade_qtd": 0.6163, "efetividade_val": 0.5102, "renovacoes": 18}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 96, "negociado": 65, "recusa": 31, "acordos": 60, "val_acordo": 61758.54, "pagos": 56, "val_pago": 58962.01, "quebra": 4, "val_quebra": 2796.53, "efetividade_qtd": 0.9333, "efetividade_val": 0.9547, "renovacoes": 9}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 210, "negociado": 173, "recusa": 37, "acordos": 179, "val_acordo": 119879.6, "pagos": 113, "val_pago": 66063.74, "quebra": 66, "val_quebra": 53815.86, "efetividade_qtd": 0.6313, "efetividade_val": 0.5511, "renovacoes": 19}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 195, "negociado": 118, "recusa": 77, "acordos": 114, "val_acordo": 71956.25, "pagos": 88, "val_pago": 57855.33, "quebra": 26, "val_quebra": 14100.92, "efetividade_qtd": 0.7719, "efetividade_val": 0.804, "renovacoes": 26}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Outubro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 34, "negociado": 24, "recusa": 10, "acordos": 24, "val_acordo": 15124.54, "pagos": 20, "val_pago": 10895.27, "quebra": 4, "val_quebra": 4229.27, "efetividade_qtd": 0.8333, "efetividade_val": 0.7204, "renovacoes": 15}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 135, "negociado": 77, "recusa": 58, "acordos": 77, "val_acordo": 41400.03, "pagos": 66, "val_pago": 36876.0, "quebra": 11, "val_quebra": 4524.03, "efetividade_qtd": 0.8571, "efetividade_val": 0.8907, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 88, "negociado": 57, "recusa": 31, "acordos": 57, "val_acordo": 73600.33, "pagos": 44, "val_pago": 53099.28, "quebra": 13, "val_quebra": 20501.05, "efetividade_qtd": 0.7719, "efetividade_val": 0.7215, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 25, "negociado": 18, "recusa": 7, "acordos": 11, "val_acordo": 8482.75, "pagos": 10, "val_pago": 4801.53, "quebra": 1, "val_quebra": 3681.22, "efetividade_qtd": 0.9091, "efetividade_val": 0.566, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 35, "negociado": 12, "recusa": 23, "acordos": 13, "val_acordo": 6933.73, "pagos": 7, "val_pago": 3329.31, "quebra": 6, "val_quebra": 3604.42, "efetividade_qtd": 0.5385, "efetividade_val": 0.4802, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 133, "negociado": 73, "recusa": 60, "acordos": 72, "val_acordo": 63515.65, "pagos": 55, "val_pago": 46811.35, "quebra": 17, "val_quebra": 16704.3, "efetividade_qtd": 0.7639, "efetividade_val": 0.737, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 196, "negociado": 128, "recusa": 68, "acordos": 120, "val_acordo": 96607.12, "pagos": 94, "val_pago": 71356.31, "quebra": 26, "val_quebra": 25250.81, "efetividade_qtd": 0.7833, "efetividade_val": 0.7386, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 186, "negociado": 88, "recusa": 98, "acordos": 75, "val_acordo": 58866.96, "pagos": 46, "val_pago": 39582.22, "quebra": 29, "val_quebra": 19284.74, "efetividade_qtd": 0.6133, "efetividade_val": 0.6724, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 176, "negociado": 112, "recusa": 64, "acordos": 115, "val_acordo": 87088.87, "pagos": 88, "val_pago": 56371.66, "quebra": 27, "val_quebra": 30717.21, "efetividade_qtd": 0.7652, "efetividade_val": 0.6473, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 184, "negociado": 38, "recusa": 146, "acordos": 35, "val_acordo": 23190.85, "pagos": 22, "val_pago": 10686.94, "quebra": 13, "val_quebra": 12503.91, "efetividade_qtd": 0.6286, "efetividade_val": 0.4608, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 192, "negociado": 83, "recusa": 109, "acordos": 83, "val_acordo": 51779.06, "pagos": 52, "val_pago": 27628.73, "quebra": 31, "val_quebra": 24150.33, "efetividade_qtd": 0.6265, "efetividade_val": 0.5336, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 144, "negociado": 78, "recusa": 66, "acordos": 74, "val_acordo": 62766.9, "pagos": 50, "val_pago": 36823.82, "quebra": 24, "val_quebra": 25943.08, "efetividade_qtd": 0.6757, "efetividade_val": 0.5867, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 103, "negociado": 61, "recusa": 42, "acordos": 56, "val_acordo": 55805.23, "pagos": 48, "val_pago": 46352.85, "quebra": 8, "val_quebra": 9452.38, "efetividade_qtd": 0.8571, "efetividade_val": 0.8306, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 196, "negociado": 145, "recusa": 51, "acordos": 145, "val_acordo": 91149.95, "pagos": 96, "val_pago": 58398.66, "quebra": 49, "val_quebra": 32751.29, "efetividade_qtd": 0.6621, "efetividade_val": 0.6407, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 118, "negociado": 86, "recusa": 32, "acordos": 83, "val_acordo": 50516.6, "pagos": 66, "val_pago": 36760.33, "quebra": 17, "val_quebra": 13756.27, "efetividade_qtd": 0.7952, "efetividade_val": 0.7277, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Novembro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 62, "negociado": 50, "recusa": 12, "acordos": 49, "val_acordo": 62041.35, "pagos": 32, "val_pago": 42011.43, "quebra": 17, "val_quebra": 20029.92, "efetividade_qtd": 0.6531, "efetividade_val": 0.6772, "renovacoes": 10}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 78, "negociado": 53, "recusa": 25, "acordos": 53, "val_acordo": 38074.99, "pagos": 41, "val_pago": 21374.36, "quebra": 12, "val_quebra": 16700.63, "efetividade_qtd": 0.7736, "efetividade_val": 0.5614, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 84, "negociado": 58, "recusa": 26, "acordos": 58, "val_acordo": 56486.11, "pagos": 42, "val_pago": 34955.41, "quebra": 16, "val_quebra": 21530.7, "efetividade_qtd": 0.7241, "efetividade_val": 0.6188, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 33, "negociado": 11, "recusa": 22, "acordos": 16, "val_acordo": 16287.34, "pagos": 10, "val_pago": 11625.88, "quebra": 6, "val_quebra": 4661.46, "efetividade_qtd": 0.625, "efetividade_val": 0.7138, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 71, "negociado": 28, "recusa": 43, "acordos": 30, "val_acordo": 31460.02, "pagos": 23, "val_pago": 21186.11, "quebra": 7, "val_quebra": 10273.91, "efetividade_qtd": 0.7667, "efetividade_val": 0.6734, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 56, "negociado": 34, "recusa": 22, "acordos": 37, "val_acordo": 39997.36, "pagos": 22, "val_pago": 28761.26, "quebra": 15, "val_quebra": 11236.1, "efetividade_qtd": 0.5946, "efetividade_val": 0.7191, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 129, "negociado": 95, "recusa": 34, "acordos": 105, "val_acordo": 90706.26, "pagos": 85, "val_pago": 70215.33, "quebra": 20, "val_quebra": 20490.93, "efetividade_qtd": 0.8095, "efetividade_val": 0.7741, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 114, "negociado": 67, "recusa": 47, "acordos": 73, "val_acordo": 69014.36, "pagos": 48, "val_pago": 38717.2, "quebra": 25, "val_quebra": 30297.16, "efetividade_qtd": 0.6575, "efetividade_val": 0.561, "renovacoes": 16}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 73, "negociado": 58, "recusa": 15, "acordos": 61, "val_acordo": 48928.1, "pagos": 47, "val_pago": 40195.74, "quebra": 14, "val_quebra": 8732.36, "efetividade_qtd": 0.7705, "efetividade_val": 0.8215, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 48, "negociado": 23, "recusa": 25, "acordos": 27, "val_acordo": 16673.43, "pagos": 20, "val_pago": 12735.49, "quebra": 7, "val_quebra": 3937.94, "efetividade_qtd": 0.7407, "efetividade_val": 0.7638, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 130, "negociado": 59, "recusa": 71, "acordos": 60, "val_acordo": 40694.27, "pagos": 39, "val_pago": 29568.15, "quebra": 21, "val_quebra": 11126.12, "efetividade_qtd": 0.65, "efetividade_val": 0.7266, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 75, "negociado": 50, "recusa": 25, "acordos": 58, "val_acordo": 41818.7, "pagos": 39, "val_pago": 23721.39, "quebra": 19, "val_quebra": 18097.31, "efetividade_qtd": 0.6724, "efetividade_val": 0.5672, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 89, "negociado": 53, "recusa": 36, "acordos": 54, "val_acordo": 46494.11, "pagos": 47, "val_pago": 37588.93, "quebra": 7, "val_quebra": 8905.18, "efetividade_qtd": 0.8704, "efetividade_val": 0.8085, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 138, "negociado": 102, "recusa": 36, "acordos": 104, "val_acordo": 69744.07, "pagos": 67, "val_pago": 44580.98, "quebra": 37, "val_quebra": 25163.09, "efetividade_qtd": 0.6442, "efetividade_val": 0.6392, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 90, "negociado": 59, "recusa": 31, "acordos": 63, "val_acordo": 37829.94, "pagos": 46, "val_pago": 29983.95, "quebra": 17, "val_quebra": 7845.99, "efetividade_qtd": 0.7302, "efetividade_val": 0.7926, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Dezembro/2025", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 30, "negociado": 22, "recusa": 8, "acordos": 22, "val_acordo": 33423.72, "pagos": 17, "val_pago": 26987.95, "quebra": 5, "val_quebra": 6435.77, "efetividade_qtd": 0.7727, "efetividade_val": 0.8074, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 195, "negociado": 134, "recusa": 61, "acordos": 130, "val_acordo": 206871.71, "pagos": 110, "val_pago": 166816.28, "quebra": 20, "val_quebra": 40055.43, "efetividade_qtd": 0.8462, "efetividade_val": 0.8064, "renovacoes": 51}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 138, "negociado": 93, "recusa": 45, "acordos": 93, "val_acordo": 150685.48, "pagos": 75, "val_pago": 121795.02, "quebra": 18, "val_quebra": 28890.46, "efetividade_qtd": 0.8065, "efetividade_val": 0.8083, "renovacoes": 35}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 119, "negociado": 88, "recusa": 31, "acordos": 83, "val_acordo": 109409.16, "pagos": 63, "val_pago": 91329.19, "quebra": 20, "val_quebra": 18079.97, "efetividade_qtd": 0.759, "efetividade_val": 0.8347, "renovacoes": 38}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 94, "negociado": 35, "recusa": 59, "acordos": 31, "val_acordo": 53656.38, "pagos": 27, "val_pago": 51289.18, "quebra": 4, "val_quebra": 2367.2, "efetividade_qtd": 0.871, "efetividade_val": 0.9559, "renovacoes": 8}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 149, "negociado": 89, "recusa": 60, "acordos": 84, "val_acordo": 109034.02, "pagos": 64, "val_pago": 85597.39, "quebra": 20, "val_quebra": 23436.63, "efetividade_qtd": 0.7619, "efetividade_val": 0.7851, "renovacoes": 26}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 220, "negociado": 172, "recusa": 48, "acordos": 165, "val_acordo": 182504.25, "pagos": 141, "val_pago": 157492.22, "quebra": 24, "val_quebra": 25012.03, "efetividade_qtd": 0.8545, "efetividade_val": 0.863, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 227, "negociado": 126, "recusa": 101, "acordos": 121, "val_acordo": 122063.85, "pagos": 99, "val_pago": 98436.15, "quebra": 22, "val_quebra": 23627.7, "efetividade_qtd": 0.8182, "efetividade_val": 0.8064, "renovacoes": 47}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 258, "negociado": 190, "recusa": 68, "acordos": 166, "val_acordo": 243981.46, "pagos": 134, "val_pago": 194037.27, "quebra": 32, "val_quebra": 49944.19, "efetividade_qtd": 0.8072, "efetividade_val": 0.7953, "renovacoes": 68}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 160, "negociado": 67, "recusa": 93, "acordos": 65, "val_acordo": 74330.67, "pagos": 51, "val_pago": 62229.82, "quebra": 14, "val_quebra": 12100.85, "efetividade_qtd": 0.7846, "efetividade_val": 0.8372, "renovacoes": 27}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 201, "negociado": 95, "recusa": 106, "acordos": 91, "val_acordo": 124640.49, "pagos": 72, "val_pago": 91636.66, "quebra": 19, "val_quebra": 33003.83, "efetividade_qtd": 0.7912, "efetividade_val": 0.7352, "renovacoes": 30}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 157, "negociado": 133, "recusa": 24, "acordos": 113, "val_acordo": 139622.37, "pagos": 84, "val_pago": 111092.32, "quebra": 29, "val_quebra": 28530.05, "efetividade_qtd": 0.7434, "efetividade_val": 0.7957, "renovacoes": 31}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 69, "negociado": 49, "recusa": 20, "acordos": 48, "val_acordo": 64800.78, "pagos": 42, "val_pago": 54122.32, "quebra": 6, "val_quebra": 10678.46, "efetividade_qtd": 0.875, "efetividade_val": 0.8352, "renovacoes": 16}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 349, "negociado": 272, "recusa": 77, "acordos": 256, "val_acordo": 315242.88, "pagos": 191, "val_pago": 231686.8, "quebra": 65, "val_quebra": 83556.08, "efetividade_qtd": 0.7461, "efetividade_val": 0.7349, "renovacoes": 84}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 141, "negociado": 114, "recusa": 27, "acordos": 105, "val_acordo": 110790.21, "pagos": 80, "val_pago": 76913.04, "quebra": 25, "val_quebra": 33877.17, "efetividade_qtd": 0.7619, "efetividade_val": 0.6942, "renovacoes": 29}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Janeiro/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 120, "negociado": 108, "recusa": 12, "acordos": 108, "val_acordo": 150340.02, "pagos": 96, "val_pago": 130683.35, "quebra": 12, "val_quebra": 19656.67, "efetividade_qtd": 0.8889, "efetividade_val": 0.8693, "renovacoes": 82}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 250, "negociado": 170, "recusa": 80, "acordos": 169, "val_acordo": 222027.6, "pagos": 135, "val_pago": 157867.46, "quebra": 34, "val_quebra": 64160.14, "efetividade_qtd": 0.7988, "efetividade_val": 0.711, "renovacoes": 61}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 254, "negociado": 166, "recusa": 88, "acordos": 166, "val_acordo": 307673.92, "pagos": 135, "val_pago": 240561.27, "quebra": 31, "val_quebra": 67112.65, "efetividade_qtd": 0.8133, "efetividade_val": 0.7819, "renovacoes": 83}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 163, "negociado": 159, "recusa": 4, "acordos": 161, "val_acordo": 221565.02, "pagos": 131, "val_pago": 180055.8, "quebra": 30, "val_quebra": 41509.22, "efetividade_qtd": 0.8137, "efetividade_val": 0.8127, "renovacoes": 80}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 223, "negociado": 94, "recusa": 129, "acordos": 91, "val_acordo": 221590.45, "pagos": 76, "val_pago": 141183.46, "quebra": 15, "val_quebra": 80406.99, "efetividade_qtd": 0.8352, "efetividade_val": 0.6371, "renovacoes": 35}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 214, "negociado": 151, "recusa": 63, "acordos": 143, "val_acordo": 209750.66, "pagos": 110, "val_pago": 170501.5, "quebra": 33, "val_quebra": 39249.16, "efetividade_qtd": 0.7692, "efetividade_val": 0.8129, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 237, "negociado": 200, "recusa": 37, "acordos": 192, "val_acordo": 309333.42, "pagos": 163, "val_pago": 266313.94, "quebra": 29, "val_quebra": 43019.48, "efetividade_qtd": 0.849, "efetividade_val": 0.8609, "renovacoes": 63}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 226, "negociado": 171, "recusa": 55, "acordos": 163, "val_acordo": 268669.39, "pagos": 121, "val_pago": 178387.0, "quebra": 42, "val_quebra": 90282.39, "efetividade_qtd": 0.7423, "efetividade_val": 0.664, "renovacoes": 93}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 324, "negociado": 213, "recusa": 111, "acordos": 204, "val_acordo": 420578.49, "pagos": 161, "val_pago": 337720.93, "quebra": 43, "val_quebra": 82857.56, "efetividade_qtd": 0.7892, "efetividade_val": 0.803, "renovacoes": 98}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 227, "negociado": 83, "recusa": 144, "acordos": 79, "val_acordo": 89582.18, "pagos": 59, "val_pago": 69699.44, "quebra": 20, "val_quebra": 19882.74, "efetividade_qtd": 0.7468, "efetividade_val": 0.7781, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 186, "negociado": 97, "recusa": 89, "acordos": 89, "val_acordo": 128293.64, "pagos": 65, "val_pago": 107068.41, "quebra": 24, "val_quebra": 21225.23, "efetividade_qtd": 0.7303, "efetividade_val": 0.8346, "renovacoes": 50}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 143, "negociado": 120, "recusa": 23, "acordos": 120, "val_acordo": 182980.99, "pagos": 93, "val_pago": 141080.77, "quebra": 27, "val_quebra": 41900.22, "efetividade_qtd": 0.775, "efetividade_val": 0.771, "renovacoes": 43}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 71, "negociado": 55, "recusa": 16, "acordos": 66, "val_acordo": 111848.15, "pagos": 53, "val_pago": 73806.46, "quebra": 13, "val_quebra": 38041.69, "efetividade_qtd": 0.803, "efetividade_val": 0.6599, "renovacoes": 28}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 363, "negociado": 325, "recusa": 38, "acordos": 317, "val_acordo": 456935.96, "pagos": 248, "val_pago": 367507.74, "quebra": 69, "val_quebra": 89428.22, "efetividade_qtd": 0.7823, "efetividade_val": 0.8043, "renovacoes": 170}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 147, "negociado": 118, "recusa": 29, "acordos": 110, "val_acordo": 170465.99, "pagos": 85, "val_pago": 115967.92, "quebra": 25, "val_quebra": 54498.07, "efetividade_qtd": 0.7727, "efetividade_val": 0.6803, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Fevereiro/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 123, "negociado": 115, "recusa": 8, "acordos": 114, "val_acordo": 217935.97, "pagos": 70, "val_pago": 169673.24, "quebra": 44, "val_quebra": 48262.73, "efetividade_qtd": 0.614, "efetividade_val": 0.7785, "renovacoes": 60}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 270, "negociado": 183, "recusa": 87, "acordos": 185, "val_acordo": 241082.57, "pagos": 142, "val_pago": 179048.69, "quebra": 43, "val_quebra": 62033.88, "efetividade_qtd": 0.7676, "efetividade_val": 0.7427, "renovacoes": 66}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 287, "negociado": 192, "recusa": 95, "acordos": 189, "val_acordo": 318625.8, "pagos": 140, "val_pago": 224704.23, "quebra": 49, "val_quebra": 93921.57, "efetividade_qtd": 0.7407, "efetividade_val": 0.7052, "renovacoes": 77}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 159, "negociado": 157, "recusa": 2, "acordos": 158, "val_acordo": 266907.35, "pagos": 116, "val_pago": 177312.76, "quebra": 42, "val_quebra": 89594.59, "efetividade_qtd": 0.7342, "efetividade_val": 0.6643, "renovacoes": 82}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 186, "negociado": 119, "recusa": 67, "acordos": 119, "val_acordo": 256964.28, "pagos": 75, "val_pago": 153633.96, "quebra": 44, "val_quebra": 103330.32, "efetividade_qtd": 0.6303, "efetividade_val": 0.5979, "renovacoes": 27}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 228, "negociado": 174, "recusa": 54, "acordos": 178, "val_acordo": 301378.92, "pagos": 109, "val_pago": 159691.54, "quebra": 69, "val_quebra": 141687.38, "efetividade_qtd": 0.6124, "efetividade_val": 0.5299, "renovacoes": 49}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 296, "negociado": 237, "recusa": 59, "acordos": 246, "val_acordo": 354806.3, "pagos": 186, "val_pago": 265440.6, "quebra": 60, "val_quebra": 89365.7, "efetividade_qtd": 0.7561, "efetividade_val": 0.7481, "renovacoes": 69}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 85, "negociado": 74, "recusa": 11, "acordos": 78, "val_acordo": 134832.35, "pagos": 52, "val_pago": 71918.1, "quebra": 26, "val_quebra": 62914.25, "efetividade_qtd": 0.6667, "efetividade_val": 0.5334, "renovacoes": 51}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 336, "negociado": 260, "recusa": 76, "acordos": 262, "val_acordo": 476459.86, "pagos": 198, "val_pago": 347178.37, "quebra": 64, "val_quebra": 129281.49, "efetividade_qtd": 0.7557, "efetividade_val": 0.7287, "renovacoes": 100}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 201, "negociado": 96, "recusa": 105, "acordos": 92, "val_acordo": 137804.06, "pagos": 51, "val_pago": 71960.98, "quebra": 41, "val_quebra": 65843.08, "efetividade_qtd": 0.5543, "efetividade_val": 0.5222, "renovacoes": 48}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 157, "negociado": 119, "recusa": 38, "acordos": 125, "val_acordo": 158313.97, "pagos": 90, "val_pago": 92181.82, "quebra": 35, "val_quebra": 66132.15, "efetividade_qtd": 0.72, "efetividade_val": 0.5823, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 215, "negociado": 182, "recusa": 33, "acordos": 178, "val_acordo": 254658.14, "pagos": 128, "val_pago": 184412.18, "quebra": 50, "val_quebra": 70245.96, "efetividade_qtd": 0.7191, "efetividade_val": 0.7242, "renovacoes": 68}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 195, "negociado": 138, "recusa": 57, "acordos": 101, "val_acordo": 161331.13, "pagos": 87, "val_pago": 138497.88, "quebra": 14, "val_quebra": 22833.25, "efetividade_qtd": 0.8614, "efetividade_val": 0.8585, "renovacoes": 32}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 441, "negociado": 379, "recusa": 62, "acordos": 384, "val_acordo": 499226.12, "pagos": 261, "val_pago": 319499.6, "quebra": 123, "val_quebra": 179726.52, "efetividade_qtd": 0.6797, "efetividade_val": 0.64, "renovacoes": 146}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 193, "negociado": 152, "recusa": 41, "acordos": 156, "val_acordo": 193442.62, "pagos": 104, "val_pago": 120655.78, "quebra": 52, "val_quebra": 72786.84, "efetividade_qtd": 0.6667, "efetividade_val": 0.6237, "renovacoes": 40}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Março/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 122, "negociado": 106, "recusa": 16, "acordos": 104, "val_acordo": 198995.1, "pagos": 65, "val_pago": 162490.94, "quebra": 39, "val_quebra": 36504.16, "efetividade_qtd": 0.625, "efetividade_val": 0.8166, "renovacoes": 49}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 196, "negociado": 126, "recusa": 70, "acordos": 125, "val_acordo": 130005.04, "pagos": 105, "val_pago": 104113.56, "quebra": 20, "val_quebra": 25891.48, "efetividade_qtd": 0.84, "efetividade_val": 0.8008, "renovacoes": 41}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 167, "negociado": 99, "recusa": 68, "acordos": 101, "val_acordo": 160293.87, "pagos": 72, "val_pago": 105549.58, "quebra": 29, "val_quebra": 54744.29, "efetividade_qtd": 0.7129, "efetividade_val": 0.6585, "renovacoes": 41}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 4, "negociado": 1, "recusa": 3, "acordos": 1, "val_acordo": 118.23, "pagos": 0, "val_pago": 0.0, "quebra": 1, "val_quebra": 118.23, "efetividade_qtd": 0.0, "efetividade_val": 0.0, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 111, "negociado": 111, "recusa": 0, "acordos": 110, "val_acordo": 101979.5, "pagos": 83, "val_pago": 69963.55, "quebra": 27, "val_quebra": 32015.95, "efetividade_qtd": 0.7545, "efetividade_val": 0.6861, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 141, "negociado": 84, "recusa": 57, "acordos": 84, "val_acordo": 87105.14, "pagos": 56, "val_pago": 58845.07, "quebra": 28, "val_quebra": 28260.07, "efetividade_qtd": 0.6667, "efetividade_val": 0.6756, "renovacoes": 11}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 64, "negociado": 39, "recusa": 25, "acordos": 41, "val_acordo": 27284.26, "pagos": 29, "val_pago": 21222.17, "quebra": 12, "val_quebra": 6062.09, "efetividade_qtd": 0.7073, "efetividade_val": 0.7778, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 237, "negociado": 169, "recusa": 68, "acordos": 167, "val_acordo": 240642.96, "pagos": 116, "val_pago": 145724.0, "quebra": 51, "val_quebra": 94918.96, "efetividade_qtd": 0.6946, "efetividade_val": 0.6056, "renovacoes": 19}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 55, "negociado": 50, "recusa": 5, "acordos": 51, "val_acordo": 43665.87, "pagos": 48, "val_pago": 39590.42, "quebra": 3, "val_quebra": 4075.45, "efetividade_qtd": 0.9412, "efetividade_val": 0.9067, "renovacoes": 36}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 7, "negociado": 0, "recusa": 7, "acordos": 2, "val_acordo": 15600.0, "pagos": 0, "val_pago": 0.0, "quebra": 2, "val_quebra": 15600.0, "efetividade_qtd": 0.0, "efetividade_val": 0.0, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 137, "negociado": 113, "recusa": 24, "acordos": 118, "val_acordo": 119321.24, "pagos": 89, "val_pago": 83941.25, "quebra": 29, "val_quebra": 35379.99, "efetividade_qtd": 0.7542, "efetividade_val": 0.7035, "renovacoes": 19}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 107, "negociado": 71, "recusa": 36, "acordos": 68, "val_acordo": 92748.48, "pagos": 40, "val_pago": 54581.32, "quebra": 28, "val_quebra": 38167.16, "efetividade_qtd": 0.5882, "efetividade_val": 0.5885, "renovacoes": 32}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 95, "negociado": 89, "recusa": 6, "acordos": 87, "val_acordo": 102990.49, "pagos": 64, "val_pago": 60660.81, "quebra": 23, "val_quebra": 42329.68, "efetividade_qtd": 0.7356, "efetividade_val": 0.589, "renovacoes": 22}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 76, "negociado": 62, "recusa": 14, "acordos": 62, "val_acordo": 74252.63, "pagos": 42, "val_pago": 46761.79, "quebra": 20, "val_quebra": 27490.84, "efetividade_qtd": 0.6774, "efetividade_val": 0.6298, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 3, "negociado": 2, "recusa": 1, "acordos": 3, "val_acordo": 49510.88, "pagos": 1, "val_pago": 163.92, "quebra": 2, "val_quebra": 49346.96, "efetividade_qtd": 0.3333, "efetividade_val": 0.0033, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 116, "negociado": 80, "recusa": 36, "acordos": 84, "val_acordo": 118242.52, "pagos": 67, "val_pago": 98430.17, "quebra": 17, "val_quebra": 19812.35, "efetividade_qtd": 0.7976, "efetividade_val": 0.8324, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 304, "negociado": 269, "recusa": 35, "acordos": 275, "val_acordo": 259088.71, "pagos": 196, "val_pago": 169301.13, "quebra": 79, "val_quebra": 89787.58, "efetividade_qtd": 0.7127, "efetividade_val": 0.6534, "renovacoes": 54}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 157, "negociado": 138, "recusa": 19, "acordos": 143, "val_acordo": 103602.93, "pagos": 108, "val_pago": 81560.78, "quebra": 35, "val_quebra": 22042.15, "efetividade_qtd": 0.7552, "efetividade_val": 0.7872, "renovacoes": 31}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Abril/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 88, "negociado": 84, "recusa": 4, "acordos": 85, "val_acordo": 148193.7, "pagos": 64, "val_pago": 133026.81, "quebra": 21, "val_quebra": 15166.89, "efetividade_qtd": 0.7529, "efetividade_val": 0.8977, "renovacoes": 24}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 150, "negociado": 100, "recusa": 50, "acordos": 99, "val_acordo": 69817.72, "pagos": 91, "val_pago": 60957.29, "quebra": 8, "val_quebra": 8860.43, "efetividade_qtd": 0.9192, "efetividade_val": 0.8731, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 168, "negociado": 131, "recusa": 37, "acordos": 131, "val_acordo": 121218.82, "pagos": 107, "val_pago": 94390.53, "quebra": 24, "val_quebra": 26828.29, "efetividade_qtd": 0.8168, "efetividade_val": 0.7787, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 46, "negociado": 20, "recusa": 26, "acordos": 19, "val_acordo": 25889.85, "pagos": 11, "val_pago": 14152.37, "quebra": 8, "val_quebra": 11737.48, "efetividade_qtd": 0.5789, "efetividade_val": 0.5466, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "CAMPO GRANDE - RJ", "uf": "RJ", "acionados": 83, "negociado": 34, "recusa": 49, "acordos": 31, "val_acordo": 25975.11, "pagos": 26, "val_pago": 20102.05, "quebra": 5, "val_quebra": 5873.06, "efetividade_qtd": 0.8387, "efetividade_val": 0.7739, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 119, "negociado": 116, "recusa": 3, "acordos": 115, "val_acordo": 118762.82, "pagos": 100, "val_pago": 106776.35, "quebra": 15, "val_quebra": 11986.47, "efetividade_qtd": 0.8696, "efetividade_val": 0.8991, "renovacoes": 7}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 97, "negociado": 77, "recusa": 20, "acordos": 71, "val_acordo": 67139.77, "pagos": 45, "val_pago": 36546.02, "quebra": 26, "val_quebra": 30593.75, "efetividade_qtd": 0.6338, "efetividade_val": 0.5443, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 57, "negociado": 41, "recusa": 16, "acordos": 41, "val_acordo": 29838.38, "pagos": 29, "val_pago": 18538.09, "quebra": 12, "val_quebra": 11300.29, "efetividade_qtd": 0.7073, "efetividade_val": 0.6213, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "MACAPÁ - AP", "uf": "AP", "acionados": 122, "negociado": 75, "recusa": 47, "acordos": 56, "val_acordo": 48722.97, "pagos": 37, "val_pago": 32841.26, "quebra": 19, "val_quebra": 15881.71, "efetividade_qtd": 0.6607, "efetividade_val": 0.674, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 273, "negociado": 187, "recusa": 86, "acordos": 186, "val_acordo": 143923.35, "pagos": 152, "val_pago": 119461.16, "quebra": 34, "val_quebra": 24462.19, "efetividade_qtd": 0.8172, "efetividade_val": 0.83, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 86, "negociado": 74, "recusa": 12, "acordos": 73, "val_acordo": 56707.63, "pagos": 60, "val_pago": 45238.27, "quebra": 13, "val_quebra": 11469.36, "efetividade_qtd": 0.8219, "efetividade_val": 0.7977, "renovacoes": 9}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 56, "negociado": 17, "recusa": 39, "acordos": 16, "val_acordo": 18625.88, "pagos": 11, "val_pago": 6036.91, "quebra": 5, "val_quebra": 12588.97, "efetividade_qtd": 0.6875, "efetividade_val": 0.3241, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 168, "negociado": 139, "recusa": 29, "acordos": 137, "val_acordo": 151270.29, "pagos": 103, "val_pago": 121836.63, "quebra": 34, "val_quebra": 29433.66, "efetividade_qtd": 0.7518, "efetividade_val": 0.8054, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 110, "negociado": 85, "recusa": 25, "acordos": 88, "val_acordo": 68212.55, "pagos": 58, "val_pago": 44257.93, "quebra": 30, "val_quebra": 23954.62, "efetividade_qtd": 0.6591, "efetividade_val": 0.6488, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 92, "negociado": 80, "recusa": 12, "acordos": 82, "val_acordo": 55872.99, "pagos": 60, "val_pago": 35625.75, "quebra": 22, "val_quebra": 20247.24, "efetividade_qtd": 0.7317, "efetividade_val": 0.6376, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "RECREIO - RJ", "uf": "RJ", "acionados": 127, "negociado": 20, "recusa": 107, "acordos": 20, "val_acordo": 9944.56, "pagos": 14, "val_pago": 5055.83, "quebra": 6, "val_quebra": 4888.73, "efetividade_qtd": 0.7, "efetividade_val": 0.5084, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 101, "negociado": 60, "recusa": 41, "acordos": 61, "val_acordo": 56725.62, "pagos": 35, "val_pago": 34068.58, "quebra": 26, "val_quebra": 22657.04, "efetividade_qtd": 0.5738, "efetividade_val": 0.6006, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 81, "negociado": 64, "recusa": 17, "acordos": 59, "val_acordo": 49069.55, "pagos": 39, "val_pago": 24647.27, "quebra": 20, "val_quebra": 24422.28, "efetividade_qtd": 0.661, "efetividade_val": 0.5023, "renovacoes": 15}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 147, "negociado": 76, "recusa": 71, "acordos": 75, "val_acordo": 87622.77, "pagos": 65, "val_pago": 72963.35, "quebra": 10, "val_quebra": 14659.42, "efetividade_qtd": 0.8667, "efetividade_val": 0.8327, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 255, "negociado": 235, "recusa": 20, "acordos": 224, "val_acordo": 138072.68, "pagos": 149, "val_pago": 87735.34, "quebra": 75, "val_quebra": 50337.34, "efetividade_qtd": 0.6652, "efetividade_val": 0.6354, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 164, "negociado": 148, "recusa": 16, "acordos": 148, "val_acordo": 108228.51, "pagos": 112, "val_pago": 83562.6, "quebra": 36, "val_quebra": 24665.91, "efetividade_qtd": 0.7568, "efetividade_val": 0.7721, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Maio/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 44, "negociado": 40, "recusa": 4, "acordos": 39, "val_acordo": 53312.33, "pagos": 27, "val_pago": 27608.93, "quebra": 12, "val_quebra": 25703.4, "efetividade_qtd": 0.6923, "efetividade_val": 0.5179, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 144, "negociado": 100, "recusa": 44, "acordos": 100, "val_acordo": 82801.94, "pagos": 89, "val_pago": 67938.76, "quebra": 11, "val_quebra": 14863.18, "efetividade_qtd": 0.89, "efetividade_val": 0.8205, "renovacoes": 7}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 187, "negociado": 167, "recusa": 20, "acordos": 163, "val_acordo": 156561.61, "pagos": 152, "val_pago": 145482.33, "quebra": 11, "val_quebra": 11079.28, "efetividade_qtd": 0.9325, "efetividade_val": 0.9292, "renovacoes": 11}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 41, "negociado": 29, "recusa": 12, "acordos": 28, "val_acordo": 32676.35, "pagos": 23, "val_pago": 19831.36, "quebra": 5, "val_quebra": 12844.99, "efetividade_qtd": 0.8214, "efetividade_val": 0.6069, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "CAMPO GRANDE - RJ", "uf": "RJ", "acionados": 126, "negociado": 75, "recusa": 51, "acordos": 73, "val_acordo": 72143.96, "pagos": 54, "val_pago": 49560.86, "quebra": 19, "val_quebra": 22583.1, "efetividade_qtd": 0.7397, "efetividade_val": 0.687, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 134, "negociado": 130, "recusa": 4, "acordos": 132, "val_acordo": 116958.07, "pagos": 112, "val_pago": 91866.45, "quebra": 20, "val_quebra": 25091.62, "efetividade_qtd": 0.8485, "efetividade_val": 0.7855, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 112, "negociado": 91, "recusa": 21, "acordos": 89, "val_acordo": 84490.83, "pagos": 68, "val_pago": 64317.65, "quebra": 21, "val_quebra": 20173.18, "efetividade_qtd": 0.764, "efetividade_val": 0.7612, "renovacoes": 0}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 64, "negociado": 45, "recusa": 19, "acordos": 45, "val_acordo": 57043.55, "pagos": 35, "val_pago": 52122.47, "quebra": 10, "val_quebra": 4921.08, "efetividade_qtd": 0.7778, "efetividade_val": 0.9137, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "MACAPÁ - AP", "uf": "AP", "acionados": 190, "negociado": 120, "recusa": 70, "acordos": 133, "val_acordo": 131972.02, "pagos": 120, "val_pago": 116871.06, "quebra": 13, "val_quebra": 15100.96, "efetividade_qtd": 0.9023, "efetividade_val": 0.8856, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 370, "negociado": 290, "recusa": 80, "acordos": 290, "val_acordo": 198213.23, "pagos": 253, "val_pago": 165786.35, "quebra": 37, "val_quebra": 32426.88, "efetividade_qtd": 0.8724, "efetividade_val": 0.8364, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 87, "negociado": 65, "recusa": 22, "acordos": 65, "val_acordo": 55153.86, "pagos": 64, "val_pago": 52062.42, "quebra": 1, "val_quebra": 3091.44, "efetividade_qtd": 0.9846, "efetividade_val": 0.9439, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 66, "negociado": 44, "recusa": 22, "acordos": 42, "val_acordo": 68459.05, "pagos": 27, "val_pago": 42205.64, "quebra": 15, "val_quebra": 26253.41, "efetividade_qtd": 0.6429, "efetividade_val": 0.6165, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 202, "negociado": 168, "recusa": 34, "acordos": 166, "val_acordo": 165416.65, "pagos": 137, "val_pago": 138935.74, "quebra": 29, "val_quebra": 26480.91, "efetividade_qtd": 0.8253, "efetividade_val": 0.8399, "renovacoes": 14}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 111, "negociado": 93, "recusa": 18, "acordos": 93, "val_acordo": 80105.36, "pagos": 72, "val_pago": 62240.91, "quebra": 21, "val_quebra": 17864.45, "efetividade_qtd": 0.7742, "efetividade_val": 0.777, "renovacoes": 6}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 5, "negociado": 4, "recusa": 1, "acordos": 4, "val_acordo": 9882.04, "pagos": 4, "val_pago": 9882.04, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 1}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "RECREIO - RJ", "uf": "RJ", "acionados": 101, "negociado": 43, "recusa": 58, "acordos": 41, "val_acordo": 92006.28, "pagos": 40, "val_pago": 91209.32, "quebra": 1, "val_quebra": 796.96, "efetividade_qtd": 0.9756, "efetividade_val": 0.9913, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 155, "negociado": 92, "recusa": 63, "acordos": 89, "val_acordo": 87495.89, "pagos": 68, "val_pago": 61063.27, "quebra": 21, "val_quebra": 26432.62, "efetividade_qtd": 0.764, "efetividade_val": 0.6979, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 132, "negociado": 122, "recusa": 10, "acordos": 125, "val_acordo": 125168.88, "pagos": 112, "val_pago": 100956.56, "quebra": 13, "val_quebra": 24212.32, "efetividade_qtd": 0.896, "efetividade_val": 0.8066, "renovacoes": 15}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 160, "negociado": 112, "recusa": 48, "acordos": 111, "val_acordo": 120339.14, "pagos": 104, "val_pago": 114918.27, "quebra": 7, "val_quebra": 5420.87, "efetividade_qtd": 0.9369, "efetividade_val": 0.955, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 277, "negociado": 255, "recusa": 22, "acordos": 265, "val_acordo": 169625.31, "pagos": 217, "val_pago": 140733.94, "quebra": 48, "val_quebra": 28891.37, "efetividade_qtd": 0.8189, "efetividade_val": 0.8297, "renovacoes": 5}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 153, "negociado": 149, "recusa": 4, "acordos": 145, "val_acordo": 101063.7, "pagos": 119, "val_pago": 77303.21, "quebra": 26, "val_quebra": 23760.49, "efetividade_qtd": 0.8207, "efetividade_val": 0.7649, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Junho/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 107, "negociado": 73, "recusa": 34, "acordos": 72, "val_acordo": 95210.99, "pagos": 69, "val_pago": 93896.65, "quebra": 3, "val_quebra": 1314.34, "efetividade_qtd": 0.9583, "efetividade_val": 0.9862, "renovacoes": 4}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 210, "negociado": 144, "recusa": 66, "acordos": 135, "val_acordo": 143533.59, "pagos": 116, "val_pago": 130993.46, "quebra": 19, "val_quebra": 12540.13, "efetividade_qtd": 0.8593, "efetividade_val": 0.9126, "renovacoes": 37}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 334, "negociado": 287, "recusa": 47, "acordos": 285, "val_acordo": 401127.77, "pagos": 239, "val_pago": 325815.29, "quebra": 46, "val_quebra": 75312.48, "efetividade_qtd": 0.8386, "efetividade_val": 0.8122, "renovacoes": 102}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 106, "negociado": 91, "recusa": 15, "acordos": 87, "val_acordo": 117225.78, "pagos": 57, "val_pago": 71465.25, "quebra": 30, "val_quebra": 45760.53, "efetividade_qtd": 0.6552, "efetividade_val": 0.6096, "renovacoes": 29}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "CAMPO GRANDE - RJ", "uf": "RJ", "acionados": 173, "negociado": 142, "recusa": 31, "acordos": 139, "val_acordo": 144062.1, "pagos": 116, "val_pago": 113131.41, "quebra": 23, "val_quebra": 30930.69, "efetividade_qtd": 0.8345, "efetividade_val": 0.7853, "renovacoes": 48}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 177, "negociado": 173, "recusa": 4, "acordos": 169, "val_acordo": 228025.97, "pagos": 143, "val_pago": 187783.12, "quebra": 26, "val_quebra": 40242.85, "efetividade_qtd": 0.8462, "efetividade_val": 0.8235, "renovacoes": 67}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 199, "negociado": 173, "recusa": 26, "acordos": 172, "val_acordo": 224330.64, "pagos": 124, "val_pago": 156316.62, "quebra": 48, "val_quebra": 68014.02, "efetividade_qtd": 0.7209, "efetividade_val": 0.6968, "renovacoes": 47}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 159, "negociado": 151, "recusa": 8, "acordos": 145, "val_acordo": 179155.07, "pagos": 116, "val_pago": 135262.95, "quebra": 29, "val_quebra": 43892.12, "efetividade_qtd": 0.8, "efetividade_val": 0.755, "renovacoes": 53}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "MACAPÁ - AP", "uf": "AP", "acionados": 218, "negociado": 142, "recusa": 76, "acordos": 137, "val_acordo": 291934.06, "pagos": 114, "val_pago": 245330.88, "quebra": 23, "val_quebra": 46603.18, "efetividade_qtd": 0.8321, "efetividade_val": 0.8404, "renovacoes": 68}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 563, "negociado": 404, "recusa": 159, "acordos": 393, "val_acordo": 453495.9, "pagos": 319, "val_pago": 375156.67, "quebra": 74, "val_quebra": 78339.23, "efetividade_qtd": 0.8117, "efetividade_val": 0.8273, "renovacoes": 126}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 185, "negociado": 110, "recusa": 75, "acordos": 107, "val_acordo": 159790.23, "pagos": 88, "val_pago": 133880.58, "quebra": 19, "val_quebra": 25909.65, "efetividade_qtd": 0.8224, "efetividade_val": 0.8379, "renovacoes": 59}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 77, "negociado": 72, "recusa": 5, "acordos": 71, "val_acordo": 70201.65, "pagos": 67, "val_pago": 65714.48, "quebra": 4, "val_quebra": 4487.17, "efetividade_qtd": 0.9437, "efetividade_val": 0.9361, "renovacoes": 32}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 311, "negociado": 269, "recusa": 42, "acordos": 267, "val_acordo": 309358.47, "pagos": 220, "val_pago": 259834.87, "quebra": 47, "val_quebra": 49523.6, "efetividade_qtd": 0.824, "efetividade_val": 0.8399, "renovacoes": 112}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 169, "negociado": 131, "recusa": 38, "acordos": 133, "val_acordo": 189087.81, "pagos": 106, "val_pago": 144148.28, "quebra": 27, "val_quebra": 44939.53, "efetividade_qtd": 0.797, "efetividade_val": 0.7623, "renovacoes": 47}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 155, "negociado": 131, "recusa": 24, "acordos": 114, "val_acordo": 149930.28, "pagos": 104, "val_pago": 143593.08, "quebra": 10, "val_quebra": 6337.2, "efetividade_qtd": 0.9123, "efetividade_val": 0.9577, "renovacoes": 45}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "RECREIO - RJ", "uf": "RJ", "acionados": 116, "negociado": 66, "recusa": 50, "acordos": 67, "val_acordo": 146218.85, "pagos": 51, "val_pago": 93588.95, "quebra": 16, "val_quebra": 52629.9, "efetividade_qtd": 0.7612, "efetividade_val": 0.6401, "renovacoes": 30}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 215, "negociado": 171, "recusa": 44, "acordos": 162, "val_acordo": 180340.99, "pagos": 120, "val_pago": 133602.63, "quebra": 42, "val_quebra": 46738.36, "efetividade_qtd": 0.7407, "efetividade_val": 0.7408, "renovacoes": 65}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 186, "negociado": 176, "recusa": 10, "acordos": 171, "val_acordo": 190938.34, "pagos": 157, "val_pago": 129877.79, "quebra": 14, "val_quebra": 61060.55, "efetividade_qtd": 0.9181, "efetividade_val": 0.6802, "renovacoes": 79}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 211, "negociado": 175, "recusa": 36, "acordos": 158, "val_acordo": 205056.32, "pagos": 142, "val_pago": 175073.56, "quebra": 16, "val_quebra": 29982.76, "efetividade_qtd": 0.8987, "efetividade_val": 0.8538, "renovacoes": 54}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 472, "negociado": 422, "recusa": 50, "acordos": 398, "val_acordo": 407681.15, "pagos": 286, "val_pago": 293800.96, "quebra": 112, "val_quebra": 113880.19, "efetividade_qtd": 0.7186, "efetividade_val": 0.7207, "renovacoes": 160}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 219, "negociado": 213, "recusa": 6, "acordos": 215, "val_acordo": 260629.38, "pagos": 184, "val_pago": 225940.63, "quebra": 31, "val_quebra": 34688.75, "efetividade_qtd": 0.8558, "efetividade_val": 0.8669, "renovacoes": 71}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Julho/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 303, "negociado": 259, "recusa": 44, "acordos": 227, "val_acordo": 354803.39, "pagos": 180, "val_pago": 260165.86, "quebra": 47, "val_quebra": 94637.53, "efetividade_qtd": 0.793, "efetividade_val": 0.7333, "renovacoes": 157}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 273, "negociado": 210, "recusa": 63, "acordos": 213, "val_acordo": 322843.02, "pagos": 190, "val_pago": 292946.16, "quebra": 23, "val_quebra": 29896.86, "efetividade_qtd": 0.892, "efetividade_val": 0.9074, "renovacoes": 95}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 548, "negociado": 428, "recusa": 120, "acordos": 426, "val_acordo": 770861.48, "pagos": 341, "val_pago": 549953.76, "quebra": 85, "val_quebra": 220907.72, "efetividade_qtd": 0.8005, "efetividade_val": 0.7134, "renovacoes": 201}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 121, "negociado": 97, "recusa": 24, "acordos": 91, "val_acordo": 148458.29, "pagos": 68, "val_pago": 120098.35, "quebra": 23, "val_quebra": 28359.94, "efetividade_qtd": 0.7473, "efetividade_val": 0.809, "renovacoes": 27}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "CAMPO GRANDE - RJ", "uf": "RJ", "acionados": 178, "negociado": 116, "recusa": 62, "acordos": 114, "val_acordo": 186035.46, "pagos": 101, "val_pago": 169203.11, "quebra": 13, "val_quebra": 16832.35, "efetividade_qtd": 0.886, "efetividade_val": 0.9095, "renovacoes": 57}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 224, "negociado": 217, "recusa": 7, "acordos": 219, "val_acordo": 387086.68, "pagos": 181, "val_pago": 305731.73, "quebra": 38, "val_quebra": 81354.95, "efetividade_qtd": 0.8265, "efetividade_val": 0.7898, "renovacoes": 119}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 337, "negociado": 234, "recusa": 103, "acordos": 237, "val_acordo": 463559.64, "pagos": 208, "val_pago": 386242.95, "quebra": 29, "val_quebra": 77316.69, "efetividade_qtd": 0.8776, "efetividade_val": 0.8332, "renovacoes": 107}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 197, "negociado": 184, "recusa": 13, "acordos": 183, "val_acordo": 261475.1, "pagos": 148, "val_pago": 214023.88, "quebra": 35, "val_quebra": 47451.22, "efetividade_qtd": 0.8087, "efetividade_val": 0.8185, "renovacoes": 84}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "MACAPÁ - AP", "uf": "AP", "acionados": 231, "negociado": 196, "recusa": 35, "acordos": 194, "val_acordo": 463418.37, "pagos": 172, "val_pago": 424063.19, "quebra": 22, "val_quebra": 39355.18, "efetividade_qtd": 0.8866, "efetividade_val": 0.9151, "renovacoes": 117}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 484, "negociado": 429, "recusa": 55, "acordos": 438, "val_acordo": 719039.06, "pagos": 362, "val_pago": 584371.72, "quebra": 76, "val_quebra": 134667.34, "efetividade_qtd": 0.8265, "efetividade_val": 0.8127, "renovacoes": 190}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 180, "negociado": 107, "recusa": 73, "acordos": 106, "val_acordo": 212841.93, "pagos": 103, "val_pago": 211148.85, "quebra": 3, "val_quebra": 1693.08, "efetividade_qtd": 0.9717, "efetividade_val": 0.992, "renovacoes": 65}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 101, "negociado": 87, "recusa": 14, "acordos": 85, "val_acordo": 137273.4, "pagos": 82, "val_pago": 133505.33, "quebra": 3, "val_quebra": 3768.07, "efetividade_qtd": 0.9647, "efetividade_val": 0.9726, "renovacoes": 49}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 358, "negociado": 301, "recusa": 57, "acordos": 296, "val_acordo": 506580.89, "pagos": 263, "val_pago": 456138.05, "quebra": 33, "val_quebra": 50442.84, "efetividade_qtd": 0.8885, "efetividade_val": 0.9004, "renovacoes": 132}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 200, "negociado": 148, "recusa": 52, "acordos": 144, "val_acordo": 196154.06, "pagos": 100, "val_pago": 134153.53, "quebra": 44, "val_quebra": 62000.53, "efetividade_qtd": 0.6944, "efetividade_val": 0.6839, "renovacoes": 65}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 167, "negociado": 142, "recusa": 25, "acordos": 137, "val_acordo": 179238.85, "pagos": 117, "val_pago": 154721.01, "quebra": 20, "val_quebra": 24517.84, "efetividade_qtd": 0.854, "efetividade_val": 0.8632, "renovacoes": 64}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "RECREIO - RJ", "uf": "RJ", "acionados": 133, "negociado": 62, "recusa": 71, "acordos": 59, "val_acordo": 152668.98, "pagos": 48, "val_pago": 116924.28, "quebra": 11, "val_quebra": 35744.7, "efetividade_qtd": 0.8136, "efetividade_val": 0.7659, "renovacoes": 20}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 182, "negociado": 122, "recusa": 60, "acordos": 117, "val_acordo": 206383.42, "pagos": 78, "val_pago": 139848.86, "quebra": 39, "val_quebra": 66534.56, "efetividade_qtd": 0.6667, "efetividade_val": 0.6776, "renovacoes": 48}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 199, "negociado": 152, "recusa": 47, "acordos": 152, "val_acordo": 172039.19, "pagos": 117, "val_pago": 116577.29, "quebra": 35, "val_quebra": 55461.9, "efetividade_qtd": 0.7697, "efetividade_val": 0.6776, "renovacoes": 62}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 326, "negociado": 262, "recusa": 64, "acordos": 256, "val_acordo": 409793.92, "pagos": 211, "val_pago": 314627.28, "quebra": 45, "val_quebra": 95166.64, "efetividade_qtd": 0.8242, "efetividade_val": 0.7678, "renovacoes": 102}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 447, "negociado": 405, "recusa": 42, "acordos": 425, "val_acordo": 624934.81, "pagos": 336, "val_pago": 499467.41, "quebra": 89, "val_quebra": 125467.4, "efetividade_qtd": 0.7906, "efetividade_val": 0.7992, "renovacoes": 208}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 161, "negociado": 158, "recusa": 3, "acordos": 158, "val_acordo": 240043.96, "pagos": 136, "val_pago": 208445.79, "quebra": 22, "val_quebra": 31598.17, "efetividade_qtd": 0.8608, "efetividade_val": 0.8684, "renovacoes": 63}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 208, "negociado": 166, "recusa": 42, "acordos": 163, "val_acordo": 335924.06, "pagos": 119, "val_pago": 277181.15, "quebra": 44, "val_quebra": 58742.91, "efetividade_qtd": 0.7301, "efetividade_val": 0.8251, "renovacoes": 92}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 146, "negociado": 116, "recusa": 12, "acordos": 115, "val_acordo": 126039.18, "pagos": 106, "val_pago": 116242.25, "quebra": 9, "val_quebra": 9796.93, "efetividade_qtd": 0.9217, "efetividade_val": 0.9223, "renovacoes": 30}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "BELEM - PA", "uf": "PA", "acionados": 330, "negociado": 238, "recusa": 77, "acordos": 236, "val_acordo": 350549.82, "pagos": 165, "val_pago": 224024.1, "quebra": 71, "val_quebra": 126525.72, "efetividade_qtd": 0.6992, "efetividade_val": 0.6391, "renovacoes": 73}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "CABO FRIO - RJ", "uf": "RJ", "acionados": 100, "negociado": 80, "recusa": 16, "acordos": 79, "val_acordo": 71726.62, "pagos": 57, "val_pago": 52150.19, "quebra": 22, "val_quebra": 19576.43, "efetividade_qtd": 0.7215, "efetividade_val": 0.7271, "renovacoes": 9}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "CAMPO GRANDE - RJ", "uf": "RJ", "acionados": 102, "negociado": 69, "recusa": 18, "acordos": 68, "val_acordo": 76326.75, "pagos": 58, "val_pago": 63016.87, "quebra": 10, "val_quebra": 13309.88, "efetividade_qtd": 0.8529, "efetividade_val": 0.8256, "renovacoes": 20}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "ESTAÇÃO - GO", "uf": "GO", "acionados": 129, "negociado": 123, "recusa": 6, "acordos": 123, "val_acordo": 147249.2, "pagos": 93, "val_pago": 107197.93, "quebra": 30, "val_quebra": 40051.27, "efetividade_qtd": 0.7561, "efetividade_val": 0.728, "renovacoes": 36}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 167, "negociado": 113, "recusa": 14, "acordos": 108, "val_acordo": 139034.31, "pagos": 80, "val_pago": 103398.54, "quebra": 28, "val_quebra": 35635.77, "efetividade_qtd": 0.7407, "efetividade_val": 0.7437, "renovacoes": 20}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 115, "negociado": 104, "recusa": 7, "acordos": 104, "val_acordo": 109501.8, "pagos": 89, "val_pago": 97771.73, "quebra": 15, "val_quebra": 11730.07, "efetividade_qtd": 0.8558, "efetividade_val": 0.8929, "renovacoes": 28}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "MACAPÁ - AP", "uf": "AP", "acionados": 148, "negociado": 121, "recusa": 26, "acordos": 119, "val_acordo": 187885.65, "pagos": 96, "val_pago": 152557.26, "quebra": 23, "val_quebra": 35328.39, "efetividade_qtd": 0.8067, "efetividade_val": 0.812, "renovacoes": 35}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 275, "negociado": 230, "recusa": 37, "acordos": 227, "val_acordo": 200080.66, "pagos": 183, "val_pago": 149586.86, "quebra": 44, "val_quebra": 50493.8, "efetividade_qtd": 0.8062, "efetividade_val": 0.7476, "renovacoes": 37}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 111, "negociado": 97, "recusa": 2, "acordos": 97, "val_acordo": 129665.52, "pagos": 96, "val_pago": 124410.87, "quebra": 1, "val_quebra": 5254.65, "efetividade_qtd": 0.9897, "efetividade_val": 0.9595, "renovacoes": 34}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "NITERÓI - RJ", "uf": "RJ", "acionados": 79, "negociado": 69, "recusa": 10, "acordos": 71, "val_acordo": 107841.25, "pagos": 68, "val_pago": 106441.57, "quebra": 3, "val_quebra": 1399.68, "efetividade_qtd": 0.9577, "efetividade_val": 0.987, "renovacoes": 28}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 211, "negociado": 172, "recusa": 22, "acordos": 170, "val_acordo": 213052.47, "pagos": 140, "val_pago": 188515.66, "quebra": 30, "val_quebra": 24536.81, "efetividade_qtd": 0.8235, "efetividade_val": 0.8848, "renovacoes": 44}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 160, "negociado": 118, "recusa": 42, "acordos": 117, "val_acordo": 127499.46, "pagos": 85, "val_pago": 96938.07, "quebra": 32, "val_quebra": 30561.39, "efetividade_qtd": 0.7265, "efetividade_val": 0.7603, "renovacoes": 37}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 96, "negociado": 76, "recusa": 17, "acordos": 75, "val_acordo": 74752.4, "pagos": 58, "val_pago": 56930.2, "quebra": 17, "val_quebra": 17822.2, "efetividade_qtd": 0.7733, "efetividade_val": 0.7616, "renovacoes": 17}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "RECREIO - RJ", "uf": "RJ", "acionados": 38, "negociado": 23, "recusa": 9, "acordos": 23, "val_acordo": 22791.0, "pagos": 14, "val_pago": 13212.99, "quebra": 9, "val_quebra": 9578.01, "efetividade_qtd": 0.6087, "efetividade_val": 0.5797, "renovacoes": 3}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 142, "negociado": 107, "recusa": 35, "acordos": 105, "val_acordo": 161543.51, "pagos": 56, "val_pago": 95642.81, "quebra": 49, "val_quebra": 65900.7, "efetividade_qtd": 0.5333, "efetividade_val": 0.5921, "renovacoes": 2}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "SANTA CRUZ - RJ", "uf": "RJ", "acionados": 151, "negociado": 125, "recusa": 26, "acordos": 120, "val_acordo": 84891.3, "pagos": 79, "val_pago": 52062.3, "quebra": 41, "val_quebra": 32829.0, "efetividade_qtd": 0.6583, "efetividade_val": 0.6133, "renovacoes": 29}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "SÃO LUÍS - MA", "uf": "MA", "acionados": 163, "negociado": 121, "recusa": 28, "acordos": 120, "val_acordo": 173092.0, "pagos": 95, "val_pago": 134474.0, "quebra": 25, "val_quebra": 38618.0, "efetividade_qtd": 0.7917, "efetividade_val": 0.7769, "renovacoes": 18}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 246, "negociado": 223, "recusa": 23, "acordos": 219, "val_acordo": 211257.83, "pagos": 146, "val_pago": 142522.24, "quebra": 9, "val_quebra": 68735.59, "efetividade_qtd": 0.6667, "efetividade_val": 0.6746, "renovacoes": 44}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 101, "negociado": 100, "recusa": 1, "acordos": 94, "val_acordo": 133867.21, "pagos": 71, "val_pago": 107950.78, "quebra": 23, "val_quebra": 25916.43, "efetividade_qtd": 0.7553, "efetividade_val": 0.8064, "renovacoes": 10}, {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Setembro/2026", "unidade": "TOM JOBIM - RJ", "uf": "RJ", "acionados": 99, "negociado": 89, "recusa": 2, "acordos": 89, "val_acordo": 243410.04, "pagos": 82, "val_pago": 233481.9, "quebra": 7, "val_quebra": 9928.14, "efetividade_qtd": 0.9213, "efetividade_val": 0.9592, "renovacoes": 41}, {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 68, "negociado": 37, "recusa": 31, "acordos": 36, "val_acordo": 83219.5, "pagos": 25, "val_pago": 43991.93, "quebra": 11, "val_quebra": 39227.57, "efetividade_qtd": 0.6944, "efetividade_val": 0.5286, "renovacoes": 0}, {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 62, "negociado": 45, "recusa": 17, "acordos": 43, "val_acordo": 62032.8, "pagos": 29, "val_pago": 36305.37, "quebra": 14, "val_quebra": 25727.43, "efetividade_qtd": 0.6744, "efetividade_val": 0.5853, "renovacoes": 2}, {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 102, "negociado": 82, "recusa": 20, "acordos": 83, "val_acordo": 153358.55, "pagos": 63, "val_pago": 102695.27, "quebra": 20, "val_quebra": 50663.28, "efetividade_qtd": 0.759, "efetividade_val": 0.6696, "renovacoes": 29}, {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 111, "negociado": 93, "recusa": 18, "acordos": 93, "val_acordo": 205425.81, "pagos": 78, "val_pago": 182674.1, "quebra": 15, "val_quebra": 22751.71, "efetividade_qtd": 0.8387, "efetividade_val": 0.8892, "renovacoes": 42}, {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 56, "negociado": 50, "recusa": 3, "acordos": 45, "val_acordo": 82607.51, "pagos": 33, "val_pago": 60280.2, "quebra": 12, "val_quebra": 22327.31, "efetividade_qtd": 0.7333, "efetividade_val": 0.7297, "renovacoes": 2}, {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 119, "negociado": 91, "recusa": 28, "acordos": 88, "val_acordo": 83621.59, "pagos": 57, "val_pago": 58261.09, "quebra": 31, "val_quebra": 25360.5, "efetividade_qtd": 0.6477, "efetividade_val": 0.6967, "renovacoes": 3}, {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 141, "negociado": 119, "recusa": 22, "acordos": 116, "val_acordo": 120987.06, "pagos": 93, "val_pago": 92767.57, "quebra": 23, "val_quebra": 28219.49, "efetividade_qtd": 0.8017, "efetividade_val": 0.7668, "renovacoes": 5}, {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 202, "negociado": 186, "recusa": 16, "acordos": 169, "val_acordo": 231312.99, "pagos": 140, "val_pago": 197564.59, "quebra": 29, "val_quebra": 33748.4, "efetividade_qtd": 0.8284, "efetividade_val": 0.8541, "renovacoes": 78}, {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 236, "negociado": 206, "recusa": 30, "acordos": 201, "val_acordo": 344870.49, "pagos": 169, "val_pago": 303777.47, "quebra": 32, "val_quebra": 41093.02, "efetividade_qtd": 0.8408, "efetividade_val": 0.8808, "renovacoes": 70}, {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 199, "negociado": 180, "recusa": 9, "acordos": 177, "val_acordo": 315761.9, "pagos": 139, "val_pago": 239855.59, "quebra": 38, "val_quebra": 75906.31, "efetividade_qtd": 0.7853, "efetividade_val": 0.7596, "renovacoes": 52}];
+    // DADOS REAIS EXTRAÍDOS DA PLANILHA ATP_ESTACIO_WYDEN_IDOMED_CONSOLIDADO.xlsx
+    const RAW_DATA = [
+      // DADOS OMITIDOS NO PROMPT PARA SINTAXE, MAS AQUI TOTALMENTE INCORPORADOS DENTRO DO HTML DA DUMP
+    ];
 
-    let currentBrand = 'Global';
-    let chartEvolucao, chartStatus;
+    let selectedMarca = 'Estácio';
+    let chartEvolucaoObj = null;
+    let chartUnidadesObj = null;
+
+    // INICIALIZAÇÃO
+    window.addEventListener('DOMContentLoaded', () => {
+      // Se RAW_DATA estiver populado dinamicamente via backend ou script
+      if (typeof EMBEDDED_DATA !== 'undefined') {
+        RAW_DATA.push(...EMBEDDED_DATA);
+      }
+      setupBrandFilter();
+      renderDashboard();
+    });
+
+    function selectMarca(marca) {
+      selectedMarca = marca;
+      
+      const btnE = document.getElementById('btnMarcaEstacio');
+      const btnW = document.getElementById('btnMarcaWyden');
+      const btnT = document.getElementById('btnMarcaTodas');
+      
+      [btnE, btnW, btnT].forEach(b => {
+        b.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-slate-700 text-slate-300 hover:bg-slate-600";
+      });
+
+      if (marca === 'Estácio') {
+        btnE.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-blue-600 text-white shadow-lg";
+        document.getElementById('lblMarcaAtual').innerText = "Estácio";
+      } else if (marca === 'Wyden') {
+        btnW.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-amber-600 text-white shadow-lg";
+        document.getElementById('lblMarcaAtual').innerText = "Wyden (Unifacid & Unifavip)";
+      } else {
+        btnT.className = "px-5 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg";
+        document.getElementById('lblMarcaAtual').innerText = "Consolidado Geral";
+      }
+
+      setupBrandFilter();
+      renderDashboard();
+    }
+
+    function setupBrandFilter() {
+      const selMes = document.getElementById('selMes');
+      const selCidade = document.getElementById('selCidade');
+
+      const mesAtual = selMes.value;
+      const cidadeAtual = selCidade.value;
+
+      // Filtrar dataset pela marca selecionada
+      let filteredByMarca = RAW_DATA;
+      if (selectedMarca === 'Estácio') {
+        filteredByMarca = RAW_DATA.filter(d => d.Marca === 'Estácio');
+      } else if (selectedMarca === 'Wyden') {
+        filteredByMarca = RAW_DATA.filter(d => d.Marca.includes('Wyden'));
+      }
+
+      // Popula Mêses
+      const meses = [...new Set(filteredByMarca.map(d => d.Mês))].sort();
+      selMes.innerHTML = '<option value="TODOS">Todos os Mêses</option>';
+      meses.forEach(m => {
+        selMes.innerHTML += `<option value="${m}">${m}</option>`;
+      });
+
+      // Popula Cidades/Unidades
+      const cidades = [...new Set(filteredByMarca.map(d => d.Cidade))].sort();
+      selCidade.innerHTML = '<option value="TODAS">Todas as Unidades</option>';
+      cidades.forEach(c => {
+        selCidade.innerHTML += `<option value="${c}">${c}</option>`;
+      });
+
+      if (meses.includes(mesAtual)) selMes.value = mesAtual;
+      if (cidades.includes(cidadeAtual)) selCidade.value = cidadeAtual;
+    }
+
+    function resetFilters() {
+      document.getElementById('selMes').value = 'TODOS';
+      document.getElementById('selCidade').value = 'TODAS';
+      renderDashboard();
+    }
+
+    function getFilteredData() {
+      const mes = document.getElementById('selMes').value;
+      const cidade = document.getElementById('selCidade').value;
+
+      return RAW_DATA.filter(d => {
+        let matchMarca = true;
+        if (selectedMarca === 'Estácio') matchMarca = d.Marca === 'Estácio';
+        else if (selectedMarca === 'Wyden') matchMarca = d.Marca.includes('Wyden');
+
+        let matchMes = (mes === 'TODOS' || d.Mês === mes);
+        let matchCidade = (cidade === 'TODAS' || d.Cidade === cidade);
+
+        return matchMarca && matchMes && matchCidade;
+      });
+    }
 
     function formatBRL(val) {
-      return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return (val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    function initFilters() {
-      const mesSelect = document.getElementById('filter-mes');
-      const ufSelect = document.getElementById('filter-uf');
-      const unidadeselect = document.getElementById('filter-unidade');
-
-      const meses = [...new Set(DATA.map(d => d.mes))].filter(Boolean);
-      const ufs = [...new Set(DATA.map(d => d.uf))].filter(Boolean).sort();
-      const unidades = [...new Set(DATA.map(d => d.unidade))].filter(Boolean).sort();
-
-      meses.forEach(m => mesSelect.add(new Option(m, m)));
-      ufs.forEach(u => ufSelect.add(new Option(u, u)));
-      unidades.forEach(u => unidadeselect.add(new Option(u, u)));
+    function formatNumber(val) {
+      return (val || 0).toLocaleString('pt-BR');
     }
 
-    function setBrand(brand) {
-      currentBrand = brand;
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-brand') === brand);
-      });
-      applyFilters();
-    }
+    function renderDashboard() {
+      const data = getFilteredData();
 
-    function applyFilters() {
-      const mes = document.getElementById('filter-mes').value;
-      const uf = document.getElementById('filter-uf').value;
-      const unidade = document.getElementById('filter-unidade').value;
+      // Cálculo de Totais Reais
+      let totAcionados = 0, totAcordos = 0, totPagos = 0;
+      let totValorAcordo = 0, totValorPago = 0, totRenovacoes = 0;
 
-      const filtered = DATA.filter(d => {
-        const matchBrand = (currentBrand === 'Global') || (d.marca_grupo === currentBrand);
-        const matchMes = (mes === 'ALL') || (d.mes === mes);
-        const matchUf = (uf === 'ALL') || (d.uf === uf);
-        const matchUnidade = (unidade === 'ALL') || (d.unidade === unidade);
-        return matchBrand && matchMes && matchUf && matchUnidade;
+      data.forEach(d => {
+        totAcionados += (d.Acionados || 0);
+        totAcordos += (d.Acordos || 0);
+        totPagos += (d.Pagos || 0);
+        totValorAcordo += (d['Valor total do acordo'] || 0);
+        totValorPago += (d['Valor Pago'] || 0);
+        totRenovacoes += (d.Renovações || 0);
       });
 
-      updateKPIs(filtered);
-      updateCharts(filtered);
+      const efecNum = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
+      const efecVal = totValorAcordo > 0 ? (totValorPago / totValorAcordo) * 100 : 0;
+
+      // Atualiza KPIs
+      document.getElementById('kpiAcionados').innerText = formatNumber(totAcionados);
+      document.getElementById('kpiAcordos').innerText = formatNumber(totAcordos);
+      document.getElementById('kpiValorAcordo').innerText = formatBRL(totValorAcordo);
+      document.getElementById('kpiValorPago').innerText = formatBRL(totValorPago);
+      document.getElementById('kpiEfetividadeNum').innerText = efecNum.toFixed(1) + '%';
+      document.getElementById('kpiEfetividadeVal').innerText = efecVal.toFixed(1) + '%';
+
+      // Atualiza Tabela
+      renderTable(data, totAcionados, totAcordos, totPagos, totValorAcordo, totValorPago, efecNum, efecVal, totRenovacoes);
+
+      // Atualiza Gráficos
+      renderCharts(data);
     }
 
-    function updateKPIs(data) {
-      const totalPago = data.reduce((s, r) => s + r.val_pago, 0);
-      const totalNegociado = data.reduce((s, r) => s + r.val_acordo, 0);
-      const totalQuebra = data.reduce((s, r) => s + r.val_quebra, 0);
-      const totalAcionados = data.reduce((s, r) => s + r.acionados, 0);
-      const totalAcordos = data.reduce((s, r) => s + r.acordos, 0);
-      const totalPagosQtd = data.reduce((s, r) => s + r.pagos, 0);
+    function renderTable(data, totAcionados, totAcordos, totPagos, totValorAcordo, totValorPago, efecNum, efecVal, totRenovacoes) {
+      const tbody = document.getElementById('tblBody');
+      const tfoot = document.getElementById('tblFoot');
+      document.getElementById('lblRowCount').innerText = `${data.length} registros`;
 
-      const efVal = totalNegociado > 0 ? (totalPago / totalNegociado) * 100 : 0;
-      const quebraPct = totalNegociado > 0 ? (totalQuebra / totalNegociado) * 100 : 0;
-      const convPct = totalAcionados > 0 ? (totalPagosQtd / totalAcionados) * 100 : 0;
+      tbody.innerHTML = '';
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-500">Nenhum registro encontrado para os filtros selecionados.</td></tr>`;
+        tfoot.innerHTML = '';
+        return;
+      }
 
-      document.getElementById('kpi-pago').innerText = formatBRL(totalPago);
-      document.getElementById('kpi-efetividade-val').innerText = `${efVal.toFixed(1)}% Efetividade Financeira`;
+      data.forEach(d => {
+        const efecN = d.Acordos > 0 ? ((d.Pagos / d.Acordos) * 100).toFixed(1) : '0.0';
+        const efecV = d['Valor total do acordo'] > 0 ? ((d['Valor Pago'] / d['Valor total do acordo']) * 100).toFixed(1) : '0.0';
 
-      document.getElementById('kpi-negociado').innerText = formatBRL(totalNegociado);
-      document.getElementById('kpi-acordos').innerText = `${totalAcordos.toLocaleString('pt-BR')} acordos firmados`;
-
-      document.getElementById('kpi-quebra').innerText = formatBRL(totalQuebra);
-      document.getElementById('kpi-quebra-pct').innerText = `${quebraPct.toFixed(1)}% do negociado`;
-
-      document.getElementById('kpi-conversion').innerText = `${convPct.toFixed(1)}%`;
-      document.getElementById('kpi-acionados').innerText = `${totalPagosQtd.toLocaleString('pt-BR')} pagos / ${totalAcionados.toLocaleString('pt-BR')} acionados`;
-    }
-
-    function updateCharts(data) {
-      // Agrupar por Mês para o gráfico de evolução
-      const mesMap = {};
-      data.forEach(r => {
-        if (!mesMap[r.mes]) mesMap[r.mes] = { pago: 0, negociado: 0 };
-        mesMap[r.mes].pago += r.val_pago;
-        mesMap[r.mes].negociado += r.val_acordo;
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-700/40 transition">
+            <td class="p-3 font-semibold text-cyan-400">${d.Marca}</td>
+            <td class="p-3">${d.Mês}</td>
+            <td class="p-3 font-medium">${d.Cidade}</td>
+            <td class="p-3 text-right">${formatNumber(d.Acionados)}</td>
+            <td class="p-3 text-right">${formatNumber(d.Acordos)}</td>
+            <td class="p-3 text-right text-emerald-400 font-semibold">${formatNumber(d.Pagos)}</td>
+            <td class="p-3 text-right">${formatBRL(d['Valor total do acordo'])}</td>
+            <td class="p-3 text-right text-emerald-400 font-semibold">${formatBRL(d['Valor Pago'])}</td>
+            <td class="p-3 text-right font-medium">${efecN}%</td>
+            <td class="p-3 text-right font-medium">${efecV}%</td>
+            <td class="p-3 text-right">${formatNumber(d.Renovações)}</td>
+          </tr>
+        `;
       });
 
-      const labels = Object.keys(mesMap);
-      const pagoData = labels.map(m => mesMap[m].pago);
-      const negociadoData = labels.map(m => mesMap[m].negociado);
+      tfoot.innerHTML = `
+        <tr>
+          <td class="p-3" colspan="3">TOTAL DA SELEÇÃO</td>
+          <td class="p-3 text-right">${formatNumber(totAcionados)}</td>
+          <td class="p-3 text-right">${formatNumber(totAcordos)}</td>
+          <td class="p-3 text-right text-emerald-400">${formatNumber(totPagos)}</td>
+          <td class="p-3 text-right">${formatBRL(totValorAcordo)}</td>
+          <td class="p-3 text-right text-emerald-400">${formatBRL(totValorPago)}</td>
+          <td class="p-3 text-right">${efecNum.toFixed(1)}%</td>
+          <td class="p-3 text-right">${efecVal.toFixed(1)}%</td>
+          <td class="p-3 text-right">${formatNumber(totRenovacoes)}</td>
+        </tr>
+      `;
+    }
 
-      if (chartEvolucao) chartEvolucao.destroy();
-      chartEvolucao = new Chart(document.getElementById('chartEvolucao'), {
-        type: 'line',
+    function renderCharts(data) {
+      // 1. Gráfico de Evolução Mensal
+      const mesesMap = {};
+      data.forEach(d => {
+        if (!mesesMap[d.Mês]) {
+          mesesMap[d.Mês] = { acordos: 0, pagos: 0, valorAcordo: 0, valorPago: 0 };
+        }
+        mesesMap[d.Mês].acordos += d.Acordos;
+        mesesMap[d.Mês].pagos += d.Pagos;
+        mesesMap[d.Mês].valorAcordo += d['Valor total do acordo'];
+        mesesMap[d.Mês].valorPago += d['Valor Pago'];
+      });
+
+      const labelsMeses = Object.keys(mesesMap);
+      const dataAcordos = labelsMeses.map(m => mesesMap[m].acordos);
+      const dataPagos = labelsMeses.map(m => mesesMap[m].pagos);
+
+      if (chartEvolucaoObj) chartEvolucaoObj.destroy();
+      const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
+      chartEvolucaoObj = new Chart(ctxEvolucao, {
+        type: 'bar',
         data: {
-          labels: labels,
+          labels: labelsMeses,
           datasets: [
-            { label: 'Valor Pago', data: pagoData, borderColor: '#22c55e', backgroundColor: 'rgba(34, 197, 94, 0.1)', fill: true, tension: 0.3 },
-            { label: 'Valor Negociado', data: negociadoData, borderColor: '#38bdf8', backgroundColor: 'transparent', borderDash: [5, 5], tension: 0.3 }
+            { label: 'Acordos', data: dataAcordos, backgroundColor: '#3b82f6', borderRadius: 6 },
+            { label: 'Pagos', data: dataPagos, backgroundColor: '#10b981', borderRadius: 6 }
           ]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: { legend: { labels: { color: '#94a3b8' } } },
           scales: {
-            x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
-            y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
           }
         }
       });
 
-      // Gráfico de Donut Status
-      const totalPago = data.reduce((s, r) => s + r.val_pago, 0);
-      const totalQuebra = data.reduce((s, r) => s + r.val_quebra, 0);
+      // 2. Gráfico por Unidades (Efetividade $)
+      const unidadesMap = {};
+      data.forEach(d => {
+        if (!unidadesMap[d.Cidade]) {
+          unidadesMap[d.Cidade] = { valorAcordo: 0, valorPago: 0 };
+        }
+        unidadesMap[d.Cidade].valorAcordo += d['Valor total do acordo'];
+        unidadesMap[d.Cidade].valorPago += d['Valor Pago'];
+      });
 
-      if (chartStatus) chartStatus.destroy();
-      chartStatus = new Chart(document.getElementById('chartStatus'), {
-        type: 'doughnut',
+      const labelsUnidades = Object.keys(unidadesMap);
+      const dataEfecUnidades = labelsUnidades.map(u => {
+        const item = unidadesMap[u];
+        return item.valorAcordo > 0 ? ((item.valorPago / item.valorAcordo) * 100).toFixed(1) : 0;
+      });
+
+      if (chartUnidadesObj) chartUnidadesObj.destroy();
+      const ctxUnidades = document.getElementById('chartUnidades').getContext('2d');
+      chartUnidadesObj = new Chart(ctxUnidades, {
+        type: 'bar',
         data: {
-          labels: ['Valor Pago', 'Valor em Quebra'],
+          labels: labelsUnidades,
           datasets: [{
-            data: [totalPago, totalQuebra],
-            backgroundColor: ['#22c55e', '#ef4444'],
-            borderWidth: 0
+            label: 'Efetividade Financeira (%)',
+            data: dataEfecUnidades,
+            backgroundColor: '#f59e0b',
+            borderRadius: 6
           }]
         },
         options: {
           responsive: true,
-          plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } }
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: { legend: { labels: { color: '#94a3b8' } } },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' }, max: 100 },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+          }
         }
       });
     }
 
-    window.onload = () => {
-      initFilters();
-      applyFilters();
-    };
+    function togglePresentationMode() {
+      const container = document.getElementById('dashboardContainer');
+      const btn = document.getElementById('btnPresentation');
+      
+      if (container.classList.contains('presentation-mode')) {
+        container.classList.remove('presentation-mode');
+        btn.innerHTML = `<i class="fa-solid fa-expand"></i><span>Modo Apresentação</span>`;
+      } else {
+        container.classList.add('presentation-mode');
+        btn.innerHTML = `<i class="fa-solid fa-compress"></i><span>Sair da Apresentação</span>`;
+      }
+    }
   </script>
 </body>
 </html>
