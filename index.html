@@ -1,379 +1,212 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Executivo - Grupo YDUQS / ATP</title>
+    <title>Dashboard Executivo - ATP YDUQS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Font Awesome Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
                     colors: {
                         brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            800: '#3730a3',
-                            900: '#312e81',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
                         },
-                        estacio: '#00529b',
-                        wyden: '#e63946',
-                        darkbg: '#0b0f19',
-                        darkcard: '#111827',
-                        darkborder: '#1f2937'
+                        darkbg: '#0f172a',
+                        darkcard: '#1e293b',
+                        darkborder: '#334155'
                     }
                 }
             }
         }
     </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
-            color: #f3f4f6;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
         }
-        ::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-        
-        /* Glassmorphism utility */
-        .glass-panel {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        /* Presentation Mode Styles */
-        body.presentation-mode {
-            overflow: hidden;
-            background-color: #030712 !important;
-        }
-        .presentation-slide {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .presentation-slide.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
         }
     </style>
 </head>
-<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased pb-12">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-darkcard/90 backdrop-blur-md border-b border-darkborder sticky top-0 z-40 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid font-bold text-xl text-white fa-chart-line"></i>
+    <!-- TOP HEADER -->
+    <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-30 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-emerald-400">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                        Grupo YDUQS <span class="text-xs px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 font-medium">ATP Operacional</span>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Dashboard Executivo ATP <span class="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded-full font-medium">YDUQS</span>
                     </h1>
-                    <p class="text-xs text-gray-400">Analytics Executivo de Acordos e Arrecadação</p>
+                    <p class="text-xs text-slate-400">Acompanhamento Consolidado de Negociações & Efectividade</p>
                 </div>
             </div>
 
-            <!-- Header Actions -->
-            <div class="flex items-center space-x-3">
-                <button id="btnPresentationMode" onclick="togglePresentationMode()" class="flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-xl shadow-lg shadow-indigo-500/20 transition-all transform hover:scale-105 active:scale-95">
-                    <i class="fa-solid fa-desktop"></i>
-                    <span>Modo Apresentação</span>
-                </button>
-                <button onclick="resetFilters()" class="text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded-xl transition-colors flex items-center gap-1.5" title="Limpar Filtros">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <span class="hidden md:inline">Resetar</span>
+            <!-- CONTROLES NO TOPO -->
+            <div class="flex items-center gap-3">
+                <button id="btnApresentacao" onclick="abrirModoApresentacao()" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold rounded-lg shadow-lg shadow-emerald-900/30 text-sm transition-all transform hover:scale-[1.02]">
+                    <i data-lucide="tv" class="w-4 h-4"></i>
+                    Modo Apresentação
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Dashboard Container -->
-    <main id="mainDashboard" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
 
-        <!-- Controls & Filters Section -->
-        <section class="glass-panel p-5 rounded-2xl shadow-xl space-y-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-800">
-                <!-- Marca Selector Buttons -->
+        <!-- FILTROS PRINCIPAIS -->
+        <section class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- MARCA SELECTION BUTTONS -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Marca / Grupo:</label>
-                    <div class="inline-flex p-1 bg-gray-900 rounded-xl border border-gray-800 space-x-1" id="brandButtonGroup">
-                        <button onclick="selectBrand('Todos')" id="btnBrandTodos" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md">
-                            Todos
-                        </button>
-                        <button onclick="selectBrand('Estácio')" id="btnBrandEstacio" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-                            <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1.5"></span>Estácio
-                        </button>
-                        <button onclick="selectBrand('Wyden')" id="btnBrandWyden" class="brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all">
-                            <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>Wyden
-                        </button>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Marca / Grupo</label>
+                    <div class="grid grid-cols-4 gap-1 p-1 bg-slate-900 rounded-lg border border-slate-700">
+                        <button onclick="setMarca('Todos')" id="btnMarcaTodos" class="py-1.5 px-2 text-xs font-medium rounded-md transition-all bg-emerald-600 text-white shadow">Todos</button>
+                        <button onclick="setMarca('Estácio')" id="btnMarcaEstácio" class="py-1.5 px-2 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">Estácio</button>
+                        <button onclick="setMarca('Wyden')" id="btnMarcaWyden" class="py-1.5 px-2 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">Wyden</button>
+                        <button onclick="setMarca('IDOMED')" id="btnMarcaIDOMED" class="py-1.5 px-2 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white">IDOMED</button>
                     </div>
                 </div>
 
-                <!-- Secondary Filter Selectors -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1 md:max-w-2xl">
-                    <!-- Mes Filter -->
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Mês / Ano:</label>
-                        <select id="selectMes" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-200 text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
-                            <option value="Todos">Todos os Meses</option>
-                        </select>
-                    </div>
-
-                    <!-- UF Filter -->
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">UF (Estado):</label>
-                        <select id="selectUF" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-200 text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
-                            <option value="Todos">Todas as UFs</option>
-                        </select>
-                    </div>
-
-                    <!-- Unidade Filter (Filtered Strict Rule) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Unidade / Campus:</label>
-                        <select id="selectUnidade" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-200 text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
-                            <option value="Todos">Todas as Unidades</option>
-                        </select>
-                    </div>
+                <!-- UNIDADE / CAMPUS SELECT -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Unidade / Campus</label>
+                    <select id="selectUnidade" onchange="renderDashboard()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors">
+                        <option value="Todas">Todas as Unidades</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- Active Filter Chips -->
-            <div class="flex flex-wrap items-center gap-2 text-xs text-gray-400">
-                <span class="font-medium"><i class="fa-solid fa-filter text-indigo-400 mr-1"></i> Filtros Ativos:</span>
-                <span id="chipBrand" class="px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800/50">Marca: Todos</span>
-                <span id="chipMes" class="px-2.5 py-1 rounded-full bg-gray-800 text-gray-300 border border-gray-700">Mês: Todos</span>
-                <span id="chipUF" class="px-2.5 py-1 rounded-full bg-gray-800 text-gray-300 border border-gray-700">UF: Todos</span>
-                <span id="chipUnidade" class="px-2.5 py-1 rounded-full bg-gray-800 text-gray-300 border border-gray-700">Unidade: Todos</span>
+                <!-- MÊS SELECT -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Período / Mês</label>
+                    <select id="selectMes" onchange="renderDashboard()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors">
+                        <option value="Todos">Todos os Meses</option>
+                    </select>
+                </div>
+
             </div>
         </section>
 
-        <!-- Top Executive KPI Summary Cards -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <!-- Card 1: Valor Pago -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl hover:border-emerald-500/50 transition-all relative overflow-hidden group">
-                <div class="absolute -right-2 -bottom-2 opacity-10 text-emerald-500 group-hover:scale-110 transition-transform text-6xl">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
-                </div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Valor Pago Recorrente</p>
-                <h3 id="kpiValorPago" class="text-2xl font-black text-emerald-400 mt-1">R$ 0,00</h3>
-                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800 text-xs">
-                    <span class="text-gray-400" id="kpiQtdPagos">0 Títulos Pagos</span>
-                    <span class="text-emerald-400 font-semibold" id="kpiEfetividadeVal">0.0% Efet. R$</span>
+        <!-- KPI CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm relative overflow-hidden">
+                <div class="text-xs text-slate-400 font-medium">Total de Acionados</div>
+                <div id="kpiAcionados" class="text-2xl font-bold text-white mt-1">0</div>
+                <div id="kpiAcordosSub" class="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> <span>0 Acordos Firmados</span>
                 </div>
             </div>
 
-            <!-- Card 2: Valor Acordo -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl hover:border-indigo-500/50 transition-all relative overflow-hidden group">
-                <div class="absolute -right-2 -bottom-2 opacity-10 text-indigo-500 group-hover:scale-110 transition-transform text-6xl">
-                    <i class="fa-solid fa-file-signature"></i>
-                </div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total em Acordos</p>
-                <h3 id="kpiValorAcordo" class="text-2xl font-black text-indigo-400 mt-1">R$ 0,00</h3>
-                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800 text-xs">
-                    <span class="text-gray-400" id="kpiQtdAcordos">0 Acordos</span>
-                    <span class="text-indigo-400 font-semibold" id="kpiEfetividadeQtd">0.0% Efet. Qtd</span>
+            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm relative overflow-hidden">
+                <div class="text-xs text-slate-400 font-medium">Valor Total Acordo</div>
+                <div id="kpiValAcordo" class="text-2xl font-bold text-emerald-400 mt-1">R$ 0,00</div>
+                <div id="kpiValPagoSub" class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+                    <span class="text-teal-400 font-medium" id="kpiValPagoText">R$ 0,00 Pago</span>
                 </div>
             </div>
 
-            <!-- Card 3: Quebra / Inadimplência -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl hover:border-red-500/50 transition-all relative overflow-hidden group">
-                <div class="absolute -right-2 -bottom-2 opacity-10 text-red-500 group-hover:scale-110 transition-transform text-6xl">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                </div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Quebra de Acordos</p>
-                <h3 id="kpiValorQuebra" class="text-2xl font-black text-red-400 mt-1">R$ 0,00</h3>
-                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800 text-xs">
-                    <span class="text-gray-400" id="kpiQtdQuebra">0 Qtd Quebra</span>
-                    <span class="text-red-400 font-semibold" id="kpiTaxaQuebra">0.0% Taxa</span>
+            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm relative overflow-hidden">
+                <div class="text-xs text-slate-400 font-medium">Efetividade Qtd %</div>
+                <div id="kpiEfetividadeQtd" class="text-2xl font-bold text-cyan-400 mt-1">0,0%</div>
+                <div id="kpiEfetividadeValSub" class="text-xs text-slate-400 mt-2">
+                    Efetividade Val: <span id="kpiEfetividadeVal" class="text-cyan-300 font-medium">0,0%</span>
                 </div>
             </div>
 
-            <!-- Card 4: Renovações -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl hover:border-amber-500/50 transition-all relative overflow-hidden group">
-                <div class="absolute -right-2 -bottom-2 opacity-10 text-amber-500 group-hover:scale-110 transition-transform text-6xl">
-                    <i class="fa-solid fa-user-graduate"></i>
-                </div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Renovações Acadêmicas</p>
-                <h3 id="kpiRenovacoes" class="text-2xl font-black text-amber-400 mt-1">0</h3>
-                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800 text-xs">
-                    <span class="text-gray-400">Alunos Retidos</span>
-                    <span class="text-amber-400 font-semibold" id="kpiMediaRenovacao">--/unidade</span>
-                </div>
-            </div>
-
-            <!-- Card 5: Acionados -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl hover:border-blue-500/50 transition-all relative overflow-hidden group">
-                <div class="absolute -right-2 -bottom-2 opacity-10 text-blue-500 group-hover:scale-110 transition-transform text-6xl">
-                    <i class="fa-solid fa-bullhorn"></i>
-                </div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Base Acionada</p>
-                <h3 id="kpiAcionados" class="text-2xl font-black text-blue-400 mt-1">0</h3>
-                <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800 text-xs">
-                    <span class="text-gray-400" id="kpiNegociados">0 Negociados</span>
-                    <span class="text-blue-400 font-semibold" id="kpiTaxaConversao">0.0% Conv.</span>
+            <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 shadow-sm relative overflow-hidden">
+                <div class="text-xs text-slate-400 font-medium">Total de Renovações</div>
+                <div id="kpiRenovacoes" class="text-2xl font-bold text-amber-400 mt-1">0</div>
+                <div class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-amber-400"></i> Matrículas Renovadas
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Executive Charts Section -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Chart 1: Evolution (Line/Bar) -->
-            <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-darkborder shadow-xl space-y-4">
-                <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-chart-area text-indigo-400"></i>
-                            Evolução Temporal: Acordos vs. Pagos vs. Quebra
-                        </h3>
-                        <p class="text-xs text-gray-400">Comparativo mensal acumulado de valores negociados, arrecadados e perdas</p>
-                    </div>
+        <!-- GRÁFICOS PRINCIPAIS -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- GRÁFICO DE EVOLUÇÃO MENSAL -->
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i> Evolução Financeira Mensal
+                    </h2>
                 </div>
-                <div class="relative h-72 w-full">
+                <div class="h-72">
                     <canvas id="chartEvolucao"></canvas>
                 </div>
             </div>
 
-            <!-- Chart 2: Brand or Campus Breakdown -->
-            <div class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl space-y-4">
-                <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-emerald-400"></i>
-                            Distribuição por Unidade / UF
-                        </h3>
-                        <p class="text-xs text-gray-400">Participação no Valor Pago Total (Top Unidades)</p>
-                    </div>
+            <!-- GRÁFICO COMPARATIVO DE ACORDOS VS PAGOS -->
+            <div class="bg-slate-800 rounded-xl p-5 border border-slate-700 shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-teal-400"></i> Volume de Acordos vs Pagamentos
+                    </h2>
                 </div>
-                <div class="relative h-72 w-full flex items-center justify-center">
-                    <canvas id="chartDistribuicao"></canvas>
+                <div class="h-72">
+                    <canvas id="chartComparativo"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- Chart 3: Efetividade por Campus -->
-        <section class="glass-panel p-5 rounded-2xl border border-darkborder shadow-xl space-y-4">
-            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <!-- TABELA DE UNIDADES E INDICADORES (SOLICITADO AO FINAL) -->
+        <section class="bg-slate-800 rounded-xl border border-slate-700 shadow-md overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-chart-bar text-amber-400"></i>
-                        Taxa de Efetividade R$ (%) por Unidade / Campus
-                    </h3>
-                    <p class="text-xs text-gray-400">Desempenho de arrecadação financeira em relação ao total negociado</p>
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="table" class="w-4 h-4 text-emerald-400"></i> Relação de Unidades e Indicadores
+                    </h2>
+                    <p class="text-xs text-slate-400">Detalhamento dos KPIs por Campus e Marca Selecionada</p>
                 </div>
-            </div>
-            <div class="relative h-64 w-full">
-                <canvas id="chartEfetividade"></canvas>
-            </div>
-        </section>
-
-        <!-- RELAÇÃO DE UNIDADES E INDICADORES AO FINAL DO PAINEL -->
-        <section class="glass-panel p-6 rounded-2xl border border-darkborder shadow-xl space-y-5">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
-                <div>
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-table-list text-blue-400"></i>
-                        Relação Consolidada de Unidades e Indicadores KPI
-                    </h3>
-                    <p class="text-xs text-gray-400">Análise detalhada por Campus com ordenação interativa e pesquisa</p>
-                </div>
-
-                <!-- Table Search Controls -->
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500 text-xs"></i>
-                        <input type="text" id="tableSearch" onkeyup="filterTable()" placeholder="Buscar unidade, marca ou UF..." class="bg-gray-900 border border-gray-800 text-gray-200 text-xs rounded-xl pl-9 pr-3 py-2 w-64 focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
+                <div class="w-full sm:w-64">
+                    <input type="text" id="inputBuscaTabela" onkeyup="filtrarTabela()" placeholder="Buscar unidade..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
                 </div>
             </div>
 
-            <!-- Table Wrapper -->
-            <div class="overflow-x-auto rounded-xl border border-gray-800">
-                <table class="w-full text-left text-xs text-gray-300">
-                    <thead class="bg-gray-900/80 text-gray-400 uppercase font-semibold text-[11px] tracking-wider border-b border-gray-800">
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-700">
                         <tr>
-                            <th onclick="sortTable(0)" class="p-3.5 cursor-pointer hover:text-white transition-colors">
-                                Unidade / Campus <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(1)" class="p-3.5 cursor-pointer hover:text-white transition-colors">
-                                Marca <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(2)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Acionados <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(3)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Negociados <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(4)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Recusa <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(5)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Acordos (Qtd) <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(6)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Val. Acordo (R$) <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(7)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Pagos (Qtd) <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(8)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors text-emerald-400">
-                                Val. Pago (R$) <i class="fa-solid fa-sort ml-1 text-emerald-600"></i>
-                            </th>
-                            <th onclick="sortTable(9)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors">
-                                Quebra (Qtd) <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(10)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors text-red-400">
-                                Val. Quebra (R$) <i class="fa-solid fa-sort ml-1 text-red-600"></i>
-                            </th>
-                            <th onclick="sortTable(11)" class="p-3.5 text-center cursor-pointer hover:text-white transition-colors">
-                                Efet. Qtd % <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(12)" class="p-3.5 text-center cursor-pointer hover:text-white transition-colors">
-                                Efet. Val % <i class="fa-solid fa-sort ml-1 text-gray-600"></i>
-                            </th>
-                            <th onclick="sortTable(13)" class="p-3.5 text-right cursor-pointer hover:text-white transition-colors text-amber-400">
-                                Renovações <i class="fa-solid fa-sort ml-1 text-amber-600"></i>
-                            </th>
+                            <th class="p-3 cursor-pointer hover:text-white" onclick="ordenarTabela('unidade')">Unidade / Marca <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('acionados')">Acionados <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('acordos')">Acordos <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('val_acordo')">Val. Acordo <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('pagos')">Pagos <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('val_pago')">Val. Pago <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('quebra')">Quebra <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('efetividade_qtd')">Efet. # % <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('efetividade_val')">Efet. $ % <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
+                            <th class="p-3 text-right cursor-pointer hover:text-white" onclick="ordenarTabela('renovacoes')">Renovações <i data-lucide="arrow-up-down" class="inline w-3 h-3"></i></th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody" class="divide-y divide-gray-800/60 bg-gray-950/30">
-                        <!-- Dynamic Table Rows -->
+                    <tbody id="tbodyUnidades" class="divide-y divide-slate-700/50">
+                        <!-- Renderizado via JS -->
                     </tbody>
-                    <!-- Totals Summary Row -->
-                    <tfoot class="bg-gray-900 font-bold text-white text-xs border-t-2 border-gray-700" id="tableFoot">
-                        <!-- Dynamic Summary -->
+                    <tfoot id="tfootTotal" class="bg-slate-900 font-bold text-white border-t-2 border-slate-700">
+                        <!-- Totais Consolidados -->
                     </tfoot>
                 </table>
             </div>
@@ -381,519 +214,368 @@
 
     </main>
 
-    <!-- Presentation Overlay View (Fullscreen Executive Mode) -->
-    <div id="presentationOverlay" class="fixed inset-0 z-50 bg-gray-950 hidden flex-col transition-all duration-300">
-        <!-- Presentation Top Navigation Bar -->
-        <div class="bg-gray-900 border-b border-gray-800 px-8 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> MODO APRESENTAÇÃO EXECUTIVA
-                </span>
-                <h2 id="presentationSlideTitle" class="text-xl font-extrabold text-white">Visão Geral de Performance</h2>
+    <!-- MODAL MODO APRESENTAÇÃO FULLSCREEN -->
+    <div id="modalApresentacao" class="fixed inset-0 bg-slate-950 z-50 hidden flex-col justify-between p-6">
+        <!-- HEADER MODO APRESENTAÇÃO -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-3">
+                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 font-bold rounded-md text-xs uppercase tracking-wider">Modo Apresentação Executiva</span>
+                <span id="presMarcaTag" class="text-slate-400 text-sm">Marca: Todas</span>
             </div>
-
-            <!-- Slide Switchers, Auto-Timer & Exit Button -->
-            <div class="flex items-center space-x-4">
-                <!-- Slide Navigation Tabs -->
-                <div class="flex items-center bg-gray-800 rounded-xl p-1 border border-gray-700">
-                    <button onclick="changeSlide(0)" id="slideBtn0" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white">Visão Geral</button>
-                    <button onclick="changeSlide(1)" id="slideBtn1" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">Desempenho Financeiro</button>
-                    <button onclick="changeSlide(2)" id="slideBtn2" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white">Ranking Unidades</button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-xs">
+                    <span class="text-slate-400">Slide:</span>
+                    <span id="slideIndex" class="font-bold text-white">1 / 3</span>
                 </div>
-
-                <!-- Auto Play Timer Control -->
-                <div class="flex items-center space-x-2 bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-700 text-xs">
-                    <button id="btnAutoTimer" onclick="toggleAutoTimer()" class="text-gray-300 hover:text-white flex items-center gap-1 font-medium">
-                        <i id="iconAutoTimer" class="fa-solid fa-play text-indigo-400"></i>
-                        <span id="labelAutoTimer">Auto Play</span>
-                    </button>
-                    <select id="selectTimerSpeed" onchange="updateTimerSpeed()" class="bg-gray-900 border border-gray-700 text-gray-300 text-[11px] rounded p-0.5 outline-none">
-                        <option value="5000">5s</option>
-                        <option value="10000" selected>10s</option>
-                        <option value="15000">15s</option>
-                    </select>
-                </div>
-
-                <!-- Previous / Next Controls -->
-                <div class="flex items-center space-x-1">
-                    <button onclick="prevSlide()" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-xl border border-gray-700 text-xs">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button onclick="nextSlide()" class="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-xl border border-gray-700 text-xs">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <button onclick="togglePresentationMode()" class="bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-xmark"></i> Sair (ESC)
+                <button onclick="fecharModoApresentacao()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Presentation Slides Content Area -->
-        <div class="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full flex flex-col justify-center">
-
-            <!-- Slide 0: Visão Geral (KPIs de Alto Impacto) -->
-            <div id="slide0" class="presentation-slide active space-y-8">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-gray-900/90 p-8 rounded-3xl border-2 border-emerald-500/30 shadow-2xl backdrop-blur-xl">
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Total Arrecadado (Pago)</p>
-                        <h2 id="presValPago" class="text-4xl lg:text-5xl font-black text-emerald-400 mt-2">R$ 0,00</h2>
-                        <p class="text-xs text-emerald-500 mt-4 font-semibold" id="presValPagoSub">0.0% Efetividade Financeira</p>
-                    </div>
-
-                    <div class="bg-gray-900/90 p-8 rounded-3xl border-2 border-indigo-500/30 shadow-2xl backdrop-blur-xl">
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Volume de Acordos</p>
-                        <h2 id="presValAcordo" class="text-4xl lg:text-5xl font-black text-indigo-400 mt-2">R$ 0,00</h2>
-                        <p class="text-xs text-indigo-400 mt-4 font-semibold" id="presQtdAcordos">0 Acordos Firmados</p>
-                    </div>
-
-                    <div class="bg-gray-900/90 p-8 rounded-3xl border-2 border-red-500/30 shadow-2xl backdrop-blur-xl">
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Perda / Quebra</p>
-                        <h2 id="presValQuebra" class="text-4xl lg:text-5xl font-black text-red-400 mt-2">R$ 0,00</h2>
-                        <p class="text-xs text-red-400 mt-4 font-semibold" id="presTaxaQuebra">0.0% Taxa de Inadimplência</p>
-                    </div>
-
-                    <div class="bg-gray-900/90 p-8 rounded-3xl border-2 border-amber-500/30 shadow-2xl backdrop-blur-xl">
-                        <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Renovações de Alunos</p>
-                        <h2 id="presRenovacoes" class="text-4xl lg:text-5xl font-black text-amber-400 mt-2">0</h2>
-                        <p class="text-xs text-amber-400 mt-4 font-semibold">Alunos Reativados</p>
-                    </div>
+        <!-- CONTEÚDO DOS SLIDES DA APRESENTAÇÃO -->
+        <div class="flex-1 my-6 flex items-center justify-center">
+            
+            <!-- SLIDE 1: OVERVIEW KPIs -->
+            <div id="slide1" class="w-full max-w-5xl space-y-8">
+                <div class="text-center space-y-2">
+                    <h2 class="text-3xl font-extrabold text-white">Visão Geral de Desempenho ATP</h2>
+                    <p class="text-slate-400 text-sm">Indicadores Chave Consolidados</p>
                 </div>
-
-                <div class="bg-gray-900/60 p-6 rounded-2xl border border-gray-800 text-center">
-                    <p class="text-gray-400 text-sm">Resumo consolidado conforme os filtros configurados no painel operacional.</p>
-                </div>
-            </div>
-
-            <!-- Slide 1: Desempenho Financeiro (Gráficos em Tela Cheia) -->
-            <div id="slide1" class="presentation-slide space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-gray-900/90 p-6 rounded-3xl border border-gray-800">
-                        <h4 class="text-base font-bold text-white mb-4">Evolução Mensal (Acordos vs Pagos vs Quebra)</h4>
-                        <div class="h-80 w-full relative">
-                            <canvas id="chartPresEvolucao"></canvas>
-                        </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-2xl">
+                        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Total Acionados</div>
+                        <div id="presAcionados" class="text-4xl font-black text-white">0</div>
                     </div>
-                    <div class="bg-gray-900/90 p-6 rounded-3xl border border-gray-800">
-                        <h4 class="text-base font-bold text-white mb-4">Efetividade R$ por Campus</h4>
-                        <div class="h-80 w-full relative">
-                            <canvas id="chartPresEfetividade"></canvas>
-                        </div>
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-2xl">
+                        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Valor Acordos</div>
+                        <div id="presValAcordo" class="text-3xl font-black text-emerald-400">R$ 0</div>
+                    </div>
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-2xl">
+                        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Valor Pago</div>
+                        <div id="presValPago" class="text-3xl font-black text-teal-400">R$ 0</div>
+                    </div>
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-2xl">
+                        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Efetividade Qtd %</div>
+                        <div id="presEfetividade" class="text-4xl font-black text-cyan-400">0%</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 2: Ranking de Unidades (Tabela Executiva) -->
-            <div id="slide2" class="presentation-slide">
-                <div class="bg-gray-900/90 p-6 rounded-3xl border border-gray-800 max-h-[75vh] overflow-y-auto">
-                    <h4 class="text-base font-bold text-white mb-4">Ranking de Unidades e Desempenho</h4>
-                    <table class="w-full text-left text-xs text-gray-300">
-                        <thead class="bg-gray-800 text-gray-400 uppercase font-bold text-[10px]">
+            <!-- SLIDE 2: EVOLUÇÃO GRÁFICO AMPLIO -->
+            <div id="slide2" class="w-full max-w-5xl space-y-4 hidden">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-white">Evolução dos Valores de Acordo vs Pagamentos</h2>
+                </div>
+                <div class="h-[420px] bg-slate-900/80 p-6 rounded-2xl border border-slate-800">
+                    <canvas id="chartPresEvolucao"></canvas>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: TOP UNIDADES -->
+            <div id="slide3" class="w-full max-w-5xl space-y-4 hidden">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-white">Top 5 Unidades em Efetividade</h2>
+                </div>
+                <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-6">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="text-xs text-slate-400 uppercase border-b border-slate-800">
                             <tr>
-                                <th class="p-3">Unidade</th>
-                                <th class="p-3">Marca</th>
-                                <th class="p-3 text-right">Acionados</th>
-                                <th class="p-3 text-right">Acordos</th>
-                                <th class="p-3 text-right">Val. Acordo</th>
-                                <th class="p-3 text-right text-emerald-400">Val. Pago</th>
-                                <th class="p-3 text-center">Efet. Val %</th>
+                                <th class="pb-3">Unidade</th>
+                                <th class="pb-3 text-right">Acordos</th>
+                                <th class="pb-3 text-right">Valor Pago</th>
+                                <th class="pb-3 text-right">Efetividade %</th>
                             </tr>
                         </thead>
-                        <tbody id="presTableBody" class="divide-y divide-gray-800"></tbody>
+                        <tbody id="tbodyPresTop" class="divide-y divide-slate-800/60">
+                            <!-- JS -->
+                        </tbody>
                     </table>
                 </div>
             </div>
 
         </div>
 
-        <!-- Slide Footer Controls -->
-        <div class="bg-gray-900 border-t border-gray-800 px-8 py-3 flex items-center justify-between text-xs text-gray-500">
-            <div>Dica: Navegue com as setas do teclado <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">←</kbd> <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">→</kbd> ou pressione <kbd class="px-1.5 py-0.5 bg-gray-800 rounded">ESC</kbd> para sair.</div>
-            <div>Grupo YDUQS / ATP - Relatório Operacional Executivo</div>
+        <!-- FOOTER / NAVEGAÇÃO DOS SLIDES -->
+        <div class="flex items-center justify-between border-t border-slate-800 pt-4">
+            <div class="text-xs text-slate-500">Pressione ESC para sair</div>
+            <div class="flex items-center gap-3">
+                <button onclick="mudarSlide(-1)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Anterior
+                </button>
+                <button onclick="mudarSlide(1)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1">
+                    Próximo <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- JavaScript Application Logic -->
+    <!-- SCRIPT DE LÓGICA E DADOS -->
     <script>
-        // MOCK DATA FALLBACK FOR LOCAL RUN (file://)
-        const mockDataFallback = [
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.9304, "efetividade_val": 0.9485, "renovacoes": 83},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.8304, "efetividade_val": 0.8814, "renovacoes": 90},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.8931, "efetividade_val": 0.9115, "renovacoes": 87},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 368, "negociado": 240, "recusa": 128, "acordos": 238, "val_acordo": 408028.56, "pagos": 193, "val_pago": 338653.04, "quebra": 45, "val_quebra": 69375.52, "efetividade_qtd": 0.8109, "efetividade_val": 0.83, "renovacoes": 122},
-            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 493, "negociado": 419, "recusa": 74, "acordos": 424, "val_acordo": 628790.63, "pagos": 353, "val_pago": 515302.36, "quebra": 71, "val_quebra": 113488.27, "efetividade_qtd": 0.8325, "efetividade_val": 0.8195, "renovacoes": 214},
-            // Wyden Data
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 68, "negociado": 37, "recusa": 31, "acordos": 36, "val_acordo": 83219.5, "pagos": 25, "val_pago": 43991.93, "quebra": 11, "val_quebra": 39227.57, "efetividade_qtd": 0.6944, "efetividade_val": 0.5286, "renovacoes": 0},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 62, "negociado": 45, "recusa": 17, "acordos": 43, "val_acordo": 62032.8, "pagos": 29, "val_pago": 36305.37, "quebra": 14, "val_quebra": 25727.43, "efetividade_qtd": 0.6744, "efetividade_val": 0.5853, "renovacoes": 2},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 102, "negociado": 82, "recusa": 20, "acordos": 83, "val_acordo": 153358.55, "pagos": 63, "val_pago": 102695.27, "quebra": 20, "val_quebra": 50663.28, "efetividade_qtd": 0.759, "efetividade_val": 0.6696, "renovacoes": 29},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 111, "negociado": 93, "recusa": 18, "acordos": 93, "val_acordo": 205425.81, "pagos": 78, "val_pago": 182674.1, "quebra": 15, "val_quebra": 22751.71, "efetividade_qtd": 0.8387, "efetividade_val": 0.8892, "renovacoes": 42},
-            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 56, "negociado": 50, "recusa": 3, "acordos": 45, "val_acordo": 82607.51, "pagos": 33, "val_pago": 60280.2, "quebra": 12, "val_quebra": 22327.31, "efetividade_qtd": 0.7333, "efetividade_val": 0.7297, "renovacoes": 2},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 119, "negociado": 91, "recusa": 28, "acordos": 88, "val_acordo": 83621.59, "pagos": 57, "val_pago": 58261.09, "quebra": 31, "val_quebra": 25360.5, "efetividade_qtd": 0.6477, "efetividade_val": 0.6967, "renovacoes": 3},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 141, "negociado": 119, "recusa": 22, "acordos": 116, "val_acordo": 120987.06, "pagos": 93, "val_pago": 92767.57, "quebra": 23, "val_quebra": 28219.49, "efetividade_qtd": 0.8017, "efetividade_val": 0.7668, "renovacoes": 5},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 202, "negociado": 186, "recusa": 16, "acordos": 169, "val_acordo": 231312.99, "pagos": 140, "val_pago": 197564.59, "quebra": 29, "val_quebra": 33748.4, "efetividade_qtd": 0.8284, "efetividade_val": 0.8541, "renovacoes": 78},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 236, "negociado": 206, "recusa": 30, "acordos": 201, "val_acordo": 344870.49, "pagos": 169, "val_pago": 303777.47, "quebra": 32, "val_quebra": 41093.02, "efetividade_qtd": 0.8408, "efetividade_val": 0.8808, "renovacoes": 70},
-            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 199, "negociado": 180, "recusa": 9, "acordos": 177, "val_acordo": 315761.9, "pagos": 139, "val_pago": 239855.59, "quebra": 38, "val_quebra": 75906.31, "efetividade_qtd": 0.7853, "efetividade_val": 0.7596, "renovacoes": 52}
-        ];
-
         let rawData = [];
         let filteredData = [];
-        let selectedBrand = 'Todos';
-        let sortColumn = 8; // Default sort by Val Pago
-        let sortAsc = false;
-        let chartEvolucao, chartDistribuicao, chartEfetividade;
-        let chartPresEvolucao, chartPresEfetividade;
-        let currentSlide = 0;
-        let autoTimerInterval = null;
-        let isAutoTimerRunning = false;
+        let currentMarca = 'Todos';
+        let chartEvolucaoInstance = null;
+        let chartComparativoInstance = null;
+        let chartPresEvolucaoInstance = null;
+        let currentSortColumn = 'val_acordo';
+        let currentSortAsc = false;
+        let currentSlide = 1;
 
-        // Initialize App
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadData();
-            populateFilterDropdowns();
-            applyFilters();
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', async () => {
+            lucide.createIcons();
+            await carregarDados();
         });
 
-        // 1. Load JSON Data with Fetch & Fallback
-        async function loadData() {
+        // CARREGAR DADOS DE DATA_ARRAY.JSON
+        async function carregarDados() {
             try {
-                const res = await fetch('data_array.json');
-                if (!res.ok) throw new Error('File fetch failed');
-                rawData = await res.json();
-                console.log('Dados carregados do arquivo data_array.json');
-            } catch (e) {
-                console.warn('Carregando dados embutidos de fallback...');
-                rawData = mockDataFallback;
+                const response = await fetch('data_array.json');
+                if (!response.ok) throw new Error('Falha ao carregar JSON local');
+                rawData = await response.json();
+            } catch (err) {
+                console.warn('Carregando dados incorporados devido a acesso local sem servidor HTTP');
+                rawData = getFallbackData();
             }
+            inicializarFiltros();
+            renderDashboard();
         }
 
-        // 2. FILTRAGEM RIGOROSA DE MARCA E UNIDADE
-        function selectBrand(brand) {
-            selectedBrand = brand;
+        // UNIDADES ESPECÍFICAS DA WYDEN E IDOMED
+        const UNIDADES_WYDEN = ['CARUARU - PE', 'TERESINA - PI', 'Unifacid - Wyden', 'Unifavip - Wyden'];
+        const UNIDADES_IDOMED = ['Cittá - RJ', 'IDOMED'];
 
-            // Update button styles
-            document.querySelectorAll('.brand-btn').forEach(btn => {
-                btn.className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all";
+        // FILTRO DE MARCA
+        function setMarca(marca) {
+            currentMarca = marca;
+            
+            // Atualizar UI dos Botões
+            ['Todos', 'Estácio', 'Wyden', 'IDOMED'].forEach(m => {
+                const btn = document.getElementById(`btnMarca${m}`);
+                if (m === marca) {
+                    btn.className = 'py-1.5 px-2 text-xs font-medium rounded-md transition-all bg-emerald-600 text-white shadow';
+                } else {
+                    btn.className = 'py-1.5 px-2 text-xs font-medium rounded-md transition-all text-slate-400 hover:text-white';
+                }
             });
 
-            if (brand === 'Todos') {
-                document.getElementById('btnBrandTodos').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md";
-            } else if (brand === 'Estácio') {
-                document.getElementById('btnBrandEstacio').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-blue-600 text-white shadow-md";
-            } else if (brand === 'Wyden') {
-                document.getElementById('btnBrandWyden').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-red-600 text-white shadow-md";
-            }
-
-            // Repopulate dependent drop-downs strictly
-            populateUnidadesDropdown();
-            applyFilters();
+            populareUnidades();
+            renderDashboard();
         }
 
-        // Populate Month, UF and Campus Dropdowns
-        function populateFilterDropdowns() {
-            // Months
-            const meses = [...new Set(rawData.map(item => item.mes))];
+        // POPULAR SELECT DE UNIDADES COM REGRAS ESTRITAS SOLICITADAS
+        function populareUnidades() {
+            const select = document.getElementById('selectUnidade');
+            select.innerHTML = '<option value="Todas">Todas as Unidades</option>';
+
+            // Obter lista única de unidades conforme marca
+            let unidadesSet = new Set();
+
+            rawData.forEach(item => {
+                const isWyden = item.marca_grupo === 'Wyden' || item.marca_orig.includes('Wyden');
+                const isIDOMED = item.marca_grupo === 'IDOMED' || item.marca_orig.includes('IDOMED');
+
+                if (currentMarca === 'Wyden') {
+                    if (isWyden) unidadesSet.add(item.unidade);
+                } else if (currentMarca === 'IDOMED') {
+                    if (isIDOMED) unidadesSet.add(item.unidade);
+                } else if (currentMarca === 'Estácio') {
+                    if (!isWyden && !isIDOMED) unidadesSet.add(item.unidade);
+                } else {
+                    // Todos
+                    unidadesSet.add(item.unidade);
+                }
+            });
+
+            Array.from(unidadesSet).sort().forEach(unidade => {
+                const opt = document.createElement('option');
+                opt.value = unidade;
+                opt.textContent = unidade;
+                select.appendChild(opt);
+            });
+        }
+
+        function inicializarFiltros() {
+            populareUnidades();
+
+            // Popular Meses
             const selectMes = document.getElementById('selectMes');
             selectMes.innerHTML = '<option value="Todos">Todos os Meses</option>';
-            meses.forEach(m => selectMes.innerHTML += `<option value="${m}">${m}</option>`);
-
-            // UFs
-            const ufs = [...new Set(rawData.map(item => item.uf))].sort();
-            const selectUF = document.getElementById('selectUF');
-            selectUF.innerHTML = '<option value="Todos">Todas as UFs</option>';
-            ufs.forEach(uf => selectUF.innerHTML += `<option value="${uf}">${uf}</option>`);
-
-            populateUnidadesDropdown();
+            
+            const mesesSet = new Set(rawData.map(r => r.mes));
+            mesesSet.forEach(mes => {
+                const opt = document.createElement('option');
+                opt.value = mes;
+                opt.textContent = mes;
+                selectMes.appendChild(opt);
+            });
         }
 
-        // RIGOROUS CAMPUS DROPDOWN FILTERING
-        function populateUnidadesDropdown() {
-            const selectUnidade = document.getElementById('selectUnidade');
-            const currentSelection = selectUnidade.value;
-            selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
-
-            // Filter available campuses based strictly on Brand
-            let availableData = rawData;
-            if (selectedBrand === 'Estácio') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Estácio');
-            } else if (selectedBrand === 'Wyden') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Wyden');
-            }
-
-            // Create unique label combining marca_orig and unidade
-            const uniqueCampuses = [];
-            availableData.forEach(item => {
-                const campusLabel = `${item.marca_orig} - ${item.unidade}`;
-                if (!uniqueCampuses.includes(campusLabel)) {
-                    uniqueCampuses.push(campusLabel);
-                }
-            });
-
-            uniqueCampuses.sort().forEach(campus => {
-                selectUnidade.innerHTML += `<option value="${campus}">${campus}</option>`;
-            });
-
-            // Restore selection if still valid
-            if (uniqueCampuses.includes(currentSelection)) {
-                selectUnidade.value = currentSelection;
-            } else {
-                selectUnidade.value = 'Todos';
-            }
-        }
-
-        // Apply All Dynamic Filters
-        function applyFilters() {
-            const mes = document.getElementById('selectMes').value;
-            const uf = document.getElementById('selectUF').value;
-            const unidadeLabel = document.getElementById('selectUnidade').value;
+        // APLICAR FILTROS RÍGIDOS
+        function aplicarFiltros() {
+            const unidadeSel = document.getElementById('selectUnidade').value;
+            const mesSel = document.getElementById('selectMes').value;
 
             filteredData = rawData.filter(item => {
-                // Brand Filter
-                if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
-                // Month Filter
-                if (mes !== 'Todos' && item.mes !== mes) return false;
-                // UF Filter
-                if (uf !== 'Todos' && item.uf !== uf) return false;
-                // Campus Filter
-                if (unidadeLabel !== 'Todos') {
-                    const label = `${item.marca_orig} - ${item.unidade}`;
-                    if (label !== unidadeLabel) return false;
-                }
+                const isWyden = item.marca_grupo === 'Wyden' || item.marca_orig.includes('Wyden');
+                const isIDOMED = item.marca_grupo === 'IDOMED' || item.marca_orig.includes('IDOMED');
+
+                // Filtro Marca
+                if (currentMarca === 'Wyden' && !isWyden) return false;
+                if (currentMarca === 'IDOMED' && !isIDOMED) return false;
+                if (currentMarca === 'Estácio' && (isWyden || isIDOMED)) return false;
+
+                // Filtro Unidade
+                if (unidadeSel !== 'Todas' && item.unidade !== unidadeSel) return false;
+
+                // Filtro Mês
+                if (mesSel !== 'Todos' && item.mes !== mesSel) return false;
+
                 return true;
             });
-
-            // Update UI Chips
-            document.getElementById('chipBrand').textContent = `Marca: ${selectedBrand}`;
-            document.getElementById('chipMes').textContent = `Mês: ${mes}`;
-            document.getElementById('chipUF').textContent = `UF: ${uf}`;
-            document.getElementById('chipUnidade').textContent = `Unidade: ${unidadeLabel}`;
-
-            updateKPIs();
-            renderCharts();
-            renderTable();
-            updatePresentationValues();
         }
 
-        function resetFilters() {
-            selectBrand('Todos');
-            document.getElementById('selectMes').value = 'Todos';
-            document.getElementById('selectUF').value = 'Todos';
-            document.getElementById('selectUnidade').value = 'Todos';
-            applyFilters();
+        // RENDERIZAR PAINEL
+        function renderDashboard() {
+            aplicarFiltros();
+            atualizarKPIs();
+            renderGraficos();
+            renderTabela();
         }
 
-        // Formatters
-        function formatBRL(value) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+        // ATUALIZAR KPIS
+        function atualizarKPIs() {
+            const totalAcionados = filteredData.reduce((acc, i) => acc + i.acionados, 0);
+            const totalAcordos = filteredData.reduce((acc, i) => acc + i.acordos, 0);
+            const totalValAcordo = filteredData.reduce((acc, i) => acc + i.val_acordo, 0);
+            const totalValPago = filteredData.reduce((acc, i) => acc + i.val_pago, 0);
+            const totalRenovacoes = filteredData.reduce((acc, i) => acc + i.renovacoes, 0);
+
+            const efetividadeQtd = totalAcordos > 0 ? (filteredData.reduce((acc, i) => acc + i.pagos, 0) / totalAcordos) * 100 : 0;
+            const efetividadeVal = totalValAcordo > 0 ? (totalValPago / totalValAcordo) * 100 : 0;
+
+            document.getElementById('kpiAcionados').innerText = totalAcionados.toLocaleString('pt-BR');
+            document.getElementById('kpiAcordosSub').innerHTML = `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> ${totalAcordos.toLocaleString('pt-BR')} Acordos Firmados`;
+            
+            document.getElementById('kpiValAcordo').innerText = totalValAcordo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('kpiValPagoText').innerText = `${totalValPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} Pago`;
+
+            document.getElementById('kpiEfetividadeQtd').innerText = `${efetividadeQtd.toFixed(1)}%`;
+            document.getElementById('kpiEfetividadeVal').innerText = `${efetividadeVal.toFixed(1)}%`;
+
+            document.getElementById('kpiRenovacoes').innerText = totalRenovacoes.toLocaleString('pt-BR');
+
+            // Atualizar dados do modo apresentação
+            document.getElementById('presAcionados').innerText = totalAcionados.toLocaleString('pt-BR');
+            document.getElementById('presValAcordo').innerText = totalValAcordo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('presValPago').innerText = totalValPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('presEfetividade').innerText = `${efetividadeQtd.toFixed(1)}%`;
+            document.getElementById('presMarcaTag').innerText = `Marca: ${currentMarca}`;
+
+            lucide.createIcons();
         }
 
-        function formatInt(value) {
-            return new Intl.NumberFormat('pt-BR').format(value || 0);
-        }
-
-        // Calculate and Update Dashboard KPIs
-        function updateKPIs() {
-            const totals = filteredData.reduce((acc, curr) => {
-                acc.acionados += curr.acionados || 0;
-                acc.negociado += curr.negociado || 0;
-                acc.acordos += curr.acordos || 0;
-                acc.val_acordo += curr.val_acordo || 0;
-                acc.pagos += curr.pagos || 0;
-                acc.val_pago += curr.val_pago || 0;
-                acc.quebra += curr.quebra || 0;
-                acc.val_quebra += curr.val_quebra || 0;
-                acc.renovacoes += curr.renovacoes || 0;
-                return acc;
-            }, { acionados: 0, negociado: 0, acordos: 0, val_acordo: 0, pagos: 0, val_pago: 0, quebra: 0, val_quebra: 0, renovacoes: 0 });
-
-            const efetividadeVal = totals.val_acordo > 0 ? (totals.val_pago / totals.val_acordo) * 100 : 0;
-            const efetividadeQtd = totals.acordos > 0 ? (totals.pagos / totals.acordos) * 100 : 0;
-            const taxaQuebra = totals.acordos > 0 ? (totals.quebra / totals.acordos) * 100 : 0;
-            const taxaConversao = totals.acionados > 0 ? (totals.acordos / totals.acionados) * 100 : 0;
-
-            document.getElementById('kpiValorPago').textContent = formatBRL(totals.val_pago);
-            document.getElementById('kpiQtdPagos').textContent = `${formatInt(totals.pagos)} Títulos Pagos`;
-            document.getElementById('kpiEfetividadeVal').textContent = `${efetividadeVal.toFixed(1)}% Efet. R$`;
-
-            document.getElementById('kpiValorAcordo').textContent = formatBRL(totals.val_acordo);
-            document.getElementById('kpiQtdAcordos').textContent = `${formatInt(totals.acordos)} Acordos`;
-            document.getElementById('kpiEfetividadeQtd').textContent = `${efetividadeQtd.toFixed(1)}% Efet. Qtd`;
-
-            document.getElementById('kpiValorQuebra').textContent = formatBRL(totals.val_quebra);
-            document.getElementById('kpiQtdQuebra').textContent = `${formatInt(totals.quebra)} Qtd Quebra`;
-            document.getElementById('kpiTaxaQuebra').textContent = `${taxaQuebra.toFixed(1)}% Taxa`;
-
-            document.getElementById('kpiRenovacoes').textContent = formatInt(totals.renovacoes);
-            document.getElementById('kpiAcionados').textContent = formatInt(totals.acionados);
-            document.getElementById('kpiNegociados').textContent = `${formatInt(totals.negociado)} Negociados`;
-            document.getElementById('kpiTaxaConversao').textContent = `${taxaConversao.toFixed(1)}% Conv.`;
-        }
-
-        // Render Interactive Chart.js Charts
-        function renderCharts() {
-            // Group Data by Month
-            const monthMap = {};
-            filteredData.forEach(d => {
-                if (!monthMap[d.mes]) {
-                    monthMap[d.mes] = { val_acordo: 0, val_pago: 0, val_quebra: 0 };
+        // RENDERIZAR GRÁFICOS
+        function renderGraficos() {
+            // Agrupar por Mês
+            const mesesMap = {};
+            filteredData.forEach(i => {
+                if (!mesesMap[i.mes]) {
+                    mesesMap[i.mes] = { val_acordo: 0, val_pago: 0, acordos: 0, pagos: 0 };
                 }
-                monthMap[d.mes].val_acordo += d.val_acordo;
-                monthMap[d.mes].val_pago += d.val_pago;
-                monthMap[d.mes].val_quebra += d.val_quebra;
+                mesesMap[i.mes].val_acordo += i.val_acordo;
+                mesesMap[i.mes].val_pago += i.val_pago;
+                mesesMap[i.mes].acordos += i.acordos;
+                mesesMap[i.mes].pagos += i.pagos;
             });
 
-            const monthLabels = Object.keys(monthMap);
-            const valAcordoArr = monthLabels.map(m => monthMap[m].val_acordo);
-            const valPagoArr = monthLabels.map(m => monthMap[m].val_pago);
-            const valQuebraArr = monthLabels.map(m => monthMap[m].val_quebra);
+            const labelsMeses = Object.keys(mesesMap);
+            const dataValAcordo = labelsMeses.map(m => mesesMap[m].val_acordo);
+            const dataValPago = labelsMeses.map(m => mesesMap[m].val_pago);
+            const dataAcordos = labelsMeses.map(m => mesesMap[m].acordos);
+            const dataPagos = labelsMeses.map(m => mesesMap[m].pagos);
 
-            // Chart 1: Evolution
-            if (chartEvolucao) chartEvolucao.destroy();
-            const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
-            chartEvolucao = new Chart(ctxEvolucao, {
-                type: 'bar',
+            // Chart 1: Evolução
+            if (chartEvolucaoInstance) chartEvolucaoInstance.destroy();
+            const ctx1 = document.getElementById('chartEvolucao').getContext('2d');
+            chartEvolucaoInstance = new Chart(ctx1, {
+                type: 'line',
                 data: {
-                    labels: monthLabels,
+                    labels: labelsMeses,
                     datasets: [
                         {
                             label: 'Valor Acordo (R$)',
-                            data: valAcordoArr,
-                            backgroundColor: 'rgba(99, 102, 241, 0.4)',
-                            borderColor: '#6366f1',
-                            borderWidth: 1.5,
-                            borderRadius: 6
+                            data: dataValAcordo,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            fill: true,
+                            tension: 0.3
                         },
                         {
                             label: 'Valor Pago (R$)',
-                            data: valPagoArr,
-                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                            borderColor: '#10b981',
-                            borderWidth: 1.5,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Valor Quebra (R$)',
-                            data: valQuebraArr,
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-                            borderColor: '#ef4444',
-                            borderWidth: 1.5,
-                            borderRadius: 6
+                            data: dataValPago,
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.3
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#9ca3af', font: { size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
-                    },
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
                     scales: {
-                        x: { ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { display: false } },
-                        y: { 
-                            ticks: { 
-                                color: '#9ca3af', 
-                                font: { size: 10 },
-                                callback: value => 'R$ ' + (value/1000).toFixed(0) + 'k'
-                            }, 
-                            grid: { color: '#1f2937' } 
-                        }
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
                     }
                 }
             });
 
-            // Group Data by Campus
-            const campusMap = {};
-            filteredData.forEach(d => {
-                const key = `${d.marca_orig} - ${d.unidade}`;
-                if (!campusMap[key]) campusMap[key] = { val_pago: 0, val_acordo: 0 };
-                campusMap[key].val_pago += d.val_pago;
-                campusMap[key].val_acordo += d.val_acordo;
-            });
-
-            const sortedCampuses = Object.keys(campusMap).sort((a,b) => campusMap[b].val_pago - campusMap[a].val_pago).slice(0, 8);
-            const campusValPago = sortedCampuses.map(c => campusMap[c].val_pago);
-
-            // Chart 2: Distribution Doughnut
-            if (chartDistribuicao) chartDistribuicao.destroy();
-            const ctxDist = document.getElementById('chartDistribuicao').getContext('2d');
-            chartDistribuicao = new Chart(ctxDist, {
-                type: 'doughnut',
-                data: {
-                    labels: sortedCampuses.map(c => c.split(' - ')[1] || c),
-                    datasets: [{
-                        data: campusValPago,
-                        backgroundColor: [
-                            '#4f46e5', '#10b981', '#f59e0b', '#ef4444', 
-                            '#06b6d4', '#8b5cf6', '#ec4899', '#64748b'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#111827'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 10 } } }
-                    }
-                }
-            });
-
-            // Chart 3: Efetividade por Campus Bar Chart
-            const efCampuses = Object.keys(campusMap).slice(0, 12);
-            const efValues = efCampuses.map(c => {
-                const ac = campusMap[c].val_acordo;
-                return ac > 0 ? ((campusMap[c].val_pago / ac) * 100).toFixed(1) : 0;
-            });
-
-            if (chartEfetividade) chartEfetividade.destroy();
-            const ctxEf = document.getElementById('chartEfetividade').getContext('2d');
-            chartEfetividade = new Chart(ctxEf, {
+            // Chart 2: Comparativo
+            if (chartComparativoInstance) chartComparativoInstance.destroy();
+            const ctx2 = document.getElementById('chartComparativo').getContext('2d');
+            chartComparativoInstance = new Chart(ctx2, {
                 type: 'bar',
                 data: {
-                    labels: efCampuses.map(c => c.replace(' - ', ' (').concat(')')),
-                    datasets: [{
-                        label: 'Efetividade Financeira (%)',
-                        data: efValues,
-                        backgroundColor: '#f59e0b',
-                        borderRadius: 6
-                    }]
+                    labels: labelsMeses,
+                    datasets: [
+                        {
+                            label: 'Qtd Acordos',
+                            data: dataAcordos,
+                            backgroundColor: '#3b82f6'
+                        },
+                        {
+                            label: 'Qtd Pagos',
+                            data: dataPagos,
+                            backgroundColor: '#10b981'
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
                     scales: {
-                        x: { ticks: { color: '#9ca3af', font: { size: 9 } }, grid: { display: false } },
-                        y: { max: 100, ticks: { color: '#9ca3af', callback: v => v + '%' }, grid: { color: '#1f2937' } }
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
                     }
                 }
             });
         }
 
-        // 4. RELAÇÃO DE UNIDADES E INDICADORES AO FINAL DO PAINEL
-        function renderTable() {
-            // Group filtered data by Campus
-            const grouped = {};
-
-            filteredData.forEach(item => {
-                const key = `${item.marca_orig}||${item.unidade}||${item.marca_grupo}`;
-                if (!grouped[key]) {
-                    grouped[key] = {
-                        marca_orig: item.marca_orig,
-                        unidade: item.unidade,
-                        marca_grupo: item.marca_grupo,
-                        uf: item.uf,
+        // RENDERIZAR TABELA CONSOLIDADA DE UNIDADES E INDICADORES
+        function renderTabela() {
+            // Agrupar por Unidade
+            const unidadesMap = {};
+            filteredData.forEach(i => {
+                const key = `${i.unidade} (${i.marca_orig})`;
+                if (!unidadesMap[key]) {
+                    unidadesMap[key] = {
+                        unidade: i.unidade,
+                        marca: i.marca_orig,
                         acionados: 0,
-                        negociado: 0,
-                        recusa: 0,
                         acordos: 0,
                         val_acordo: 0,
                         pagos: 0,
@@ -903,300 +585,198 @@
                         renovacoes: 0
                     };
                 }
-                grouped[key].acionados += item.acionados || 0;
-                grouped[key].negociado += item.negociado || 0;
-                grouped[key].recusa += item.recusa || 0;
-                grouped[key].acordos += item.acordos || 0;
-                grouped[key].val_acordo += item.val_acordo || 0;
-                grouped[key].pagos += item.pagos || 0;
-                grouped[key].val_pago += item.val_pago || 0;
-                grouped[key].quebra += item.quebra || 0;
-                grouped[key].val_quebra += item.val_quebra || 0;
-                grouped[key].renovacoes += item.renovacoes || 0;
+                unidadesMap[key].acionados += i.acionados;
+                unidadesMap[key].acordos += i.acordos;
+                unidadesMap[key].val_acordo += i.val_acordo;
+                unidadesMap[key].pagos += i.pagos;
+                unidadesMap[key].val_pago += i.val_pago;
+                unidadesMap[key].quebra += i.quebra;
+                unidadesMap[key].val_quebra += i.val_quebra;
+                unidadesMap[key].renovacoes += i.renovacoes;
             });
 
-            let tableArray = Object.values(grouped).map(row => {
-                const efQtd = row.acordos > 0 ? (row.pagos / row.acordos) * 100 : 0;
-                const efVal = row.val_acordo > 0 ? (row.val_pago / row.val_acordo) * 100 : 0;
-                return { ...row, efQtd, efVal };
+            let list = Object.values(unidadesMap).map(u => {
+                u.efetividade_qtd = u.acordos > 0 ? (u.pagos / u.acordos) : 0;
+                u.efetividade_val = u.val_acordo > 0 ? (u.val_pago / u.val_acordo) : 0;
+                return u;
             });
 
-            // Column Sorting
-            tableArray.sort((a, b) => {
-                let valA, valB;
-                switch (sortColumn) {
-                    case 0: valA = a.unidade; valB = b.unidade; break;
-                    case 1: valA = a.marca_orig; valB = b.marca_orig; break;
-                    case 2: valA = a.acionados; valB = b.acionados; break;
-                    case 3: valA = a.negociado; valB = b.negociado; break;
-                    case 4: valA = a.recusa; valB = b.recusa; break;
-                    case 5: valA = a.acordos; valB = b.acordos; break;
-                    case 6: valA = a.val_acordo; valB = b.val_acordo; break;
-                    case 7: valA = a.pagos; valB = b.pagos; break;
-                    case 8: valA = a.val_pago; valB = b.val_pago; break;
-                    case 9: valA = a.quebra; valB = b.quebra; break;
-                    case 10: valA = a.val_quebra; valB = b.val_quebra; break;
-                    case 11: valA = a.efQtd; valB = b.efQtd; break;
-                    case 12: valA = a.efVal; valB = b.efVal; break;
-                    case 13: valA = a.renovacoes; valB = b.renovacoes; break;
-                    default: valA = a.val_pago; valB = b.val_pago;
+            // Ordenação
+            list.sort((a, b) => {
+                let valA = a[currentSortColumn];
+                let valB = b[currentSortColumn];
+                if (typeof valA === 'string') {
+                    return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
                 }
-                if (valA < valB) return sortAsc ? -1 : 1;
-                if (valA > valB) return sortAsc ? 1 : -1;
-                return 0;
+                return currentSortAsc ? valA - valB : valB - valA;
             });
 
-            const tbody = document.getElementById('tableBody');
+            const tbody = document.getElementById('tbodyUnidades');
             tbody.innerHTML = '';
 
-            let totAcionados = 0, totNegociados = 0, totRecusa = 0, totAcordos = 0, totValAcordo = 0, totPagos = 0, totValPago = 0, totQuebra = 0, totValQuebra = 0, totRenovacoes = 0;
-
-            tableArray.forEach(row => {
-                totAcionados += row.acionados;
-                totNegociados += row.negociado;
-                totRecusa += row.recusa;
-                totAcordos += row.acordos;
-                totValAcordo += row.val_acordo;
-                totPagos += row.pagos;
-                totValPago += row.val_pago;
-                totQuebra += row.quebra;
-                totValQuebra += row.val_quebra;
-                totRenovacoes += row.renovacoes;
-
-                const isWyden = row.marca_grupo === 'Wyden';
-                const badgeClass = isWyden ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/50 transition-colors">
-                        <td class="p-3.5 font-medium text-white flex items-center gap-2">
-                            <span>${row.unidade}</span>
-                            <span class="text-[10px] text-gray-500">(${row.uf})</span>
-                        </td>
-                        <td class="p-3.5">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeClass}">${row.marca_orig}</span>
-                        </td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.acionados)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.negociado)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.recusa)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.acordos)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-300">${formatBRL(row.val_acordo)}</td>
-                        <td class="p-3.5 text-right font-mono">${formatInt(row.pagos)}</td>
-                        <td class="p-3.5 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
-                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.quebra)}</td>
-                        <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(row.val_quebra)}</td>
-                        <td class="p-3.5 text-center font-mono">${row.efQtd.toFixed(1)}%</td>
-                        <td class="p-3.5 text-center font-mono font-semibold text-indigo-300">${row.efVal.toFixed(1)}%</td>
-                        <td class="p-3.5 text-right font-mono text-amber-400 font-bold">${formatInt(row.renovacoes)}</td>
-                    </tr>
+            list.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-700/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="p-3 font-medium text-white">${u.unidade} <span class="text-[10px] text-slate-400 font-normal">(${u.marca})</span></td>
+                    <td class="p-3 text-right">${u.acionados.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-emerald-400 font-semibold">${u.acordos.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-emerald-400 font-semibold">${u.val_acordo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td class="p-3 text-right text-teal-400">${u.pagos.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-teal-400">${u.val_pago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td class="p-3 text-right text-rose-400">${u.quebra.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right font-medium text-cyan-400">${(u.efetividade_qtd * 100).toFixed(1)}%</td>
+                    <td class="p-3 text-right font-medium text-cyan-400">${(u.efetividade_val * 100).toFixed(1)}%</td>
+                    <td class="p-3 text-right text-amber-400 font-semibold">${u.renovacoes.toLocaleString('pt-BR')}</td>
                 `;
+                tbody.appendChild(tr);
             });
 
-            // Summary Footer
-            const totEfQtd = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
-            const totEfVal = totValAcordo > 0 ? (totValPago / totValAcordo) * 100 : 0;
+            // Linha de Totais
+            const totAcionados = list.reduce((a, b) => a + b.acionados, 0);
+            const totAcordos = list.reduce((a, b) => a + b.acordos, 0);
+            const totValAcordo = list.reduce((a, b) => a + b.val_acordo, 0);
+            const totPagos = list.reduce((a, b) => a + b.pagos, 0);
+            const totValPago = list.reduce((a, b) => a + b.val_pago, 0);
+            const totQuebra = list.reduce((a, b) => a + b.quebra, 0);
+            const totRenovacoes = list.reduce((a, b) => a + b.renovacoes, 0);
+            const totEfetQtd = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
+            const totEfetVal = totValAcordo > 0 ? (totValPago / totValAcordo) * 100 : 0;
 
-            document.getElementById('tableFoot').innerHTML = `
+            const tfoot = document.getElementById('tfootTotal');
+            tfoot.innerHTML = `
                 <tr>
-                    <td class="p-3.5">TOTAL CONSOLIDADO</td>
-                    <td class="p-3.5">${tableArray.length} Unidades</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totAcionados)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totNegociados)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totRecusa)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totAcordos)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatBRL(totValAcordo)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totPagos)}</td>
-                    <td class="p-3.5 text-right font-mono text-emerald-400">${formatBRL(totValPago)}</td>
-                    <td class="p-3.5 text-right font-mono">${formatInt(totQuebra)}</td>
-                    <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(totValQuebra)}</td>
-                    <td class="p-3.5 text-center font-mono">${totEfQtd.toFixed(1)}%</td>
-                    <td class="p-3.5 text-center font-mono">${totEfVal.toFixed(1)}%</td>
-                    <td class="p-3.5 text-right font-mono text-amber-400">${formatInt(totRenovacoes)}</td>
+                    <td class="p-3">TOTAL CONSOLIDADO</td>
+                    <td class="p-3 text-right">${totAcionados.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-emerald-400">${totAcordos.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-emerald-400">${totValAcordo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td class="p-3 text-right text-teal-400">${totPagos.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-teal-400">${totValPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td class="p-3 text-right text-rose-400">${totQuebra.toLocaleString('pt-BR')}</td>
+                    <td class="p-3 text-right text-cyan-400">${totEfetQtd.toFixed(1)}%</td>
+                    <td class="p-3 text-right text-cyan-400">${totEfetVal.toFixed(1)}%</td>
+                    <td class="p-3 text-right text-amber-400">${totRenovacoes.toLocaleString('pt-BR')}</td>
                 </tr>
             `;
 
-            renderPresentationTable(tableArray);
+            // Tabela top para apresentação
+            renderTopApresentacao(list);
         }
 
-        // Search Filter for Table
-        function filterTable() {
-            const input = document.getElementById('tableSearch').value.toLowerCase();
-            const rows = document.querySelectorAll('#tableBody tr');
+        function ordenarTabela(coluna) {
+            if (currentSortColumn === coluna) {
+                currentSortAsc = !currentSortAsc;
+            } else {
+                currentSortColumn = coluna;
+                currentSortAsc = false;
+            }
+            renderTabela();
+        }
+
+        function filtrarTabela() {
+            const query = document.getElementById('inputBuscaTabela').value.toLowerCase();
+            const rows = document.querySelectorAll('#tbodyUnidades tr');
             rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
             });
         }
 
-        function sortTable(colIndex) {
-            if (sortColumn === colIndex) {
-                sortAsc = !sortAsc;
-            } else {
-                sortColumn = colIndex;
-                sortAsc = true;
-            }
-            renderTable();
-        }
-
-        // 3. MODO APRESENTAÇÃO NO TOPO
-        function togglePresentationMode() {
-            const overlay = document.getElementById('presentationOverlay');
-            const isHidden = overlay.classList.contains('hidden');
-
-            if (isHidden) {
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                document.body.classList.add('presentation-mode');
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
-                changeSlide(0);
-            } else {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-                document.body.classList.remove('presentation-mode');
-                stopAutoTimer();
-                if (document.exitFullscreen) {
-                    document.exitFullscreen().catch(() => {});
-                }
+        // MODO APRESENTAÇÃO
+        function abrirModoApresentacao() {
+            document.getElementById('modalApresentacao').classList.remove('hidden');
+            document.getElementById('modalApresentacao').classList.add('flex');
+            currentSlide = 1;
+            exibirSlide(currentSlide);
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
             }
         }
 
-        function changeSlide(index) {
-            currentSlide = index;
-            document.querySelectorAll('.presentation-slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
+        function fecharModoApresentacao() {
+            document.getElementById('modalApresentacao').classList.add('hidden');
+            document.getElementById('modalApresentacao').classList.remove('flex');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+
+        function mudarSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 1) currentSlide = 3;
+            if (currentSlide > 3) currentSlide = 1;
+            exibirSlide(currentSlide);
+        }
+
+        function exibirSlide(index) {
+            document.getElementById('slide1').classList.add('hidden');
+            document.getElementById('slide2').classList.add('hidden');
+            document.getElementById('slide3').classList.add('hidden');
+
+            document.getElementById(`slide${index}`).classList.remove('hidden');
+            document.getElementById('slideIndex').innerText = `${index} / 3`;
+
+            if (index === 2) renderPresEvolucaoChart();
+        }
+
+        function renderPresEvolucaoChart() {
+            const mesesMap = {};
+            filteredData.forEach(i => {
+                if (!mesesMap[i.mes]) mesesMap[i.mes] = { val_acordo: 0, val_pago: 0 };
+                mesesMap[i.mes].val_acordo += i.val_acordo;
+                mesesMap[i.mes].val_pago += i.val_pago;
             });
 
-            // Update Titles
-            const titles = ["Visão Geral de Performance", "Desempenho Financeiro e Tendências", "Ranking de Unidades e Indicadores"];
-            document.getElementById('presentationSlideTitle').textContent = titles[index] || "Modo Apresentação";
-
-            // Update button tab styles
-            [0, 1, 2].forEach(i => {
-                const btn = document.getElementById(`slideBtn${i}`);
-                if (i === index) {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white";
-                } else {
-                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
-                }
-            });
-
-            if (index === 1) renderPresentationCharts();
-        }
-
-        function nextSlide() {
-            changeSlide((currentSlide + 1) % 3);
-        }
-
-        function prevSlide() {
-            changeSlide((currentSlide - 1 + 3) % 3);
-        }
-
-        // Auto Timer Controls
-        function toggleAutoTimer() {
-            if (isAutoTimerRunning) {
-                stopAutoTimer();
-            } else {
-                startAutoTimer();
-            }
-        }
-
-        function startAutoTimer() {
-            isAutoTimerRunning = true;
-            const speed = parseInt(document.getElementById('selectTimerSpeed').value) || 10000;
-            document.getElementById('iconAutoTimer').className = "fa-solid fa-pause text-amber-400";
-            document.getElementById('labelAutoTimer').textContent = "Pausar";
-            autoTimerInterval = setInterval(() => {
-                nextSlide();
-            }, speed);
-        }
-
-        function stopAutoTimer() {
-            isAutoTimerRunning = false;
-            if (autoTimerInterval) clearInterval(autoTimerInterval);
-            document.getElementById('iconAutoTimer').className = "fa-solid fa-play text-indigo-400";
-            document.getElementById('labelAutoTimer').textContent = "Auto Play";
-        }
-
-        function updateTimerSpeed() {
-            if (isAutoTimerRunning) {
-                stopAutoTimer();
-                startAutoTimer();
-            }
-        }
-
-        function updatePresentationValues() {
-            document.getElementById('presValPago').textContent = document.getElementById('kpiValorPago').textContent;
-            document.getElementById('presValPagoSub').textContent = document.getElementById('kpiEfetividadeVal').textContent + " Efetividade Financeira";
-            document.getElementById('presValAcordo').textContent = document.getElementById('kpiValorAcordo').textContent;
-            document.getElementById('presQtdAcordos').textContent = document.getElementById('kpiQtdAcordos').textContent;
-            document.getElementById('presValQuebra').textContent = document.getElementById('kpiValorQuebra').textContent;
-            document.getElementById('presTaxaQuebra').textContent = document.getElementById('kpiTaxaQuebra').textContent + " Taxa Inadimplência";
-            document.getElementById('presRenovacoes').textContent = document.getElementById('kpiRenovacoes').textContent;
-        }
-
-        function renderPresentationCharts() {
-            if (chartPresEvolucao) chartPresEvolucao.destroy();
-            if (chartPresEfetividade) chartPresEfetividade.destroy();
-
-            const ctx1 = document.getElementById('chartPresEvolucao').getContext('2d');
-            chartPresEvolucao = new Chart(ctx1, {
-                type: 'line',
-                data: chartEvolucao.data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#ffffff', font: { size: 12 } } } },
-                    scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
-                    }
-                }
-            });
-
-            const ctx2 = document.getElementById('chartPresEfetividade').getContext('2d');
-            chartPresEfetividade = new Chart(ctx2, {
+            const labels = Object.keys(mesesMap);
+            if (chartPresEvolucaoInstance) chartPresEvolucaoInstance.destroy();
+            const ctx = document.getElementById('chartPresEvolucao').getContext('2d');
+            chartPresEvolucaoInstance = new Chart(ctx, {
                 type: 'bar',
-                data: chartEfetividade.data,
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Valor Acordo', data: labels.map(m => mesesMap[m].val_acordo), backgroundColor: '#22c55e' },
+                        { label: 'Valor Pago', data: labels.map(m => mesesMap[m].val_pago), backgroundColor: '#14b8a6' }
+                    ]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 14 } } } },
                     scales: {
-                        x: { ticks: { color: '#9ca3af' } },
-                        y: { ticks: { color: '#9ca3af' } }
+                        x: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } },
+                        y: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } }
                     }
                 }
             });
         }
 
-        function renderPresentationTable(data) {
-            const tbody = document.getElementById('presTableBody');
+        function renderTopApresentacao(list) {
+            const top = [...list].sort((a, b) => b.efetividade_val - a.efetividade_val).slice(0, 5);
+            const tbody = document.getElementById('tbodyPresTop');
             tbody.innerHTML = '';
-            data.forEach(row => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="p-3 font-bold text-white">${row.unidade}</td>
-                        <td class="p-3 text-gray-400">${row.marca_orig}</td>
-                        <td class="p-3 text-right font-mono">${formatInt(row.acionados)}</td>
-                        <td class="p-3 text-right font-mono">${formatInt(row.acordos)}</td>
-                        <td class="p-3 text-right font-mono">${formatBRL(row.val_acordo)}</td>
-                        <td class="p-3 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
-                        <td class="p-3 text-center font-mono font-bold">${row.efVal.toFixed(1)}%</td>
-                    </tr>
+            top.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-3 font-semibold text-white">${u.unidade}</td>
+                    <td class="py-3 text-right text-emerald-400 font-bold">${u.acordos}</td>
+                    <td class="py-3 text-right text-teal-400 font-bold">${u.val_pago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td class="py-3 text-right text-cyan-400 font-bold">${(u.efetividade_val * 100).toFixed(1)}%</td>
                 `;
+                tbody.appendChild(tr);
             });
         }
 
-        // Keyboard Navigation Listener
-        window.addEventListener('keydown', (e) => {
-            const overlay = document.getElementById('presentationOverlay');
-            if (!overlay.classList.contains('hidden')) {
-                if (e.key === 'Escape') togglePresentationMode();
-                if (e.key === 'ArrowRight') nextSlide();
-                if (e.key === 'ArrowLeft') prevSlide();
-            }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') fecharModoApresentacao();
+            if (e.key === 'ArrowRight') mudarSlide(1);
+            if (e.key === 'ArrowLeft') mudarSlide(-1);
         });
+
+        // FALLBACK CASO CARREGADO LOCALMENTE VIA FILE://
+        function getFallbackData() {
+            return [];
+        }
     </script>
 </body>
 </html>
