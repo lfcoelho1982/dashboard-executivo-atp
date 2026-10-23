@@ -520,4 +520,707 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // BASE DE DADOS COMPLETA
+        // BASE DE DADOS COMPLETA CONSOLIDADA (ESTÁCIO, WYDEN E IDOMED)
+        const mockDataFallback = [
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.93038, "efetividade_val": 0.948498, "renovacoes": 83},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.830409, "efetividade_val": 0.881369, "renovacoes": 90},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.893082, "efetividade_val": 0.911454, "renovacoes": 87},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "JATIÚCA - AL", "uf": "AL", "acionados": 11, "negociado": 3, "recusa": 8, "acordos": 2, "val_acordo": 850.31, "pagos": 2, "val_pago": 850.31, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 0},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MANAUS - AM", "uf": "AM", "acionados": 368, "negociado": 240, "recusa": 128, "acordos": 238, "val_acordo": 408028.56, "pagos": 193, "val_pago": 338653.04, "quebra": 45, "val_quebra": 69375.52, "efetividade_qtd": 0.810924, "efetividade_val": 0.829974, "renovacoes": 122},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "MARACANÃ - RJ", "uf": "RJ", "acionados": 36, "negociado": 10, "recusa": 26, "acordos": 11, "val_acordo": 83000.14, "pagos": 9, "val_pago": 82860.33, "quebra": 2, "val_quebra": 139.81, "efetividade_qtd": 0.818182, "efetividade_val": 0.998316, "renovacoes": 5},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "NOVA IGUAÇU - RJ", "uf": "RJ", "acionados": 224, "negociado": 213, "recusa": 11, "acordos": 215, "val_acordo": 381374.32, "pagos": 196, "val_pago": 346941.02, "quebra": 19, "val_quebra": 34433.3, "efetividade_qtd": 0.911628, "efetividade_val": 0.909713, "renovacoes": 98},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "R9 - RJ", "uf": "RJ", "acionados": 45, "negociado": 8, "recusa": 37, "acordos": 8, "val_acordo": 16850.26, "pagos": 6, "val_pago": 15940.63, "quebra": 2, "val_quebra": 909.63, "efetividade_qtd": 0.75, "efetividade_val": 0.946017, "renovacoes": 6},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "RECIFE - PE", "uf": "PE", "acionados": 48, "negociado": 23, "recusa": 25, "acordos": 20, "val_acordo": 55631.52, "pagos": 13, "val_pago": 44826.57, "quebra": 7, "val_quebra": 10804.95, "efetividade_qtd": 0.65, "efetividade_val": 0.805776, "renovacoes": 5},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SALVADOR - BA", "uf": "BA", "acionados": 199, "negociado": 176, "recusa": 23, "acordos": 172, "val_acordo": 367061.9, "pagos": 128, "val_pago": 240311.17, "quebra": 44, "val_quebra": 126750.73, "efetividade_qtd": 0.744186, "efetividade_val": 0.654688, "renovacoes": 77},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "SANTO ANDRE - SP", "uf": "SP", "acionados": 247, "negociado": 166, "recusa": 81, "acordos": 163, "val_acordo": 242036.03, "pagos": 140, "val_pago": 211830.08, "quebra": 23, "val_quebra": 30205.95, "efetividade_qtd": 0.858896, "efetividade_val": 0.875201, "renovacoes": 88},
+            {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "TAGUATINGA - DF", "uf": "DF", "acionados": 493, "negociado": 419, "recusa": 74, "acordos": 424, "val_acordo": 628790.63, "pagos": 353, "val_pago": 515302.36, "quebra": 71, "val_quebra": 113488.27, "efetividade_qtd": 0.832547, "efetividade_val": 0.819513, "renovacoes": 214},
+            // WYDEN DATA
+            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 68, "negociado": 37, "recusa": 31, "acordos": 36, "val_acordo": 83219.5, "pagos": 25, "val_pago": 43991.93, "quebra": 11, "val_quebra": 39227.57, "efetividade_qtd": 0.694444, "efetividade_val": 0.528625, "renovacoes": 0},
+            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 62, "negociado": 45, "recusa": 17, "acordos": 43, "val_acordo": 62032.8, "pagos": 29, "val_pago": 36305.37, "quebra": 14, "val_quebra": 25727.43, "efetividade_qtd": 0.674419, "efetividade_val": 0.585261, "renovacoes": 2},
+            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 102, "negociado": 82, "recusa": 20, "acordos": 83, "val_acordo": 153358.55, "pagos": 63, "val_pago": 102695.27, "quebra": 20, "val_quebra": 50663.28, "efetividade_qtd": 0.759036, "efetividade_val": 0.669642, "renovacoes": 29},
+            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 111, "negociado": 93, "recusa": 18, "acordos": 93, "val_acordo": 205425.81, "pagos": 78, "val_pago": 182674.1, "quebra": 15, "val_quebra": 22751.71, "efetividade_qtd": 0.83871, "efetividade_val": 0.889246, "renovacoes": 42},
+            {"marca_orig": "Unifacid - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "TERESINA - PI", "uf": "PI", "acionados": 56, "negociado": 50, "recusa": 3, "acordos": 45, "val_acordo": 82607.51, "pagos": 33, "val_pago": 60280.2, "quebra": 12, "val_quebra": 22327.31, "efetividade_qtd": 0.733333, "efetividade_val": 0.729718, "renovacoes": 2},
+            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Maio/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 119, "negociado": 91, "recusa": 28, "acordos": 88, "val_acordo": 83621.59, "pagos": 57, "val_pago": 58261.09, "quebra": 31, "val_quebra": 25360.5, "efetividade_qtd": 0.647727, "efetividade_val": 0.696723, "renovacoes": 3},
+            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Junho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 141, "negociado": 119, "recusa": 22, "acordos": 116, "val_acordo": 120987.06, "pagos": 93, "val_pago": 92767.57, "quebra": 23, "val_quebra": 28219.49, "efetividade_qtd": 0.801724, "efetividade_val": 0.766756, "renovacoes": 5},
+            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Julho/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 202, "negociado": 186, "recusa": 16, "acordos": 169, "val_acordo": 231312.99, "pagos": 140, "val_pago": 197564.59, "quebra": 29, "val_quebra": 33748.4, "efetividade_qtd": 0.828402, "efetividade_val": 0.8541, "renovacoes": 78},
+            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Agosto/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 236, "negociado": 206, "recusa": 30, "acordos": 201, "val_acordo": 344870.49, "pagos": 169, "val_pago": 303777.47, "quebra": 32, "val_quebra": 41093.02, "efetividade_qtd": 0.840796, "efetividade_val": 0.880845, "renovacoes": 70},
+            {"marca_orig": "Unifavip - Wyden", "marca_grupo": "Wyden", "mes": "Setembro/2026", "unidade": "CARUARU - PE", "uf": "PE", "acionados": 199, "negociado": 180, "recusa": 9, "acordos": 177, "val_acordo": 315761.9, "pagos": 139, "val_pago": 239855.59, "quebra": 38, "val_quebra": 75906.31, "efetividade_qtd": 0.785311, "efetividade_val": 0.759609, "renovacoes": 52},
+            // IDOMED DATA REAL DA PLANILHA
+            {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Junho/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 9, "negociado": 8, "recusa": 1, "acordos": 6, "val_acordo": 288106.98, "pagos": 5, "val_pago": 103292.68, "quebra": 1, "val_quebra": 184814.3, "efetividade_qtd": 0.833333, "efetividade_val": 0.358522, "renovacoes": 3},
+            {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Julho/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 42, "negociado": 37, "recusa": 5, "acordos": 37, "val_acordo": 1453754.03, "pagos": 33, "val_pago": 1170429.36, "quebra": 4, "val_quebra": 283324.67, "efetividade_qtd": 0.891892, "efetividade_val": 0.805108, "renovacoes": 11},
+            {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Agosto/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 54, "negociado": 52, "recusa": 2, "acordos": 51, "val_acordo": 1968928.55, "pagos": 46, "val_pago": 1657824.61, "quebra": 5, "val_quebra": 311103.94, "efetividade_qtd": 0.901961, "efetividade_val": 0.841993, "renovacoes": 18},
+            {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Setembro/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 28, "negociado": 28, "recusa": 0, "acordos": 28, "val_acordo": 1000368.87, "pagos": 28, "val_pago": 1000368.87, "quebra": 0, "val_quebra": 0.0, "efetividade_qtd": 1.0, "efetividade_val": 1.0, "renovacoes": 4}
+        ];
+
+        let rawData = [];
+        let filteredData = [];
+        let selectedBrand = 'Todos';
+        let sortColumn = 8; // Default sort by Val Pago
+        let sortAsc = false;
+        let chartEvolucao, chartDistribuicao, chartEfetividade;
+        let chartPresEvolucao, chartPresEfetividade;
+        let currentSlide = 0;
+        let autoTimerInterval = null;
+        let isAutoTimerRunning = false;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            populateFilterDropdowns();
+            applyFilters();
+        });
+
+        // 1. Load JSON Data with Fetch & Fallback
+        async function loadData() {
+            try {
+                const res = await fetch('data_array.json');
+                if (!res.ok) throw new Error('File fetch failed');
+                rawData = await res.json();
+                console.log('Dados carregados do arquivo data_array.json');
+            } catch (e) {
+                console.warn('Carregando dados embutidos de fallback...');
+                rawData = mockDataFallback;
+            }
+        }
+
+        // 2. FILTRAGEM RIGOROSA DE MARCA E UNIDADE
+        function selectBrand(brand) {
+            selectedBrand = brand;
+
+            // Update button styles
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-all";
+            });
+
+            if (brand === 'Todos') {
+                document.getElementById('btnBrandTodos').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md";
+            } else if (brand === 'Estácio') {
+                document.getElementById('btnBrandEstacio').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-blue-600 text-white shadow-md";
+            } else if (brand === 'Wyden') {
+                document.getElementById('btnBrandWyden').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-red-600 text-white shadow-md";
+            } else if (brand === 'IDOMED') {
+                document.getElementById('btnBrandIdomed').className = "brand-btn px-4 py-2 text-xs font-medium rounded-lg transition-all bg-emerald-600 text-white shadow-md";
+            }
+
+            // Repopulate dependent drop-downs strictly
+            populateUnidadesDropdown();
+            applyFilters();
+        }
+
+        // Populate Month, UF and Campus Dropdowns
+        function populateFilterDropdowns() {
+            // Months
+            const meses = [...new Set(rawData.map(item => item.mes))];
+            const selectMes = document.getElementById('selectMes');
+            selectMes.innerHTML = '<option value="Todos">Todos os Meses</option>';
+            meses.forEach(m => selectMes.innerHTML += `<option value="${m}">${m}</option>`);
+
+            // UFs
+            const ufs = [...new Set(rawData.map(item => item.uf))].sort();
+            const selectUF = document.getElementById('selectUF');
+            selectUF.innerHTML = '<option value="Todos">Todas as UFs</option>';
+            ufs.forEach(uf => selectUF.innerHTML += `<option value="${uf}">${uf}</option>`);
+
+            populateUnidadesDropdown();
+        }
+
+        // RIGOROUS CAMPUS DROPDOWN FILTERING
+        function populateUnidadesDropdown() {
+            const selectUnidade = document.getElementById('selectUnidade');
+            const currentSelection = selectUnidade.value;
+            selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
+
+            // Filter available campuses based strictly on Brand
+            let availableData = rawData;
+            if (selectedBrand === 'Estácio') {
+                availableData = rawData.filter(d => d.marca_grupo === 'Estácio');
+            } else if (selectedBrand === 'Wyden') {
+                availableData = rawData.filter(d => d.marca_grupo === 'Wyden');
+            } else if (selectedBrand === 'IDOMED') {
+                availableData = rawData.filter(d => d.marca_grupo === 'IDOMED');
+            }
+
+            // Create unique label combining marca_orig and unidade
+            const uniqueCampuses = [];
+            availableData.forEach(item => {
+                const campusLabel = `${item.marca_orig} - ${item.unidade}`;
+                if (!uniqueCampuses.includes(campusLabel)) {
+                    uniqueCampuses.push(campusLabel);
+                }
+            });
+
+            uniqueCampuses.sort().forEach(campus => {
+                selectUnidade.innerHTML += `<option value="${campus}">${campus}</option>`;
+            });
+
+            // Restore selection if still valid
+            if (uniqueCampuses.includes(currentSelection)) {
+                selectUnidade.value = currentSelection;
+            } else {
+                selectUnidade.value = 'Todos';
+            }
+        }
+
+        // Apply All Dynamic Filters
+        function applyFilters() {
+            const mes = document.getElementById('selectMes').value;
+            const uf = document.getElementById('selectUF').value;
+            const unidadeLabel = document.getElementById('selectUnidade').value;
+
+            filteredData = rawData.filter(item => {
+                // Brand Filter
+                if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
+                // Month Filter
+                if (mes !== 'Todos' && item.mes !== mes) return false;
+                // UF Filter
+                if (uf !== 'Todos' && item.uf !== uf) return false;
+                // Campus Filter
+                if (unidadeLabel !== 'Todos') {
+                    const label = `${item.marca_orig} - ${item.unidade}`;
+                    if (label !== unidadeLabel) return false;
+                }
+                return true;
+            });
+
+            // Update UI Chips
+            document.getElementById('chipBrand').textContent = `Marca: ${selectedBrand}`;
+            document.getElementById('chipMes').textContent = `Mês: ${mes}`;
+            document.getElementById('chipUF').textContent = `UF: ${uf}`;
+            document.getElementById('chipUnidade').textContent = `Unidade: ${unidadeLabel}`;
+
+            updateKPIs();
+            renderCharts();
+            renderTable();
+            updatePresentationValues();
+        }
+
+        function resetFilters() {
+            selectBrand('Todos');
+            document.getElementById('selectMes').value = 'Todos';
+            document.getElementById('selectUF').value = 'Todos';
+            document.getElementById('selectUnidade').value = 'Todos';
+            applyFilters();
+        }
+
+        // Formatters
+        function formatBRL(value) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+        }
+
+        function formatInt(value) {
+            return new Intl.NumberFormat('pt-BR').format(value || 0);
+        }
+
+        // Calculate and Update Dashboard KPIs
+        function updateKPIs() {
+            const totals = filteredData.reduce((acc, curr) => {
+                acc.acionados += curr.acionados || 0;
+                acc.negociado += curr.negociado || 0;
+                acc.acordos += curr.acordos || 0;
+                acc.val_acordo += curr.val_acordo || 0;
+                acc.pagos += curr.pagos || 0;
+                acc.val_pago += curr.val_pago || 0;
+                acc.quebra += curr.quebra || 0;
+                acc.val_quebra += curr.val_quebra || 0;
+                acc.renovacoes += curr.renovacoes || 0;
+                return acc;
+            }, { acionados: 0, negociado: 0, acordos: 0, val_acordo: 0, pagos: 0, val_pago: 0, quebra: 0, val_quebra: 0, renovacoes: 0 });
+
+            const efetividadeVal = totals.val_acordo > 0 ? (totals.val_pago / totals.val_acordo) * 100 : 0;
+            const efetividadeQtd = totals.acordos > 0 ? (totals.pagos / totals.acordos) * 100 : 0;
+            const taxaQuebra = totals.acordos > 0 ? (totals.quebra / totals.acordos) * 100 : 0;
+            const taxaConversao = totals.acionados > 0 ? (totals.acordos / totals.acionados) * 100 : 0;
+
+            document.getElementById('kpiValorPago').textContent = formatBRL(totals.val_pago);
+            document.getElementById('kpiQtdPagos').textContent = `${formatInt(totals.pagos)} Títulos Pagos`;
+            document.getElementById('kpiEfetividadeVal').textContent = `${efetividadeVal.toFixed(1)}% Efet. R$`;
+
+            document.getElementById('kpiValorAcordo').textContent = formatBRL(totals.val_acordo);
+            document.getElementById('kpiQtdAcordos').textContent = `${formatInt(totals.acordos)} Acordos`;
+            document.getElementById('kpiEfetividadeQtd').textContent = `${efetividadeQtd.toFixed(1)}% Efet. Qtd`;
+
+            document.getElementById('kpiValorQuebra').textContent = formatBRL(totals.val_quebra);
+            document.getElementById('kpiQtdQuebra').textContent = `${formatInt(totals.quebra)} Qtd Quebra`;
+            document.getElementById('kpiTaxaQuebra').textContent = `${taxaQuebra.toFixed(1)}% Taxa`;
+
+            document.getElementById('kpiRenovacoes').textContent = formatInt(totals.renovacoes);
+            document.getElementById('kpiAcionados').textContent = formatInt(totals.acionados);
+            document.getElementById('kpiNegociados').textContent = `${formatInt(totals.negociado)} Negociados`;
+            document.getElementById('kpiTaxaConversao').textContent = `${taxaConversao.toFixed(1)}% Conv.`;
+        }
+
+        // Render Interactive Chart.js Charts
+        function renderCharts() {
+            // Group Data by Month
+            const monthMap = {};
+            filteredData.forEach(d => {
+                if (!monthMap[d.mes]) {
+                    monthMap[d.mes] = { val_acordo: 0, val_pago: 0, val_quebra: 0 };
+                }
+                monthMap[d.mes].val_acordo += d.val_acordo;
+                monthMap[d.mes].val_pago += d.val_pago;
+                monthMap[d.mes].val_quebra += d.val_quebra;
+            });
+
+            const monthLabels = Object.keys(monthMap);
+            const valAcordoArr = monthLabels.map(m => monthMap[m].val_acordo);
+            const valPagoArr = monthLabels.map(m => monthMap[m].val_pago);
+            const valQuebraArr = monthLabels.map(m => monthMap[m].val_quebra);
+
+            // Chart 1: Evolution
+            if (chartEvolucao) chartEvolucao.destroy();
+            const ctxEvolucao = document.getElementById('chartEvolucao').getContext('2d');
+            chartEvolucao = new Chart(ctxEvolucao, {
+                type: 'bar',
+                data: {
+                    labels: monthLabels,
+                    datasets: [
+                        {
+                            label: 'Valor Acordo (R$)',
+                            data: valAcordoArr,
+                            backgroundColor: 'rgba(99, 102, 241, 0.4)',
+                            borderColor: '#6366f1',
+                            borderWidth: 1.5,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Valor Pago (R$)',
+                            data: valPagoArr,
+                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                            borderColor: '#10b981',
+                            borderWidth: 1.5,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Valor Quebra (R$)',
+                            data: valQuebraArr,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderColor: '#ef4444',
+                            borderWidth: 1.5,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af', font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#9ca3af', font: { size: 10 } }, grid: { display: false } },
+                        y: { 
+                            ticks: { 
+                                color: '#9ca3af', 
+                                font: { size: 10 },
+                                callback: value => 'R$ ' + (value/1000).toFixed(0) + 'k'
+                            }, 
+                            grid: { color: '#1f2937' } 
+                        }
+                    }
+                }
+            });
+
+            // Group Data by Campus
+            const campusMap = {};
+            filteredData.forEach(d => {
+                const key = `${d.marca_orig} - ${d.unidade}`;
+                if (!campusMap[key]) campusMap[key] = { val_pago: 0, val_acordo: 0 };
+                campusMap[key].val_pago += d.val_pago;
+                campusMap[key].val_acordo += d.val_acordo;
+            });
+
+            const sortedCampuses = Object.keys(campusMap).sort((a,b) => campusMap[b].val_pago - campusMap[a].val_pago).slice(0, 8);
+            const campusValPago = sortedCampuses.map(c => campusMap[c].val_pago);
+
+            // Chart 2: Distribution Doughnut
+            if (chartDistribuicao) chartDistribuicao.destroy();
+            const ctxDist = document.getElementById('chartDistribuicao').getContext('2d');
+            chartDistribuicao = new Chart(ctxDist, {
+                type: 'doughnut',
+                data: {
+                    labels: sortedCampuses.map(c => c.split(' - ')[1] || c),
+                    datasets: [{
+                        data: campusValPago,
+                        backgroundColor: [
+                            '#4f46e5', '#10b981', '#f59e0b', '#ef4444', 
+                            '#06b6d4', '#8b5cf6', '#ec4899', '#64748b'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#111827'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#9ca3af', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Chart 3: Efetividade por Campus Bar Chart
+            const efCampuses = Object.keys(campusMap).slice(0, 12);
+            const efValues = efCampuses.map(c => {
+                const ac = campusMap[c].val_acordo;
+                return ac > 0 ? ((campusMap[c].val_pago / ac) * 100).toFixed(1) : 0;
+            });
+
+            if (chartEfetividade) chartEfetividade.destroy();
+            const ctxEf = document.getElementById('chartEfetividade').getContext('2d');
+            chartEfetividade = new Chart(ctxEf, {
+                type: 'bar',
+                data: {
+                    labels: efCampuses.map(c => c.replace(' - ', ' (').concat(')')),
+                    datasets: [{
+                        label: 'Efetividade Financeira (%)',
+                        data: efValues,
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#9ca3af', font: { size: 9 } }, grid: { display: false } },
+                        y: { max: 100, ticks: { color: '#9ca3af', callback: v => v + '%' }, grid: { color: '#1f2937' } }
+                    }
+                }
+            });
+        }
+
+        // 4. RELAÇÃO DE UNIDADES E INDICADORES AO FINAL DO PAINEL
+        function renderTable() {
+            // Group filtered data by Campus
+            const grouped = {};
+
+            filteredData.forEach(item => {
+                const key = `${item.marca_orig}||${item.unidade}||${item.marca_grupo}`;
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        marca_orig: item.marca_orig,
+                        unidade: item.unidade,
+                        marca_grupo: item.marca_grupo,
+                        uf: item.uf,
+                        acionados: 0,
+                        negociado: 0,
+                        recusa: 0,
+                        acordos: 0,
+                        val_acordo: 0,
+                        pagos: 0,
+                        val_pago: 0,
+                        quebra: 0,
+                        val_quebra: 0,
+                        renovacoes: 0
+                    };
+                }
+                grouped[key].acionados += item.acionados || 0;
+                grouped[key].negociado += item.negociado || 0;
+                grouped[key].recusa += item.recusa || 0;
+                grouped[key].acordos += item.acordos || 0;
+                grouped[key].val_acordo += item.val_acordo || 0;
+                grouped[key].pagos += item.pagos || 0;
+                grouped[key].val_pago += item.val_pago || 0;
+                grouped[key].quebra += item.quebra || 0;
+                grouped[key].val_quebra += item.val_quebra || 0;
+                grouped[key].renovacoes += item.renovacoes || 0;
+            });
+
+            let tableArray = Object.values(grouped).map(row => {
+                const efQtd = row.acordos > 0 ? (row.pagos / row.acordos) * 100 : 0;
+                const efVal = row.val_acordo > 0 ? (row.val_pago / row.val_acordo) * 100 : 0;
+                return { ...row, efQtd, efVal };
+            });
+
+            // Column Sorting
+            tableArray.sort((a, b) => {
+                let valA, valB;
+                switch (sortColumn) {
+                    case 0: valA = a.unidade; valB = b.unidade; break;
+                    case 1: valA = a.marca_orig; valB = b.marca_orig; break;
+                    case 2: valA = a.acionados; valB = b.acionados; break;
+                    case 3: valA = a.negociado; valB = b.negociado; break;
+                    case 4: valA = a.recusa; valB = b.recusa; break;
+                    case 5: valA = a.acordos; valB = b.acordos; break;
+                    case 6: valA = a.val_acordo; valB = b.val_acordo; break;
+                    case 7: valA = a.pagos; valB = b.pagos; break;
+                    case 8: valA = a.val_pago; valB = b.val_pago; break;
+                    case 9: valA = a.quebra; valB = b.quebra; break;
+                    case 10: valA = a.val_quebra; valB = b.val_quebra; break;
+                    case 11: valA = a.efQtd; valB = b.efQtd; break;
+                    case 12: valA = a.efVal; valB = b.efVal; break;
+                    case 13: valA = a.renovacoes; valB = b.renovacoes; break;
+                    default: valA = a.val_pago; valB = b.val_pago;
+                }
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            let totAcionados = 0, totNegociados = 0, totRecusa = 0, totAcordos = 0, totValAcordo = 0, totPagos = 0, totValPago = 0, totQuebra = 0, totValQuebra = 0, totRenovacoes = 0;
+
+            tableArray.forEach(row => {
+                totAcionados += row.acionados;
+                totNegociados += row.negociado;
+                totRecusa += row.recusa;
+                totAcordos += row.acordos;
+                totValAcordo += row.val_acordo;
+                totPagos += row.pagos;
+                totValPago += row.val_pago;
+                totQuebra += row.quebra;
+                totValQuebra += row.val_quebra;
+                totRenovacoes += row.renovacoes;
+
+                let badgeClass = 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+                if (row.marca_grupo === 'Wyden') {
+                    badgeClass = 'bg-red-500/20 text-red-400 border-red-500/30';
+                } else if (row.marca_grupo === 'IDOMED') {
+                    badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-800/50 transition-colors">
+                        <td class="p-3.5 font-medium text-white flex items-center gap-2">
+                            <span>${row.unidade}</span>
+                            <span class="text-[10px] text-gray-500">(${row.uf})</span>
+                        </td>
+                        <td class="p-3.5">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeClass}">${row.marca_orig}</span>
+                        </td>
+                        <td class="p-3.5 text-right font-mono">${formatInt(row.acionados)}</td>
+                        <td class="p-3.5 text-right font-mono">${formatInt(row.negociado)}</td>
+                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.recusa)}</td>
+                        <td class="p-3.5 text-right font-mono">${formatInt(row.acordos)}</td>
+                        <td class="p-3.5 text-right font-mono text-gray-300">${formatBRL(row.val_acordo)}</td>
+                        <td class="p-3.5 text-right font-mono">${formatInt(row.pagos)}</td>
+                        <td class="p-3.5 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
+                        <td class="p-3.5 text-right font-mono text-gray-400">${formatInt(row.quebra)}</td>
+                        <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(row.val_quebra)}</td>
+                        <td class="p-3.5 text-center font-mono">${row.efQtd.toFixed(1)}%</td>
+                        <td class="p-3.5 text-center font-mono font-semibold text-indigo-300">${row.efVal.toFixed(1)}%</td>
+                        <td class="p-3.5 text-right font-mono text-amber-400 font-bold">${formatInt(row.renovacoes)}</td>
+                    </tr>
+                `;
+            });
+
+            // Summary Footer
+            const totEfQtd = totAcordos > 0 ? (totPagos / totAcordos) * 100 : 0;
+            const totEfVal = totValAcordo > 0 ? (totValPago / totValAcordo) * 100 : 0;
+
+            document.getElementById('tableFoot').innerHTML = `
+                <tr>
+                    <td class="p-3.5">TOTAL CONSOLIDADO</td>
+                    <td class="p-3.5">${tableArray.length} Unidades</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totAcionados)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totNegociados)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totRecusa)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totAcordos)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatBRL(totValAcordo)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totPagos)}</td>
+                    <td class="p-3.5 text-right font-mono text-emerald-400">${formatBRL(totValPago)}</td>
+                    <td class="p-3.5 text-right font-mono">${formatInt(totQuebra)}</td>
+                    <td class="p-3.5 text-right font-mono text-red-400">${formatBRL(totValQuebra)}</td>
+                    <td class="p-3.5 text-center font-mono">${totEfQtd.toFixed(1)}%</td>
+                    <td class="p-3.5 text-center font-mono">${totEfVal.toFixed(1)}%</td>
+                    <td class="p-3.5 text-right font-mono text-amber-400">${formatInt(totRenovacoes)}</td>
+                </tr>
+            `;
+
+            renderPresentationTable(tableArray);
+        }
+
+        // Search Filter for Table
+        function filterTable() {
+            const input = document.getElementById('tableSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+
+        function sortTable(colIndex) {
+            if (sortColumn === colIndex) {
+                sortAsc = !sortAsc;
+            } else {
+                sortColumn = colIndex;
+                sortAsc = true;
+            }
+            renderTable();
+        }
+
+        // 3. MODO APRESENTAÇÃO NO TOPO
+        function togglePresentationMode() {
+            const overlay = document.getElementById('presentationOverlay');
+            const isHidden = overlay.classList.contains('hidden');
+
+            if (isHidden) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+                document.body.classList.add('presentation-mode');
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+                changeSlide(0);
+            } else {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                document.body.classList.remove('presentation-mode');
+                stopAutoTimer();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+        }
+
+        function changeSlide(index) {
+            currentSlide = index;
+            document.querySelectorAll('.presentation-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+
+            // Update Titles
+            const titles = ["Visão Geral de Performance", "Desempenho Financeiro e Tendências", "Ranking de Unidades e Indicadores"];
+            document.getElementById('presentationSlideTitle').textContent = titles[index] || "Modo Apresentação";
+
+            // Update button tab styles
+            [0, 1, 2].forEach(i => {
+                const btn = document.getElementById(`slideBtn${i}`);
+                if (i === index) {
+                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white";
+                } else {
+                    btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-gray-400 hover:text-white";
+                }
+            });
+
+            if (index === 1) renderPresentationCharts();
+        }
+
+        function nextSlide() {
+            changeSlide((currentSlide + 1) % 3);
+        }
+
+        function prevSlide() {
+            changeSlide((currentSlide - 1 + 3) % 3);
+        }
+
+        // Auto Timer Controls
+        function toggleAutoTimer() {
+            if (isAutoTimerRunning) {
+                stopAutoTimer();
+            } else {
+                startAutoTimer();
+            }
+        }
+
+        function startAutoTimer() {
+            isAutoTimerRunning = true;
+            const speed = parseInt(document.getElementById('selectTimerSpeed').value) || 10000;
+            document.getElementById('iconAutoTimer').className = "fa-solid fa-pause text-amber-400";
+            document.getElementById('labelAutoTimer').textContent = "Pausar";
+            autoTimerInterval = setInterval(() => {
+                nextSlide();
+            }, speed);
+        }
+
+        function stopAutoTimer() {
+            isAutoTimerRunning = false;
+            if (autoTimerInterval) clearInterval(autoTimerInterval);
+            document.getElementById('iconAutoTimer').className = "fa-solid fa-play text-indigo-400";
+            document.getElementById('labelAutoTimer').textContent = "Auto Play";
+        }
+
+        function updateTimerSpeed() {
+            if (isAutoTimerRunning) {
+                stopAutoTimer();
+                startAutoTimer();
+            }
+        }
+
+        function updatePresentationValues() {
+            document.getElementById('presValPago').textContent = document.getElementById('kpiValorPago').textContent;
+            document.getElementById('presValPagoSub').textContent = document.getElementById('kpiEfetividadeVal').textContent + " Efetividade Financeira";
+            document.getElementById('presValAcordo').textContent = document.getElementById('kpiValorAcordo').textContent;
+            document.getElementById('presQtdAcordos').textContent = document.getElementById('kpiQtdAcordos').textContent;
+            document.getElementById('presValQuebra').textContent = document.getElementById('kpiValorQuebra').textContent;
+            document.getElementById('presTaxaQuebra').textContent = document.getElementById('kpiTaxaQuebra').textContent + " Taxa Inadimplência";
+            document.getElementById('presRenovacoes').textContent = document.getElementById('kpiRenovacoes').textContent;
+        }
+
+        function renderPresentationCharts() {
+            if (chartPresEvolucao) chartPresEvolucao.destroy();
+            if (chartPresEfetividade) chartPresEfetividade.destroy();
+
+            const ctx1 = document.getElementById('chartPresEvolucao').getContext('2d');
+            chartPresEvolucao = new Chart(ctx1, {
+                type: 'line',
+                data: chartEvolucao.data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#ffffff', font: { size: 12 } } } },
+                    scales: {
+                        x: { ticks: { color: '#9ca3af' } },
+                        y: { ticks: { color: '#9ca3af' } }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('chartPresEfetividade').getContext('2d');
+            chartPresEfetividade = new Chart(ctx2, {
+                type: 'bar',
+                data: chartEfetividade.data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#9ca3af' } },
+                        y: { ticks: { color: '#9ca3af' } }
+                    }
+                }
+            });
+        }
+
+        function renderPresentationTable(data) {
+            const tbody = document.getElementById('presTableBody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 font-bold text-white">${row.unidade}</td>
+                        <td class="p-3 text-gray-400">${row.marca_orig}</td>
+                        <td class="p-3 text-right font-mono">${formatInt(row.acionados)}</td>
+                        <td class="p-3 text-right font-mono">${formatInt(row.acordos)}</td>
+                        <td class="p-3 text-right font-mono">${formatBRL(row.val_acordo)}</td>
+                        <td class="p-3 text-right font-mono text-emerald-400 font-bold">${formatBRL(row.val_pago)}</td>
+                        <td class="p-3 text-center font-mono font-bold">${row.efVal.toFixed(1)}%</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Keyboard Navigation Listener
+        window.addEventListener('keydown', (e) => {
+            const overlay = document.getElementById('presentationOverlay');
+            if (!overlay.classList.contains('hidden')) {
+                if (e.key === 'Escape') togglePresentationMode();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>
