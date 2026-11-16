@@ -151,11 +151,11 @@
             <div class="grid grid-cols-2 gap-2">
                 <div>
                     <span class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1">De</span>
-                    <input type="month" id="selectMesDe" onchange="applyFilters()" style="color-scheme: dark" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
+                    <select id="selectMesDe" onchange="applyFilters()" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all"><option value="">Início</option></select>
                 </div>
                 <div>
                     <span class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1">Até</span>
-                    <input type="month" id="selectMesAte" onchange="applyFilters()" style="color-scheme: dark" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
+                    <select id="selectMesAte" onchange="applyFilters()" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all"><option value="">Fim</option></select>
                 </div>
             </div>
             <button type="button" onclick="clearMes()" class="mt-1 text-[11px] font-medium text-indigo-400 hover:text-indigo-300 transition-all">Limpar período (todos os meses)</button>
@@ -828,11 +828,12 @@
             }
 
             const meses = [...new Set(base.map(item => item.mes))];
-            const valores = meses.map(mesParaValor).filter(Boolean).sort();
-            ['selectMesDe', 'selectMesAte'].forEach(id => {
+            const valores = [...new Set(meses.map(mesParaValor).filter(Boolean))].sort();
+            const opcoesMes = valores.map(v => `<option value="${v}">${valorParaTexto(v)}</option>`).join('');
+            ['selectMesDe', 'selectMesAte'].forEach((id, idx) => {
                 const el = document.getElementById(id);
+                el.innerHTML = `<option value="">${idx === 0 ? 'Início' : 'Fim'}</option>` + opcoesMes;
                 el.value = '';
-                if (valores.length) { el.min = valores[0]; el.max = valores[valores.length - 1]; }
             });
 
             const ufs = [...new Set(base.map(item => item.uf))].sort();
@@ -884,6 +885,10 @@
             if (!v) return 'Todos';
             const [y, m] = v.split('-');
             return `${MESES_PT[+m - 1]}/${y}`;
+        }
+        function valorParaTexto(v) {
+            const [y, m] = v.split('-');
+            return `${MESES_PT[+m - 1]} ${y}`;
         }
         function clearMes() {
             document.getElementById('selectMesDe').value = '';
