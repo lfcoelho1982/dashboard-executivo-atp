@@ -25,6 +25,8 @@
     </script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SheetJS para exportação em Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -70,6 +72,42 @@
 </head>
 <body class="min-h-screen flex flex-col bg-dark-900 text-gray-100">
 
+    <!-- MODAL DE LOGIN / CREDENCIAIS -->
+    <div id="loginModal" class="fixed inset-0 z-50 bg-dark-900/95 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 max-w-md w-full shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <div class="bg-indigo-600 w-12 h-12 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-lock text-white text-xl"></i>
+                </div>
+                <h2 class="text-xl font-bold text-white">Acesso Restrito - ATP</h2>
+                <p class="text-xs text-gray-400">Insira suas credenciais corporativas para acessar o painel da sua marca</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Usuário / Perfil:</label>
+                    <input type="text" id="loginUser" required placeholder="Ex: estacio, wyden, idomed ou admin" class="w-full bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Senha:</label>
+                    <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
+                <div id="loginError" class="text-red-400 text-xs hidden text-center font-medium">Usuário ou senha incorretos. Tente novamente.</div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all">
+                    Entrar no Sistema
+                </button>
+            </form>
+
+            <div class="border-t border-dark-700 pt-4 text-[11px] text-gray-500 text-center space-y-1">
+                <p><strong>Acessos de Teste:</strong></p>
+                <p>Estácio: <code class="text-gray-400">estacio</code> / <code class="text-gray-400">estacio2026</code></p>
+                <p>Wyden: <code class="text-gray-400">wyden</code> / <code class="text-gray-400">wyden2026</code> | IDOMED: <code class="text-gray-400">idomed</code> / <code class="text-gray-400">idomed2026</code></p>
+                <p>Diretoria/Admin (Todas): <code class="text-gray-400">admin</code> / <code class="text-gray-400">yduqs2026</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER PRINCIPAL -->
     <header class="bg-dark-800 border-b border-dark-700 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-md">
         <div class="flex items-center space-x-4">
             <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
@@ -78,28 +116,33 @@
             <div>
                 <div class="flex items-center gap-2">
                     <h1 class="text-lg font-bold tracking-tight text-white">Grupo YDUQS</h1>
-                    <span class="px-2 py-0.5 text-[10px] font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full">ATP Operacional</span>
+                    <span id="userBadgeRole" class="px-2 py-0.5 text-[10px] font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full">ATP Operacional</span>
                 </div>
                 <p class="text-xs text-gray-400">Analytics Executivo de Acordos e Arrecadação</p>
             </div>
         </div>
 
         <div class="flex items-center gap-3">
+            <button onclick="exportToExcel()" class="flex items-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-xl transition-all shadow-lg">
+                <i class="fa-solid fa-file-excel"></i>
+                <span>Exportar Planilha (Diretoria)</span>
+            </button>
             <button onclick="togglePresentationMode()" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition-all">
                 <i class="fa-solid fa-person-chalkboard"></i>
                 <span>Modo Apresentação</span>
             </button>
-            <button onclick="resetFilters()" class="flex items-center gap-2 px-3 py-2 bg-dark-700 hover:bg-dark-600 text-gray-300 text-xs font-medium rounded-xl transition-all border border-gray-700">
-                <i class="fa-solid fa-rotate-right"></i>
-                <span>Resetar</span>
+            <button onclick="logout()" class="flex items-center gap-2 px-3 py-2 bg-dark-700 hover:bg-dark-600 text-gray-300 text-xs font-medium rounded-xl transition-all border border-gray-700" title="Trocar Usuário">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sair</span>
             </button>
         </div>
     </header>
 
+    <!-- BARRA DE FILTROS -->
     <div class="bg-dark-800/60 border-b border-dark-700 px-6 py-4 grid grid-cols-1 md:grid-cols-4 gap-4 backdrop-blur-md">
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Marca / Grupo:</label>
-            <div class="flex flex-wrap gap-1.5 bg-dark-900 p-1 rounded-xl border border-dark-700">
+            <div id="brandButtonGroup" class="flex flex-wrap gap-1.5 bg-dark-900 p-1 rounded-xl border border-dark-700">
                 <button id="btnBrandTodos" onclick="selectBrand('Todos')" class="brand-btn px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md">Todos</button>
                 <button id="btnBrandEstacio" onclick="selectBrand('Estácio')" class="brand-btn px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all">Estácio</button>
                 <button id="btnBrandWyden" onclick="selectBrand('Wyden')" class="brand-btn px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all">Wyden</button>
@@ -129,6 +172,7 @@
         </div>
     </div>
 
+    <!-- CHIPS DE FILTROS ATIVOS -->
     <div class="px-6 py-2.5 bg-dark-900 border-b border-dark-700/50 flex items-center gap-2 text-xs text-gray-400 overflow-x-auto">
         <span class="flex items-center gap-1.5 font-medium text-gray-300"><i class="fa-solid fa-filter text-indigo-400"></i> Filtros Ativos:</span>
         <span id="chipBrand" class="px-2.5 py-1 bg-dark-800 border border-dark-700 rounded-lg text-gray-300">Marca: Todos</span>
@@ -137,6 +181,7 @@
         <span id="chipUnidade" class="px-2.5 py-1 bg-dark-800 border border-dark-700 rounded-lg text-gray-300">Unidade: Todos</span>
     </div>
 
+    <!-- CONTEÚDO PRINCIPAL (KPIS E GRÁFICOS) -->
     <main class="flex-1 p-6 space-y-6 max-w-[1600px] w-full mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-all">
@@ -282,6 +327,7 @@
         Grupo YDUQS / ATP - Relatório Operacional Executivo &bull; Todos os direitos reservados.
     </footer>
 
+    <!-- MODO APRESENTAÇÃO -->
     <div id="presentationOverlay" class="fixed inset-0 z-50 bg-dark-900/98 backdrop-blur-xl hidden flex-col">
         <div class="bg-dark-800 border-b border-dark-700 px-8 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4">
@@ -415,8 +461,8 @@
         </div>
     </div>
 
+    <!-- SCRIPT DE DADOS E LÓGICA -->
     <script>
-        // Base completa consolidada (Agosto/2025 a Outubro/2026) embutida diretamente
         const rawData = [
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.93038, "efetividade_val": 0.948498, "renovacoes": 83},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.830409, "efetividade_val": 0.881369, "renovacoes": 90},
@@ -584,6 +630,15 @@
             {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Outubro/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 6, "negociado": 6, "recusa": 0, "acordos": 6, "val_acordo": 121177.37, "pagos": 5, "val_pago": 119260.59, "quebra": 1, "val_quebra": 1916.78, "efetividade_qtd": 0.833, "efetividade_val": 0.984, "renovacoes": 0}
         ];
 
+        // Definição de Usuários e Permissões por Marca
+        const validUsers = {
+            "estacio": { pass: "estacio2026", brand: "Estácio", label: "Visão Restrita: Estácio" },
+            "wyden": { pass: "wyden2026", brand: "Wyden", label: "Visão Restrita: Wyden" },
+            "idomed": { pass: "idomed2026", brand: "IDOMED", label: "Visão Restrita: IDOMED" },
+            "admin": { pass: "yduqs2026", brand: "Todos", label: "Visão Consolidada: Diretoria YDUQS" }
+        };
+
+        let currentUser = null;
         let filteredData = [];
         let selectedBrand = 'Todos';
         let sortColumn = 8;
@@ -594,12 +649,54 @@
         let autoTimerInterval = null;
         let isAutoTimerRunning = false;
 
+        function handleLogin(event) {
+            event.preventDefault();
+            const uInput = document.getElementById('loginUser').value.trim().toLowerCase();
+            const pInput = document.getElementById('loginPass').value;
+            const errDiv = document.getElementById('loginError');
+
+            if (validUsers[uInput] && validUsers[uInput].pass === pInput) {
+                currentUser = validUsers[uInput];
+                document.getElementById('loginModal').classList.add('hidden');
+                errDiv.classList.add('hidden');
+                
+                // Configurar restrição de marca baseada no login
+                document.getElementById('userBadgeRole').textContent = currentUser.label;
+                
+                if (currentUser.brand !== 'Todos') {
+                    selectedBrand = currentUser.brand;
+                    // Oculta botões de outras marcas no seletor para forçar restrição
+                    document.getElementById('brandButtonGroup').style.display = 'none';
+                } else {
+                    selectedBrand = 'Todos';
+                    document.getElementById('brandButtonGroup').style.display = 'flex';
+                }
+
+                initDashboard();
+            } else {
+                errDiv.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            populateFilterDropdowns();
-            applyFilters();
+            // Mantém modal aberto aguardando login
         });
 
+        function initDashboard() {
+            populateFilterDropdowns();
+            selectBrand(selectedBrand);
+        }
+
         function selectBrand(brand) {
+            if (currentUser && currentUser.brand !== 'Todos' && currentUser.brand !== brand) return;
+
             selectedBrand = brand;
             document.querySelectorAll('.brand-btn').forEach(btn => {
                 btn.className = "brand-btn px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all";
@@ -620,12 +717,17 @@
         }
 
         function populateFilterDropdowns() {
-            const meses = [...new Set(rawData.map(item => item.mes))];
+            let base = rawData;
+            if (currentUser && currentUser.brand !== 'Todos') {
+                base = rawData.filter(item => item.marca_grupo === currentUser.brand);
+            }
+
+            const meses = [...new Set(base.map(item => item.mes))];
             const selectMes = document.getElementById('selectMes');
             selectMes.innerHTML = '<option value="Todos">Todos os Meses</option>';
             meses.forEach(m => selectMes.innerHTML += `<option value="${m}">${m}</option>`);
 
-            const ufs = [...new Set(rawData.map(item => item.uf))].sort();
+            const ufs = [...new Set(base.map(item => item.uf))].sort();
             const selectUF = document.getElementById('selectUF');
             selectUF.innerHTML = '<option value="Todos">Todas as UFs</option>';
             ufs.forEach(uf => selectUF.innerHTML += `<option value="${uf}">${uf}</option>`);
@@ -639,12 +741,10 @@
             selectUnidade.innerHTML = '<option value="Todos">Todas as Unidades</option>';
 
             let availableData = rawData;
-            if (selectedBrand === 'Estácio') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Estácio');
-            } else if (selectedBrand === 'Wyden') {
-                availableData = rawData.filter(d => d.marca_grupo === 'Wyden');
-            } else if (selectedBrand === 'IDOMED') {
-                availableData = rawData.filter(d => d.marca_grupo === 'IDOMED');
+            if (currentUser && currentUser.brand !== 'Todos') {
+                availableData = rawData.filter(d => d.marca_grupo === currentUser.brand);
+            } else if (selectedBrand !== 'Todos') {
+                availableData = rawData.filter(d => d.marca_grupo === selectedBrand);
             }
 
             const uniqueCampuses = [];
@@ -672,6 +772,7 @@
             const unidadeLabel = document.getElementById('selectUnidade').value;
 
             filteredData = rawData.filter(item => {
+                if (currentUser && currentUser.brand !== 'Todos' && item.marca_grupo !== currentUser.brand) return false;
                 if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
                 if (mes !== 'Todos' && item.mes !== mes) return false;
                 if (uf !== 'Todos' && item.uf !== uf) return false;
@@ -691,14 +792,6 @@
             renderCharts();
             renderTable();
             updatePresentationValues();
-        }
-
-        function resetFilters() {
-            selectBrand('Todos');
-            document.getElementById('selectMes').value = 'Todos';
-            document.getElementById('selectUF').value = 'Todos';
-            document.getElementById('selectUnidade').value = 'Todos';
-            applyFilters();
         }
 
         function formatBRL(value) {
@@ -958,6 +1051,42 @@
             `;
 
             renderPresentationTable(tableArray);
+        }
+
+        // Função de Extração para Planilha Excel (.xlsx) formatada para a Diretoria
+        function exportToExcel() {
+            if (!filteredData || filteredData.length === 0) {
+                alert("Não há dados filtrados para exportar.");
+                return;
+            }
+
+            const exportRows = filteredData.map(item => ({
+                "Mês": item.mes,
+                "Grupo / Marca": item.marca_grupo,
+                "Marca Original": item.marca_orig,
+                "UF": item.uf,
+                "Unidade / Campus": item.unidade,
+                "Base Acionada": item.acionados,
+                "Negociados": item.negociado,
+                "Recusas": item.recusa,
+                "Qtd Acordos": item.acordos,
+                "Valor Acordo (R$)": item.val_acordo,
+                "Qtd Pagos": item.pagos,
+                "Valor Pago (R$)": item.val_pago,
+                "Qtd Quebra": item.quebra,
+                "Valor Quebra (R$)": item.val_quebra,
+                "Efetividade Qtd (%)": Number((item.efetividade_qtd * 100).toFixed(2)),
+                "Efetividade Val (%)": Number((item.efetividade_val * 100).toFixed(2)),
+                "Renovações Acadêmicas": item.renovacoes
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Indicadores ATP");
+
+            // Nome do arquivo dinâmico baseado na marca logada/filtrada
+            const fileName = `Relatorio_Executivo_ATP_${selectedBrand}_${new Date().toISOString().slice(0,10)}.xlsx`;
+            XLSX.writeFile(workbook, fileName);
         }
 
         function filterTable() {
