@@ -909,6 +909,7 @@
             const w = document.getElementById('unidadeWrap');
             if (w && !w.contains(e.target)) toggleUnidadePanel(false);
         });
+        const MESES_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
         function mesParaValor(label) {
             const [m, y] = String(label).split('/');
             const i = MESES_PT.findIndex(x => x.toLowerCase() === String(m).toLowerCase());
