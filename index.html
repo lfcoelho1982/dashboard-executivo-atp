@@ -137,7 +137,7 @@
     <div class="bg-dark-800/60 border-b border-dark-700 px-6 py-4 grid grid-cols-1 md:grid-cols-4 gap-4 backdrop-blur-md">
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Marca / Grupo:</label>
-            <div id="brandFixed" class="hidden px-3 py-2 text-xs font-bold rounded-xl bg-dark-900 border border-dark-700 text-white"></div>
+            <div id="brandFixed" class="hidden px-3 py-2.5 text-base font-extrabold uppercase tracking-widest rounded-xl bg-dark-900 border border-dark-700 text-white"></div>
             <div id="brandButtonGroup" class="flex flex-wrap gap-1.5 bg-dark-900 p-1 rounded-xl border border-dark-700">
                 <button id="btnBrandTodos" onclick="selectBrand('Todos')" class="brand-btn px-3 py-1.5 text-xs font-medium rounded-lg transition-all bg-indigo-600 text-white shadow-md">Todos</button>
                 <button id="btnBrandEstacio" onclick="selectBrand('Estácio')" class="brand-btn px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-all">Estácio</button>
@@ -148,10 +148,17 @@
 
         <div>
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Mês / Ano:</label>
-            <div class="flex gap-2">
-                <input type="month" id="selectMes" onchange="applyFilters()" style="color-scheme: dark" class="flex-1 min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
-                <button type="button" onclick="clearMes()" title="Todos os meses" class="px-3 text-xs font-medium rounded-xl bg-dark-700 hover:bg-dark-600 text-gray-300 border border-gray-700 transition-all">Todos</button>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <span class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1">De</span>
+                    <input type="month" id="selectMesDe" onchange="applyFilters()" style="color-scheme: dark" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
+                <div>
+                    <span class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1">Até</span>
+                    <input type="month" id="selectMesAte" onchange="applyFilters()" style="color-scheme: dark" class="w-full min-w-0 bg-dark-900 border border-dark-700 text-gray-200 text-xs rounded-xl px-2 py-2.5 focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
             </div>
+            <button type="button" onclick="clearMes()" class="mt-1 text-[11px] font-medium text-indigo-400 hover:text-indigo-300 transition-all">Limpar período (todos os meses)</button>
         </div>
 
         <div>
@@ -760,7 +767,9 @@
                     selectedBrand = currentUser.brand;
                     // Oculta botões de outras marcas no seletor para forçar restrição
                     document.getElementById('brandButtonGroup').style.display = 'none';
-                    document.getElementById('brandFixed').textContent = currentUser.brand;
+                    const brandEl = document.getElementById('brandFixed');
+                    brandEl.textContent = currentUser.brand.toUpperCase();
+                    brandEl.style.color = { 'Estácio': '#60a5fa', 'Wyden': '#f87171', 'IDOMED': '#34d399' }[currentUser.brand] || '';
                     document.getElementById('brandFixed').classList.remove('hidden');
                 } else {
                     selectedBrand = 'Todos';
@@ -819,10 +828,12 @@
             }
 
             const meses = [...new Set(base.map(item => item.mes))];
-            const selectMes = document.getElementById('selectMes');
             const valores = meses.map(mesParaValor).filter(Boolean).sort();
-            selectMes.value = '';
-            if (valores.length) { selectMes.min = valores[0]; selectMes.max = valores[valores.length - 1]; }
+            ['selectMesDe', 'selectMesAte'].forEach(id => {
+                const el = document.getElementById(id);
+                el.value = '';
+                if (valores.length) { el.min = valores[0]; el.max = valores[valores.length - 1]; }
+            });
 
             const ufs = [...new Set(base.map(item => item.uf))].sort();
             const selectUF = document.getElementById('selectUF');
@@ -875,19 +886,32 @@
             return `${MESES_PT[+m - 1]}/${y}`;
         }
         function clearMes() {
-            document.getElementById('selectMes').value = '';
+            document.getElementById('selectMesDe').value = '';
+            document.getElementById('selectMesAte').value = '';
             applyFilters();
+        }
+        function mesNoIntervalo(label, de, ate) {
+            if (!de && !ate) return true;
+            const v = mesParaValor(label);
+            if (!v) return false;
+            if (de && v < de) return false;
+            if (ate && v > ate) return false;
+            return true;
         }
 
         function applyFilters() {
-            const mes = valorParaMes(document.getElementById('selectMes').value);
+            let mesDe = document.getElementById('selectMesDe').value;
+            let mesAte = document.getElementById('selectMesAte').value;
+            if (mesDe && mesAte && mesDe > mesAte) [mesDe, mesAte] = [mesAte, mesDe];
+            const mes = (!mesDe && !mesAte) ? 'Todos'
+                : `${mesDe ? valorParaMes(mesDe) : 'Início'} a ${mesAte ? valorParaMes(mesAte) : 'Fim'}`;
             const uf = document.getElementById('selectUF').value;
             const unidadeLabel = document.getElementById('selectUnidade').value;
 
             filteredData = rawData.filter(item => {
                 if (currentUser && currentUser.brand !== 'Todos' && item.marca_grupo !== currentUser.brand) return false;
                 if (selectedBrand !== 'Todos' && item.marca_grupo !== selectedBrand) return false;
-                if (mes !== 'Todos' && item.mes !== mes) return false;
+                if (!mesNoIntervalo(item.mes, mesDe, mesAte)) return false;
                 if (uf !== 'Todos' && item.uf !== uf) return false;
                 if (unidadeLabel !== 'Todos') {
                     const label = `${item.marca_orig} - ${item.unidade}`;
