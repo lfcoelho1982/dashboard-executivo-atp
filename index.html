@@ -416,7 +416,8 @@
     </div>
 
     <script>
-        const mockDataFallback = [
+        // Base completa consolidada (Agosto/2025 a Outubro/2026) embutida diretamente
+        const rawData = [
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "ARACAJU - SE", "uf": "SE", "acionados": 278, "negociado": 164, "recusa": 114, "acordos": 158, "val_acordo": 252051.84, "pagos": 147, "val_pago": 239070.72, "quebra": 11, "val_quebra": 12981.12, "efetividade_qtd": 0.93038, "efetividade_val": 0.948498, "renovacoes": 83},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "BELEM - PA", "uf": "PA", "acionados": 198, "negociado": 171, "recusa": 27, "acordos": 171, "val_acordo": 270392.53, "pagos": 142, "val_pago": 238315.64, "quebra": 29, "val_quebra": 32076.89, "efetividade_qtd": 0.830409, "efetividade_val": 0.881369, "renovacoes": 90},
             {"marca_orig": "Estácio", "marca_grupo": "Estácio", "mes": "Agosto/2025", "unidade": "FORTALEZA - CE", "uf": "CE", "acionados": 261, "negociado": 163, "recusa": 98, "acordos": 159, "val_acordo": 357835.79, "pagos": 142, "val_pago": 326150.99, "quebra": 17, "val_quebra": 31684.8, "efetividade_qtd": 0.893082, "efetividade_val": 0.911454, "renovacoes": 87},
@@ -583,7 +584,6 @@
             {"marca_orig": "IDOMED", "marca_grupo": "IDOMED", "mes": "Outubro/2026", "unidade": "Cittá - RJ", "uf": "RJ", "acionados": 6, "negociado": 6, "recusa": 0, "acordos": 6, "val_acordo": 121177.37, "pagos": 5, "val_pago": 119260.59, "quebra": 1, "val_quebra": 1916.78, "efetividade_qtd": 0.833, "efetividade_val": 0.984, "renovacoes": 0}
         ];
 
-        let rawData = [];
         let filteredData = [];
         let selectedBrand = 'Todos';
         let sortColumn = 8;
@@ -594,21 +594,10 @@
         let autoTimerInterval = null;
         let isAutoTimerRunning = false;
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadData();
+        window.addEventListener('DOMContentLoaded', () => {
             populateFilterDropdowns();
             applyFilters();
         });
-
-        async function loadData() {
-            try {
-                const res = await fetch('data_array.json');
-                if (!res.ok) throw new Error('File fetch failed');
-                rawData = await res.json();
-            } catch (e) {
-                rawData = mockDataFallback;
-            }
-        }
 
         function selectBrand(brand) {
             selectedBrand = brand;
